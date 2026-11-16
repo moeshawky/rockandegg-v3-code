@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rockandegg-v3"
+version = "0.1.0"
+description = "Native SystemOne decision head for the headless RockAndEgg-313M-v3 backbone"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.11",
+    "transformers>=5.18",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.15",
+    "mypy>=2.0",
+    "pytest>=8",
+    "pytest-cov>=6",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rockandegg_v3"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+# Pre-existing evidence instruments; kept as immutable records, not implementation.
+extend-exclude = ["gpu_verify.py", "banking77_probe.py"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W", "F", "I", "UP", "B", "SIM", "RUF", "S", "C4", "RET", "PTH",
+    "TC", "FA", "FURB",
+]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = ["transformers.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["datasets.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "scripts", "serving"]
+addopts = "-ra -q --strict-markers --tb=short"
+
+[tool.coverage.run]
+source = ["src/rockandegg_v3"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

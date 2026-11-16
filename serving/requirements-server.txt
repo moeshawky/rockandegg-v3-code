@@ -1,0 +1,21 @@
+# Runtime dependencies for systemone_server.py
+#
+# "No separate package install" means no model-specific package: the adapter,
+# custom modeling code and tokenizer ship in this directory. These generic
+# libraries are still required and are NOT bundled.
+#
+# Install with:  python -m pip install -r requirements-server.txt
+#
+# Version notes (verified 2026-11-16 in the audit workspace):
+#   - transformers 5.x declares `huggingface-hub>=1.5,<2.0`. A newer hub
+#     (e.g. 2.4.0) breaks `import transformers`; keep hub below 2.0.
+#   - T4 is Turing and has no bf16. The server selects fp16 on CUDA and
+#     fp32 on CPU explicitly (never bf16).
+#   - Python >= 3.10.
+
+torch>=2.11
+transformers>=5.16,<6
+huggingface-hub>=1.5,<2.0
+fastapi>=0.110
+uvicorn>=0.27
+pydantic>=2.6

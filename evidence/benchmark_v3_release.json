@@ -1,0 +1,24 @@
+{
+  "arm": "v3_release",
+  "model": "moeshawky/RockAndEgg-313M-v3 (published weights, fp16 T4)",
+  "dataset": "LocalLLaMA/typed-decisions all/test",
+  "n_cases": 400,
+  "n_decisions": 2000,
+  "accuracy": 0.3395,
+  "by_type": {
+    "choice": {
+      "n": 600,
+      "accuracy": 0.20666666666666667
+    },
+    "score": {
+      "n": 800,
+      "accuracy": 0.325
+    },
+    "noul": {
+      "n": 600,
+      "accuracy": 0.49166666666666664
+    }
+  },
+  "documented_release_arm_accuracy": 0.3425,
+  "note": "Laya arm and matched-head arm are not reproduced: private inference wrapper and separate training run are required."
+}

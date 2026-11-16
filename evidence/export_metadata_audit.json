@@ -1,0 +1,23 @@
+{
+  "artifact": "<repro-workspace>/export/rockandegg-313m-v3",
+  "claim_count": 14,
+  "verified_by_weights": 8,
+  "verified_by_source_match": 1,
+  "supported_by_producer": 4,
+  "failed": 1,
+  "verdict": "FAIL"
+}
+  [      VERIFIED_BY_WEIGHTS] manifest.sha256 matches model.safetensors
+  [      VERIFIED_BY_WEIGHTS] manifest.tensor_count = 122
+  [      VERIFIED_BY_WEIGHTS] head_config.dtype = fp32 (weights F32)
+  [      VERIFIED_BY_WEIGHTS] config.json dtype matches actual weights
+  [      VERIFIED_BY_WEIGHTS] qtype_embedding = 3
+  [      VERIFIED_BY_WEIGHTS] scorer = 1024->256->1
+  [      VERIFIED_BY_WEIGHTS] lm_head = false; generation = false
+  [      VERIFIED_BY_WEIGHTS] optional components (cross-attn / mixer / cosine-prior) OFF
+  [ VERIFIED_BY_SOURCE_MATCH] systemone_head.trained = true; head_checkpoint weights embedded
+  [                   FAILED] head_config.freeze_backbone = true; source_backbone weights unchanged
+  [    SUPPORTED_BY_PRODUCER] systemone_head.max_state_len = 256
+  [    SUPPORTED_BY_PRODUCER] systemone_head.training_dataset = SargeDev/jev-distill-corpus-v3
+  [    SUPPORTED_BY_PRODUCER] manifest.seed = 20261116
+  [    SUPPORTED_BY_PRODUCER] manifest.source_backbone string = moeshawky/RockAndEgg-313M-v2 (public Hub id)

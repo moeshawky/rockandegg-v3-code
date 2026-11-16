@@ -1,0 +1,22 @@
+{
+  "arm": "v3_matched_typed",
+  "head_checkpoint": "training_typed/head_final_typed.pt",
+  "n_cases": 400,
+  "n_decisions": 2000,
+  "accuracy": 0.47,
+  "by_type": {
+    "choice": {
+      "n": 600,
+      "accuracy": 0.45166666666666666
+    },
+    "score": {
+      "n": 800,
+      "accuracy": 0.36625
+    },
+    "noul": {
+      "n": 600,
+      "accuracy": 0.6266666666666667
+    }
+  },
+  "documented_matched_arm_accuracy": 0.523
+}

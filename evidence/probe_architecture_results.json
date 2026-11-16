@@ -1,0 +1,95 @@
+{
+  "n_options=2": {
+    "n_options": 2,
+    "option_rows": 2,
+    "backbone_calls": 2,
+    "shapes": [
+      [
+        1,
+        16
+      ],
+      [
+        2,
+        4
+      ]
+    ],
+    "logits_per_question": [
+      1,
+      1
+    ],
+    "naive_reencode_calls": 3,
+    "calls_saved": 1,
+    "device": "cuda:0"
+  },
+  "n_options=4": {
+    "n_options": 4,
+    "option_rows": 4,
+    "backbone_calls": 2,
+    "shapes": [
+      [
+        1,
+        16
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "logits_per_question": [
+      2,
+      2
+    ],
+    "naive_reencode_calls": 5,
+    "calls_saved": 3,
+    "device": "cuda:0"
+  },
+  "n_options=8": {
+    "n_options": 8,
+    "option_rows": 8,
+    "backbone_calls": 2,
+    "shapes": [
+      [
+        1,
+        16
+      ],
+      [
+        8,
+        4
+      ]
+    ],
+    "logits_per_question": [
+      4,
+      4
+    ],
+    "naive_reencode_calls": 9,
+    "calls_saved": 7,
+    "device": "cuda:0"
+  },
+  "n_options=16": {
+    "n_options": 16,
+    "option_rows": 16,
+    "backbone_calls": 2,
+    "shapes": [
+      [
+        1,
+        16
+      ],
+      [
+        16,
+        4
+      ]
+    ],
+    "logits_per_question": [
+      8,
+      8
+    ],
+    "naive_reencode_calls": 17,
+    "calls_saved": 15,
+    "device": "cuda:0"
+  }
+}
+
+=== verdict ===
+backbone call counts across all option totals: [2]
+PASS: exactly 2 backbone forwards regardless of option count —
+the state is encoded once and the option rows reuse its KV cache.

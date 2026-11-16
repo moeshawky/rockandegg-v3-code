@@ -1,0 +1,60 @@
+{
+  "model_path": "moeshawky/RockAndEgg-313M-v2 (public Hub id)",
+  "devices": 2,
+  "gpu_names": [
+    "Tesla T4",
+    "Tesla T4"
+  ],
+  "fp32": {
+    "load_kwarg": "dtype",
+    "attn_implementation": "sdpa",
+    "kv_cache_bytes": 41943040,
+    "kv_cache_MiB": 40.0,
+    "fork_return": null,
+    "fork_seq_length": 540,
+    "position_ids_shape": [
+      1,
+      28
+    ],
+    "position_ids_first_last": [
+      512,
+      539
+    ],
+    "position_ids_same_all_rows": true,
+    "state_last_finite": true,
+    "option_permutation_max_abs_diff": 1.1920928955078125e-07,
+    "question_permutation_max_abs_diff": 0.0,
+    "state_independence_max_abs_diff": 0.0,
+    "cross_question_leakage_max_abs_diff": 0.0,
+    "changed_question0_did_change_logits": 0.4344481825828552,
+    "full_case_latency_ms": 172.832
+  },
+  "fp16": {
+    "load_kwarg": "dtype",
+    "attn_implementation": "sdpa",
+    "kv_cache_bytes": 20971520,
+    "kv_cache_MiB": 20.0,
+    "fork_return": null,
+    "fork_seq_length": 540,
+    "position_ids_shape": [
+      1,
+      28
+    ],
+    "position_ids_first_last": [
+      512,
+      539
+    ],
+    "position_ids_same_all_rows": true,
+    "state_last_finite": true,
+    "option_permutation_max_abs_diff": 3.5762786865234375e-07,
+    "question_permutation_max_abs_diff": 0.0,
+    "state_independence_max_abs_diff": 0.0,
+    "cross_question_leakage_max_abs_diff": 0.0,
+    "changed_question0_did_change_logits": 0.43601691722869873,
+    "full_case_latency_ms": 84.647
+  },
+  "flash_attention_2": {
+    "loaded": false,
+    "error": "ImportError: FlashAttention2 has been toggled on, but it cannot be used due to the following error: the package for FlashAttention2 doesn't seem to be installed."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "claim": "RAE-v2 last-token vector: 83.44% BANKING77",
+  "protocol": "frozen backbone, add_special_tokens=False, max_length=128, last non-pad token, logistic regression on raw text, fp16 T4",
+  "train_rows": 10003,
+  "test_rows": 3080,
+  "num_classes": 77,
+  "linear_probe_accuracy": 0.8665584415584415,
+  "cosine_1nn_accuracy": 0.7113636363636363,
+  "claimed": 0.8344,
+  "delta_vs_claim": 0.0321584415584415,
+  "features_finite": true
+}

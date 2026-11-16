@@ -1,0 +1,93 @@
+{
+  "fp16_artifact": "<repro-workspace>/hf_repo/RockAndEgg-313M-v3/fp16/model.safetensors",
+  "fp16_sha256_source": "64d4843a0a6e742de268522bed3643d47c38ea7dac6cbd40649e0405c0af20e1",
+  "weight_identity": {
+    "status": "CHECKED",
+    "compared_against": "HeadConfig(dtype_name='fp16') + training/head_final.pt",
+    "tensors_in_file": 122,
+    "tensors_in_live_fp16_model": 122,
+    "keys_match": true,
+    "dtypes": [
+      "torch.float16"
+    ],
+    "max_abs_diff_vs_gated_fp16_model": 0.0,
+    "n_tensors_differing": 0
+  },
+  "loadability_subfolder": {
+    "config_class": "RockAndEggV3Config",
+    "model_class": "RockAndEggV3SystemOneModel",
+    "config_dtype": "torch.float16",
+    "tokenizer_class": "Qwen2Tokenizer",
+    "backbone_arch": [
+      "RockAndEggV3SystemOneModel"
+    ],
+    "has_lm_head": false,
+    "has_generate": false,
+    "first_weight_dtype": "torch.float16",
+    "n_parameters": 313161733
+  },
+  "fp32_output": [
+    {
+      "type": "choice",
+      "chosen_key": "The deployment failed",
+      "confidence": 0.9349634647369385,
+      "probabilities": [
+        0.9349634647369385,
+        0.06503654271364212
+      ]
+    },
+    {
+      "type": "score",
+      "chosen_key": "high",
+      "confidence": 0.4010293781757355,
+      "probabilities": [
+        0.34589684009552,
+        0.15564963221549988,
+        0.09742421656847,
+        0.4010293781757355
+      ]
+    }
+  ],
+  "fp16_output": [
+    {
+      "type": "choice",
+      "chosen_key": "The deployment failed",
+      "confidence": 0.9361100196838379,
+      "probabilities": [
+        0.9361100196838379,
+        0.0638899877667427
+      ]
+    },
+    {
+      "type": "score",
+      "chosen_key": "high",
+      "confidence": 0.40259066224098206,
+      "probabilities": [
+        0.34502726793289185,
+        0.15582001209259033,
+        0.09656206518411636,
+        0.40259066224098206
+      ]
+    }
+  ],
+  "divergence": {
+    "per_question": [
+      {
+        "type": "choice",
+        "chosen_key_matches": true,
+        "max_abs_prob_delta": 0.001146554946899414,
+        "mean_abs_prob_delta": 0.001146554946899414,
+        "confidence_delta": 0.001146554946899414
+      },
+      {
+        "type": "score",
+        "chosen_key_matches": true,
+        "max_abs_prob_delta": 0.001561284065246582,
+        "mean_abs_prob_delta": 0.0008658468723297119,
+        "confidence_delta": 0.001561284065246582
+      }
+    ],
+    "all_chosen_keys_match": true,
+    "max_abs_prob_delta": 0.001561284065246582
+  }
+}
