@@ -1,3 +1,8 @@
+> **Update (2026-11-19):** this card describes the preview artifact. The full-backbone
+> BF16 seed-0 checkpoint is now the canonical `main` of `moeshawky/RockAndEgg-313M-v3`,
+> tagged `v3-fullbackbone-main-1` (commit `c8d6f8c…`), shipping at the repository root.
+> See the model repository's root `README.md` for the canonical card and loading snippet.
+
 # Model Card: RockAndEgg-313M-v3 — Full-Backbone BF16 (RESEARCH / PREVIEW)
 
 **Model ID / Version:** `moeshawky/RockAndEgg-313M-v3`, branch `preview/fullbackbone-bf16-seed0` @ revision `0b60f73eda4293b4891f27c3106a977cef536a1f`
