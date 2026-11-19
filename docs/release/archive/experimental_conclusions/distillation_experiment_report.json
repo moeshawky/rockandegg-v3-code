@@ -1,0 +1,270 @@
+{
+  "protocol": "Phase IV/V matched distillation; pre-registered in distillation_preregistration.md",
+  "preregistration": "/scratch/rockandegg-v3-code/experiments/ensemble_validation_20261118/distillation_preregistration.md",
+  "final_panel_manifest": "/scratch/rockandegg-v3-code/artifacts/final_eval_panel_v1_manifest.json",
+  "final_panel_ids_sha256": "369fc01ed21b1cdf65e0973e0ca466305e2328a24b2e50e628dd14c999148130",
+  "transfer_set": "90 DEV dossiers / 450 decisions (out-of-sample for all 3 teachers)",
+  "n_blended_decisions": 270,
+  "seed0_sha256": "1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92",
+  "training": {
+    "control": {
+      "name": "control",
+      "epochs": 3,
+      "steps": 87,
+      "loss_first": 1.1460440158843994,
+      "loss_last": 0.9639222025871277,
+      "seconds": 12.236366748809814,
+      "checkpoint": "/scratch/rockandegg-v3-code/experiments/ensemble_validation_20261118/students/control",
+      "sha256": "25788c756a5290fd47d1749cbc30d815aa8984cf310fedebe90f5fdf3cfd5d0f"
+    },
+    "treatment": {
+      "name": "treatment",
+      "epochs": 3,
+      "steps": 87,
+      "loss_first": 1.151084065437317,
+      "loss_last": 0.9825403690338135,
+      "seconds": 11.89166784286499,
+      "checkpoint": "/scratch/rockandegg-v3-code/experiments/ensemble_validation_20261118/students/treatment",
+      "sha256": "ebc30af2eb3f10f58e656aa7ec86d4143fa5c556537f0dec91a33acdc2913486"
+    }
+  },
+  "arms": {
+    "seed0": {
+      "metrics": {
+        "n_decisions": 1000,
+        "accuracy": 0.731,
+        "soft_accuracy": 0.5379561640922544,
+        "brier": 0.07549857257896596,
+        "ece": 0.12760217412174635,
+        "score_mae": 0.2758523074659563,
+        "within_one": 0.9875,
+        "tv": 0.17042188446112802,
+        "kl": 0.1342271055549142
+      },
+      "per_type": {
+        "choice": {
+          "n_decisions": 296,
+          "accuracy": 0.7094594594594594,
+          "soft_accuracy": 0.44705058862612235,
+          "brier": 0.08700744037998621,
+          "ece": 0.13855374670981788,
+          "score_mae": 0.0,
+          "within_one": 0.0,
+          "tv": 0.2024968216744706,
+          "kl": 0.17818951065384372
+        },
+        "noul": {
+          "n_decisions": 304,
+          "accuracy": 0.8092105263157895,
+          "soft_accuracy": 0.6264694875724356,
+          "brier": 0.0642925697200778,
+          "ece": 0.10332284548731269,
+          "score_mae": 0.0,
+          "within_one": 0.0,
+          "tv": 0.13919102454287344,
+          "kl": 0.09142160585332489
+        },
+        "score": {
+          "n_decisions": 400,
+          "accuracy": 0.6875,
+          "soft_accuracy": 0.0,
+          "brier": 0.0,
+          "ece": 0.14702193137802982,
+          "score_mae": 0.2758523074659563,
+          "within_one": 0.9875,
+          "tv": 0.0,
+          "kl": 0.0
+        }
+      },
+      "nll": 0.7970552151287825,
+      "confidence": {
+        "mean": 0.6033978258782535,
+        "p10": 0.42481445251984834,
+        "p50": 0.5756367901682261,
+        "p90": 0.8856062626817928
+      }
+    },
+    "control": {
+      "metrics": {
+        "n_decisions": 1000,
+        "accuracy": 0.731,
+        "soft_accuracy": 0.5559296526882505,
+        "brier": 0.08818659507326633,
+        "ece": 0.09623691083574909,
+        "score_mae": 0.2951484258417276,
+        "within_one": 0.9825,
+        "tv": 0.1718184676744465,
+        "kl": 0.15924459246101713
+      },
+      "per_type": {
+        "choice": {
+          "n_decisions": 296,
+          "accuracy": 0.7364864864864865,
+          "soft_accuracy": 0.46303284430538744,
+          "brier": 0.09982222051821936,
+          "ece": 0.10389489955552013,
+          "score_mae": 0.0,
+          "within_one": 0.0,
+          "tv": 0.20658003147393497,
+          "kl": 0.20216178163302426
+        },
+        "noul": {
+          "n_decisions": 304,
+          "accuracy": 0.7894736842105263,
+          "soft_accuracy": 0.6463818082189328,
+          "brier": 0.07685717029791735,
+          "ece": 0.06339253886848903,
+          "score_mae": 0.0,
+          "within_one": 0.0,
+          "tv": 0.13797168186968137,
+          "kl": 0.11745680300406286
+        },
+        "score": {
+          "n_decisions": 400,
+          "accuracy": 0.6825,
+          "soft_accuracy": 0.0,
+          "brier": 0.0,
+          "ece": 0.13177125799957634,
+          "score_mae": 0.2951484258417276,
+          "within_one": 0.9825,
+          "tv": 0.0,
+          "kl": 0.0
+        }
+      },
+      "nll": 0.81393260693477,
+      "confidence": {
+        "mean": 0.643540477496197,
+        "p10": 0.441898961549211,
+        "p50": 0.6022703093628985,
+        "p90": 0.9283716914323655
+      }
+    },
+    "treatment": {
+      "metrics": {
+        "n_decisions": 1000,
+        "accuracy": 0.718,
+        "soft_accuracy": 0.5466995560400957,
+        "brier": 0.08187904692364384,
+        "ece": 0.10556866641933624,
+        "score_mae": 0.29357876283297235,
+        "within_one": 0.9825,
+        "tv": 0.1679885465400524,
+        "kl": 0.14349084683553565
+      },
+      "per_type": {
+        "choice": {
+          "n_decisions": 296,
+          "accuracy": 0.6858108108108109,
+          "soft_accuracy": 0.4491109310665726,
+          "brier": 0.09282287836041309,
+          "ece": 0.14383115520516254,
+          "score_mae": 0.0,
+          "within_one": 0.0,
+          "tv": 0.20371071005340396,
+          "kl": 0.1829957972404288
+        },
+        "noul": {
+          "n_decisions": 304,
+          "accuracy": 0.805921052631579,
+          "soft_accuracy": 0.6417200593037891,
+          "brier": 0.07122321105100013,
+          "ece": 0.0954412289431276,
+          "score_mae": 0.0,
+          "within_one": 0.0,
+          "tv": 0.1332064399612627,
+          "kl": 0.10502550038866601
+        },
+        "score": {
+          "n_decisions": 400,
+          "accuracy": 0.675,
+          "soft_accuracy": 0.0,
+          "brier": 0.0,
+          "ece": 0.10969945792391757,
+          "score_mae": 0.29357876283297235,
+          "within_one": 0.9825,
+          "tv": 0.0,
+          "kl": 0.0
+        }
+      },
+      "nll": 0.8083592399515294,
+      "confidence": {
+        "mean": 0.6296946654882913,
+        "p10": 0.43360846620901,
+        "p50": 0.5866585685297405,
+        "p90": 0.9161478417964528
+      }
+    }
+  },
+  "paired": {
+    "treatment_minus_control": {
+      "delta_accuracy_a_minus_b": -0.013000000000000001,
+      "ci95_low": -0.028999999999999995,
+      "ci95_high": 0.0020000000000000005,
+      "excludes_zero": false,
+      "n_dossiers": 200,
+      "n_boot": 5000
+    },
+    "treatment_minus_seed0": {
+      "delta_accuracy_a_minus_b": -0.013000000000000001,
+      "ci95_low": -0.04,
+      "ci95_high": 0.012,
+      "excludes_zero": false,
+      "n_dossiers": 200,
+      "n_boot": 5000
+    },
+    "control_minus_seed0": {
+      "delta_accuracy_a_minus_b": -2.220446049250313e-18,
+      "ci95_low": -0.028999999999999998,
+      "ci95_high": 0.027000000000000003,
+      "excludes_zero": false,
+      "n_dossiers": 200,
+      "n_boot": 5000
+    },
+    "per_type_treatment_minus_control": {
+      "choice": {
+        "delta": -0.0425,
+        "ci95_low": -0.0675,
+        "ci95_high": -0.02,
+        "n_dossiers": 200
+      },
+      "score": {
+        "delta": -0.0075,
+        "ci95_low": -0.0325,
+        "ci95_high": 0.0175,
+        "n_dossiers": 200
+      },
+      "noul": {
+        "delta": 0.01,
+        "ci95_low": -0.015062499999999996,
+        "ci95_high": 0.035,
+        "n_dossiers": 200
+      }
+    }
+  },
+  "decision": {
+    "gate1_treatment_beats_control": false,
+    "gate2_treatment_beats_seed0": false,
+    "gate3_no_type_regression": false,
+    "gate4_structural_integrity": true,
+    "per_type_deltas": {
+      "choice": -0.0425,
+      "score": -0.0075,
+      "noul": 0.01
+    },
+    "verdict": "FAILURE"
+  },
+  "integrity": {
+    "control": {
+      "param_count": 313161733,
+      "lm_head": false,
+      "backbone_frozen": true,
+      "generate_method": false
+    },
+    "treatment": {
+      "param_count": 313161733,
+      "lm_head": false,
+      "backbone_frozen": true,
+      "generate_method": false
+    }
+  }
+}

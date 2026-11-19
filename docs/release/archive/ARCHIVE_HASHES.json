@@ -1,0 +1,97 @@
+{
+  "generated_utc": "2026-11-19T01:06:50.891108+00:00",
+  "artifact": {
+    "payload_files_in_manifest": 17,
+    "manifest_file_itself": 1,
+    "expected_remote_file_count": 18,
+    "all_payload_hashes_match": true,
+    "mismatches": [],
+    "model_sha256": "c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5"
+  },
+  "archive": {
+    "n_files": 20,
+    "self_exclusion_note": "ARCHIVE_HASHES.json excludes itself; on-disk total = n_files + 1",
+    "files": {
+      "V3_RELEASE_ARCHIVE/MODEL_CARD.md": {
+        "sha256": "a96af8464942fd85e947073144e9c0b7f925253f523fbb42d020550a6e01ac61",
+        "bytes": 10353
+      },
+      "V3_RELEASE_ARCHIVE/MODEL_SELECTION_REPORT.md": {
+        "sha256": "4903884eaba9ba3add74757890636ee343e6211f5a50011429906272f3b0206d",
+        "bytes": 3998
+      },
+      "V3_RELEASE_ARCHIVE/PUBLICATION_REPORT.md": {
+        "sha256": "d505ba7021aebdf9a70f5847ba77d007124c6666f6da98dc3095b9073c01ccd8",
+        "bytes": 3520
+      },
+      "V3_RELEASE_ARCHIVE/RELEASE_MANIFEST.json": {
+        "sha256": "cf0a8d8143bbe8f3f975663e6501c6230cd46a741a8fbbd3cc48df0fc0bc1634",
+        "bytes": 2954
+      },
+      "V3_RELEASE_ARCHIVE/RELEASE_QUALIFICATION.md": {
+        "sha256": "bd6cadb8dfd820c80becbb9b38f75d2198f240f6dc834d180c92deb4adde89a6",
+        "bytes": 4265
+      },
+      "V3_RELEASE_ARCHIVE/V3_OPERATIONAL_HANDOFF.md": {
+        "sha256": "386d1ca82b3231ef89062a622db4a4a7d8eb946f21d60035810c3ac5200cff5b",
+        "bytes": 6789
+      },
+      "V3_RELEASE_ARCHIVE/V3_RELEASE_FREEZE.md": {
+        "sha256": "482d6d9a2145c91e41e09e59c03321d37a209c492de2a3e2d2ae240d9b0e437e",
+        "bytes": 5667
+      },
+      "V3_RELEASE_ARCHIVE/evidence/artifact_release_manifest.json": {
+        "sha256": "e5ca22a387f8e30690a69a589a71db5a392bff345ebb880944d796693c803a0e",
+        "bytes": 4441
+      },
+      "V3_RELEASE_ARCHIVE/evidence/release_integrity.json": {
+        "sha256": "09b31b3f1820916d3124f08ea374866b341b14953cf6f84198ab1221a44a1384",
+        "bytes": 2508
+      },
+      "V3_RELEASE_ARCHIVE/evidence/release_performance.json": {
+        "sha256": "2ee396ea2f187d11e7ef780866e7899ad3da512268948ebbfdd470da36296b8b",
+        "bytes": 2035
+      },
+      "V3_RELEASE_ARCHIVE/evidence/remote_verification.json": {
+        "sha256": "83a64b54c2ce0609cceb99008c15a380ec374cbb19cba094c99e7b44bc0f79bb",
+        "bytes": 4587
+      },
+      "V3_RELEASE_ARCHIVE/evidence/smoke_interface.json": {
+        "sha256": "df177297d54c31029a15d5b4313a8ae24e6851ba3fdee5d40c228b3aa6f2b59c",
+        "bytes": 1898
+      },
+      "V3_RELEASE_ARCHIVE/experimental_conclusions/DATA_LINEAGE_AUDIT.md": {
+        "sha256": "ce4fa2c17a43ac3ce1ea073c37359915007107533697d1cabfbb3599b4c4722f",
+        "bytes": 25291
+      },
+      "V3_RELEASE_ARCHIVE/experimental_conclusions/DISTILLATION_EXPERIMENT.md": {
+        "sha256": "0e92b323d29516785a2171398e8e13593527ed8261fb6efa0e4c183a0ec2a479",
+        "bytes": 5124
+      },
+      "V3_RELEASE_ARCHIVE/experimental_conclusions/ENSEMBLE_VALIDATION_REPORT.md": {
+        "sha256": "30061639ade1eda9d99a1965dc1a7f754e530fbbaf8ba8ad46767e016a60bf19",
+        "bytes": 5001
+      },
+      "V3_RELEASE_ARCHIVE/experimental_conclusions/FINAL_QUALIFICATION_REPORT.md": {
+        "sha256": "c3e79c1aacc78705342f466f728c5077f7f00cc78efaa407f9a87bb8081cf9a7",
+        "bytes": 7122
+      },
+      "V3_RELEASE_ARCHIVE/experimental_conclusions/distillation_experiment_report.json": {
+        "sha256": "6d751f5448d097a2fa5557d1943b14cf2a51688b337ee89f9611cd14b284e5e7",
+        "bytes": 8114
+      },
+      "V3_RELEASE_ARCHIVE/experimental_conclusions/ensemble_validation_report.json": {
+        "sha256": "4cf71e8a27c9e435efedc2a27c11d27470d3a07fe9e3e6ae1d7fe7900115eb9d",
+        "bytes": 8857
+      },
+      "V3_RELEASE_ARCHIVE/preregistration/distillation_preregistration.md": {
+        "sha256": "d599e77abe2ffccfb22753cf5ede84f1ef897470876219393a266b5e90b73f4b",
+        "bytes": 3919
+      },
+      "V3_RELEASE_ARCHIVE/preregistration/ensemble_validation_preregistration.md": {
+        "sha256": "2d68cc783308ce5c9cdc8cf35de9a91c2458888586c0b266f0426bfd32203b2c",
+        "bytes": 3168
+      }
+    }
+  }
+}

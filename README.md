@@ -187,6 +187,13 @@ reported as passes. See `QUALIFICATION.md` for the status of all numeric claims.
 * The public candidate has fresh Git history. Original repository history is
   deliberately not reproduced.
 
+## Release dossier
+
+The closure record for the full-backbone BF16 research/preview release — model card,
+freeze, operational handoff, qualification, selection/publication reports and the full
+evidence archive — is in [`docs/release/`](docs/release/README.md). The exact
+release-engineering scripts are in [`scripts/release/`](scripts/release/README.md).
+
 ## License
 
 Apache-2.0 — see `LICENSE` and `ATTRIBUTION.md`.

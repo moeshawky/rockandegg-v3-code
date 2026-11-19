@@ -1,0 +1,111 @@
+{
+  "artifact": "/scratch/rockandegg-v3-code/release/RockAndEgg-313M-v3-fullbackbone-bf16-preview",
+  "device": "cuda:0",
+  "precision": "bfloat16",
+  "n_input_cases": 65,
+  "fanout": {
+    "F1": {
+      "backbone_calls": 2,
+      "shapes": [
+        [
+          1,
+          256
+        ],
+        [
+          4,
+          21
+        ]
+      ],
+      "naive_reencode_calls": 2
+    },
+    "F2": {
+      "backbone_calls": 2,
+      "shapes": [
+        [
+          1,
+          256
+        ],
+        [
+          4,
+          21
+        ]
+      ],
+      "naive_reencode_calls": 3
+    },
+    "F4": {
+      "backbone_calls": 2,
+      "shapes": [
+        [
+          1,
+          256
+        ],
+        [
+          4,
+          21
+        ]
+      ],
+      "naive_reencode_calls": 5
+    },
+    "F8": {
+      "backbone_calls": 2,
+      "shapes": [
+        [
+          1,
+          256
+        ],
+        [
+          4,
+          21
+        ]
+      ],
+      "naive_reencode_calls": 9
+    }
+  },
+  "latency": {
+    "F1": {
+      "fan_out": 1,
+      "warmup_iters": 5,
+      "timed_iters": 40,
+      "p50_ms": 14.347,
+      "p95_ms": 14.67,
+      "min_ms": 14.018,
+      "max_ms": 14.836,
+      "throughput_req_per_s": 69.7,
+      "peak_vram_mib": 654.0
+    },
+    "F2": {
+      "fan_out": 2,
+      "warmup_iters": 5,
+      "timed_iters": 40,
+      "p50_ms": 14.132,
+      "p95_ms": 14.209,
+      "min_ms": 14.032,
+      "max_ms": 14.228,
+      "throughput_req_per_s": 70.8,
+      "peak_vram_mib": 668.1
+    },
+    "F4": {
+      "fan_out": 4,
+      "warmup_iters": 5,
+      "timed_iters": 40,
+      "p50_ms": 14.312,
+      "p95_ms": 14.408,
+      "min_ms": 14.206,
+      "max_ms": 15.001,
+      "throughput_req_per_s": 69.9,
+      "peak_vram_mib": 693.8
+    },
+    "F8": {
+      "fan_out": 8,
+      "warmup_iters": 5,
+      "timed_iters": 40,
+      "p50_ms": 14.31,
+      "p95_ms": 14.446,
+      "min_ms": 14.186,
+      "max_ms": 14.712,
+      "throughput_req_per_s": 69.9,
+      "peak_vram_mib": 693.8
+    }
+  },
+  "encode_once_verified": true
+}

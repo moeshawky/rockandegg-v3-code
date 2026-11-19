@@ -1,0 +1,66 @@
+{
+  "model_identity": {
+    "model_id": "moeshawky/RockAndEgg-313M-v3",
+    "release_name": "fullbackbone-bf16-seed0",
+    "release_state": "RESEARCH/PREVIEW (NOT production qualified)",
+    "parameters": 313161733,
+    "architecture": "10x Qwen3-derived decoder blocks + native SystemOne decision head; no lm_head, no generate",
+    "decision_types": ["choice", "score", "noul"],
+    "precision": "bfloat16"
+  },
+  "source_commit": {
+    "repository": "https://github.com/moeshawky/rockandegg-v3-code",
+    "base_commit": "74658b1c7f3d2572d02c863626a8b4954e4221cd",
+    "release_commit": "215cc710a9da62a8d56a8a8e676a41293dc5fc1b",
+    "release_tag": "v3-fullbackbone-preview-1",
+    "tag_object": "e3c64366ea29ea9de1e76e89c5ae11241bf7ffc7",
+    "history": "fast-forward; original public history preserved"
+  },
+  "model_revision": {
+    "hf_preview_branch": "preview/fullbackbone-bf16-seed0",
+    "hf_preview_revision": "0b60f73eda4293b4891f27c3106a977cef536a1f",
+    "hf_main_revision_preserved": "87c754951f9d4bd04c90e9ec78fc54295075e86c",
+    "hf_historical_tag": "v3-head-only-main",
+    "artifact_subfolder": "fullbackbone-bf16-preview"
+  },
+  "checkpoint_hashes": {
+    "selected_source_fp32": "1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92",
+    "released_bf16": "c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5",
+    "published_head_only_main": "3b208b86d6b5b87306091cbaec1b71007454eb4864b47efc636b4f633c875ac8"
+  },
+  "file_hashes": {
+    "_note": "Authoritative per-file SHA-256 for the published artifact is in the artifact's RELEASE_MANIFEST.json; all 17 verified against remote download.",
+    "manifest_path": "release/RockAndEgg-313M-v3-fullbackbone-bf16-preview/RELEASE_MANIFEST.json",
+    "n_files": 17,
+    "remote_all_hashes_match": true
+  },
+  "training_configuration": {
+    "objective": "soft-label CE; EMD weight 0 for selected config",
+    "full_backbone": true,
+    "optimizer": "AdamW lr_backbone 2.5e-5 / lr_head 1e-4, wd 0.01, 3% warmup + cosine",
+    "epochs": 8,
+    "micro_batch": 64,
+    "precision": "bf16 autocast / fp32 master",
+    "dataset": "LocalLLaMA/typed-decisions",
+    "dataset_config": "all",
+    "dataset_revision": "e6aa632c4db73b59c7713bb21066ad1a8e1bfce6",
+    "selection": "DEV best 0.7800 @ step 320",
+    "seed": 0
+  },
+  "dependencies": ["torch>=2.11", "transformers>=5.16,<6", "huggingface-hub>=1.5,<2.0", "safetensors>=0.4"],
+  "evaluation_references": {
+    "integrity": "artifacts/release_integrity.json",
+    "performance": "artifacts/release_performance.json",
+    "remote_verification": "artifacts/remote_verification.json",
+    "ensemble": "artifacts/ensemble_validation_report.json",
+    "distillation": "artifacts/distillation_experiment_report.json"
+  },
+  "calibration": {
+    "production_gate_met": false,
+    "ece_bound": 0.05,
+    "raw_ece_reserved": 0.1599,
+    "raw_ece_ssf1_sealed": 0.2755,
+    "temperature": 1.0,
+    "c2_rejected": true
+  }
+}

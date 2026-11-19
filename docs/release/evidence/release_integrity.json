@@ -1,0 +1,101 @@
+{
+  "artifact": "/scratch/rockandegg-v3-code/release/RockAndEgg-313M-v3-fullbackbone-bf16-preview",
+  "config_dtype": "bfloat16",
+  "architectures": [
+    "RockAndEggV3SystemOneModel"
+  ],
+  "no_lm_head_declared": true,
+  "no_generation_declared": true,
+  "tensor_key_parity": true,
+  "n_tensors": 122,
+  "all_tensor_shapes_match_source": true,
+  "shape_mismatches": [],
+  "param_count": 313161733,
+  "param_count_ok": true,
+  "has_lm_head_attr": false,
+  "has_generate_attr": false,
+  "all_weights_bf16": true,
+  "backbone_frozen_at_serve": true,
+  "tokenizer_loads": true,
+  "marker_id_ok": true,
+  "raw_temperature_is_1": true,
+  "calibration_json_absent_from_release": true,
+  "probe_choice": {
+    "probs": [
+      0.318535178899765,
+      0.2724575996398926,
+      0.4090072512626648
+    ],
+    "sum": 1.0000000298023224,
+    "argmax": 2,
+    "conf": 0.4090072512626648,
+    "chosen": "Increase log verbosity"
+  },
+  "prob_normalized_1": true,
+  "confidence_equals_maxprob": true,
+  "probe_score": {
+    "probs": [
+      0.225105881690979,
+      0.23962396383285522,
+      0.34865081310272217,
+      0.1866193413734436
+    ],
+    "sum": 1.0,
+    "argmax": 2,
+    "conf": 0.34865081310272217,
+    "chosen": "high"
+  },
+  "probe_noul": {
+    "probs": [
+      0.5774953961372375,
+      0.42250463366508484
+    ],
+    "sum": 1.0000000298023224,
+    "argmax": 0,
+    "conf": 0.5774953961372375,
+    "chosen": "false"
+  },
+  "score_normalized": true,
+  "noul_normalized": true,
+  "option_order_permutation": {
+    "orig_probs": [
+      0.318535178899765,
+      0.2724575996398926,
+      0.4090072512626648
+    ],
+    "perm_probs": [
+      0.4090072512626648,
+      0.318535178899765,
+      0.2724575996398926
+    ],
+    "perm_argmax_key": "Increase log verbosity"
+  },
+  "option_order_chosen_key_stable": true,
+  "deterministic_gpu": true,
+  "cpu_load_and_infer": true,
+  "cpu_vs_gpu_prob_maxdiff": 0.01906031370162964,
+  "fp32_vs_bf16_parity": {
+    "n_decisions": 50,
+    "argmax_flips": 0,
+    "max_prob_abs_diff": 0.024136782012506797
+  },
+  "checks": {
+    "config_dtype_bf16": true,
+    "no_lm_head": true,
+    "no_generate": true,
+    "param_count": true,
+    "tensor_keys": true,
+    "tensor_shapes": true,
+    "all_bf16": true,
+    "tokenizer": true,
+    "prob_normalization": true,
+    "confidence": true,
+    "option_order": true,
+    "determinism": true,
+    "raw_t1_no_calibration": true,
+    "cpu_load": true,
+    "bf16_parity": true,
+    "backbone_frozen_serve": true
+  },
+  "all_pass": true
+}

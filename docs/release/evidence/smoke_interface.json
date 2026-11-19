@@ -1,0 +1,118 @@
+{
+  "repo": "moeshawky/RockAndEgg-313M-v3",
+  "revision": "preview/fullbackbone-bf16-seed0",
+  "subfolder": "fullbackbone-bf16-preview",
+  "model_load": true,
+  "tokenizer_load": true,
+  "marker_id_ok": true,
+  "param_count": 313161733,
+  "raw_t1": true,
+  "n_decisions": 3,
+  "decision_types": [
+    "choice",
+    "score",
+    "noul"
+  ],
+  "all_normalized": true,
+  "confidence_is_max": true,
+  "sample": [
+    {
+      "type": "choice",
+      "chosen": "Add logging",
+      "probs": [
+        0.3377,
+        0.2549,
+        0.4074
+      ],
+      "confidence": 0.4074
+    },
+    {
+      "type": "score",
+      "chosen": "high",
+      "probs": [
+        0.2041,
+        0.2312,
+        0.4058,
+        0.1589
+      ],
+      "confidence": 0.4058
+    },
+    {
+      "type": "noul",
+      "chosen": "false",
+      "probs": [
+        0.5622,
+        0.4378
+      ],
+      "confidence": 0.5622
+    }
+  ],
+  "fanout": {
+    "F1": {
+      "backbone_calls": 2,
+      "shapes": [
+        [
+          1,
+          256
+        ],
+        [
+          16,
+          10
+        ]
+      ]
+    },
+    "F2": {
+      "backbone_calls": 2,
+      "shapes": [
+        [
+          1,
+          256
+        ],
+        [
+          16,
+          10
+        ]
+      ]
+    },
+    "F4": {
+      "backbone_calls": 2,
+      "shapes": [
+        [
+          1,
+          256
+        ],
+        [
+          16,
+          10
+        ]
+      ]
+    },
+    "F8": {
+      "backbone_calls": 2,
+      "shapes": [
+        [
+          1,
+          256
+        ],
+        [
+          16,
+          10
+        ]
+      ]
+    }
+  },
+  "encode_once": true,
+  "checks": {
+    "model_load": true,
+    "tokenizer_load": true,
+    "marker_id": true,
+    "param_count": true,
+    "raw_t1": true,
+    "three_decisions": true,
+    "decision_types": true,
+    "normalized": true,
+    "confidence": true,
+    "encode_once": true
+  },
+  "all_pass": true
+}
