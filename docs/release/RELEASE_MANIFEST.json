@@ -5,7 +5,11 @@
     "release_state": "RESEARCH/PREVIEW (NOT production qualified)",
     "parameters": 313161733,
     "architecture": "10x Qwen3-derived decoder blocks + native SystemOne decision head; no lm_head, no generate",
-    "decision_types": ["choice", "score", "noul"],
+    "decision_types": [
+      "choice",
+      "score",
+      "noul"
+    ],
     "precision": "bfloat16"
   },
   "source_commit": {
@@ -21,7 +25,13 @@
     "hf_preview_revision": "0b60f73eda4293b4891f27c3106a977cef536a1f",
     "hf_main_revision_preserved": "87c754951f9d4bd04c90e9ec78fc54295075e86c",
     "hf_historical_tag": "v3-head-only-main",
-    "artifact_subfolder": "fullbackbone-bf16-preview"
+    "artifact_subfolder": "fullbackbone-bf16-preview",
+    "canonical_main_promotion": {
+      "hf_tag": "v3-fullbackbone-main-1",
+      "hf_commit": "c8d6f8c1e3cc32456ddb80640a7339789ca7dff8",
+      "date": "2026-11-19",
+      "note": "Promotion of the preview artifact to canonical main; preview branch and revision preserved."
+    }
   },
   "checkpoint_hashes": {
     "selected_source_fp32": "1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92",
@@ -47,7 +57,12 @@
     "selection": "DEV best 0.7800 @ step 320",
     "seed": 0
   },
-  "dependencies": ["torch>=2.11", "transformers>=5.16,<6", "huggingface-hub>=1.5,<2.0", "safetensors>=0.4"],
+  "dependencies": [
+    "torch>=2.11",
+    "transformers>=5.16,<6",
+    "huggingface-hub>=1.5,<2.0",
+    "safetensors>=0.4"
+  ],
   "evaluation_references": {
     "integrity": "artifacts/release_integrity.json",
     "performance": "artifacts/release_performance.json",
