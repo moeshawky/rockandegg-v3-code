@@ -4,12 +4,19 @@ A compact, **non-generative** typed-decision model. It does not produce text.
 It returns one typed decision per question (`choice`, `score`, `noul`) with a
 probability distribution and a confidence value.
 
-This repository contains the training implementation, the architecture, the
+This repository contains the training implementations, the architecture, the
 qualification scripts and the tests. The published weights, tokenizer and the
 **canonical HTTP server** live in
 [`moeshawky/RockAndEgg-313M-v3`](https://huggingface.co/moeshawky/RockAndEgg-313M-v3).
 Do not create a second server implementation here: `serving/systemone_server.py`
 is a reviewed reference copy of that canonical file, kept in sync for auditing.
+
+> **Two training procedures, do not confuse them.** `scripts/train_jev_distill.py`
+> is the historical **head-only** (frozen-backbone) procedure behind the published
+> `main` weights. `scripts/train_full_backbone.py` is the **selected full-backbone**
+> procedure behind the research/preview BF16 release. See `FULL_BACKBONE.md`. The
+> full-backbone artifact is an explicitly **uncalibrated research/preview** release
+> (ECE ≤ 0.05 gate NOT met); no calibrated-confidence claim is made for it.
 
 ## What is actually novel
 
@@ -99,7 +106,8 @@ and TLS, or set the token gate described above.
 
 ```
 src/rockandegg_v3/    model, loss, gates, inference, parallel, config
-scripts/              training, export, verification and gate runners
+scripts/              training (head-only + full-backbone), export, verification, gate runners
+FULL_BACKBONE.md      selected full-backbone procedure vs historical head-only procedure
 tests/                CPU unit tests
 serving/              reviewed reference copy of the canonical HF server,
                       adapter, custom modeling code and CPU server tests
