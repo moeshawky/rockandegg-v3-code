@@ -185,7 +185,7 @@ class SystemOneResponseOut(BaseModel):
 
     ``options_truncated`` reports the number of option rows whose text exceeded
     the qualified option budget and was therefore cut by the adapter. Reporting
-    is additive only — the qualified tokenization contract is unchanged.
+    is additive only — the established tokenization contract is unchanged.
     """
 
     decisions: list[QuestionDecisionOut]

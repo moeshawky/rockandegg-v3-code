@@ -1,5 +1,10 @@
 # Publication Report — RockAndEgg-313M-v3 Full-Backbone BF16
 
+> This report covers two distinct publications: the **original preview publication**
+> (sections 1–5, 2026-11-19) and the **subsequent canonical-main promotion**
+> (section 6, 2026-11-19). The preview publication and the promotion are separate
+> events with separate immutable identifiers; neither tag was rewritten.
+
 Date: 2026-11-19. Final status: **RELEASED — RESEARCH/PREVIEW**.
 
 ## 1. Git commit and tag (source repository)
@@ -65,10 +70,10 @@ canonical `AutoModel` + `SystemOneInference` path, and executed on `choice`, `sc
 - Next legitimate step (out of scope here): obtain a fresh, representative, unused typed
   population and pass a degeneracy-gated ECE fit to reach production qualification.
 
-## 4. Promotion to canonical main (2026-11-19)
+## 6. Promotion to canonical main (2026-11-19)
 
-The full-backbone BF16 seed-0 checkpoint was promoted to the default `main`
-artifact of `moeshawky/RockAndEgg-313M-v3`. The historical head-only release is
+The full-backbone BF16 seed-0 checkpoint (already published on the preview branch)
+was promoted to the default `main` artifact of `moeshawky/RockAndEgg-313M-v3`. The historical head-only release is
 preserved and independently retrievable.
 
 - New main commit: `c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`.

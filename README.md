@@ -35,7 +35,8 @@ The historical head-only release remains available via its tag.
 | Source checkpoint (FP32) SHA-256 | `1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92` |
 | Parameters | 313,161,733 |
 | Source commit (this repo) | `215cc710a9da62a8d56a8a8e676a41293dc5fc1b` |
-| Source tag | `v3-fullbackbone-preview-1` (now advanced to `v3-fullbackbone-main-1` on GitHub) |
+| Source tag (preview) | `v3-fullbackbone-preview-1` — immutable identifier for the original preview publication; **not** rewritten |
+| Source tag (canonical main) | `v3-fullbackbone-main-1` — distinct immutable identifier for the canonical-main promotion |
 | Historical head-only tag | `v3-head-only-main` → `87c754951f9d4bd04c90e9ec78fc54295075e86c` |
 | Preserved preview branch | `preview/fullbackbone-bf16-seed0` → `0b60f73eda4293b4891f27c3106a977cef536a1f` |
 
@@ -90,7 +91,7 @@ Measured structural facts, independently re-derived from the published
 | Parameters | 313,161,733 (backbone 312,892,928 + head 268,805) |
 | `lm_head` tensors | 0 |
 | Backbone layers / hidden / KV heads / head dim | 10 / 1024 / 8 / 128 |
-| Qualified state / option limit | 256 / 64 tokens |
+| State / option token limit (max) | 256 / 64 tokens |
 | Generation flag in `config.json` | `false` |
 
 Lineage: Laya (decision architecture), Verdict-MQ (shared-state hypothesis

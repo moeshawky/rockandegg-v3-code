@@ -9,7 +9,7 @@ This repository preserves **two** training procedures. They must not be confused
 (Apache-2.0, revision `75111a13…`). This is the procedure that produced the
 **published** `moeshawky/RockAndEgg-313M-v3` checkpoint on `main` (frozen backbone,
 312,892,928 backbone tensors bit-identical to v2). It is retained unchanged and its
-history is not rewritten. It is **not** the procedure behind the full-backbone preview.
+history is not rewritten. It is **not** the procedure behind the full-backbone canonical release.
 
 ## 2. Selected full-backbone procedure (this release)
 
@@ -39,14 +39,17 @@ independent seeds: 0.7800 / 0.7533 / 0.7711 DEV best.
 
 ## Release status
 
-The released preview artifact is the seed-0 full-backbone checkpoint cast to BF16,
-published on a versioned preview branch of
-`moeshawky/RockAndEgg-313M-v3`. It is a **research/preview** release, not production
-qualified: the ECE ≤ 0.05 gate is NOT met (raw ECE 0.1599 RESERVED / 0.2755 SSF-1
-sealed), C2 calibration is rejected, and probabilities are uncalibrated T=1.0.
-See the model card's `CALIBRATION_LIMITATIONS.md`. The three-model ensemble
-(research context only, +2.1 pts on a clean panel) and the failed 75/25 distillation
-are documented in `EVALUATION_REPORT.md`; neither is the deployed model.
+The seed-0 full-backbone checkpoint cast to BF16 was first published on the versioned
+preview branch `preview/fullbackbone-bf16-seed0` and was subsequently promoted to the
+canonical `main` artifact of `moeshawky/RockAndEgg-313M-v3` under the immutable tag
+`v3-fullbackbone-main-1` (commit `c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`). The
+preview branch and its revision `0b60f73eda4293b4891f27c3106a977cef536a1f` remain
+preserved. It is a **research/preview** release, not production qualified: the
+ECE ≤ 0.05 gate is NOT met (raw ECE 0.1599 RESERVED / 0.2755 SSF-1 sealed), C2
+calibration is rejected, and probabilities are uncalibrated T=1.0. See the model
+card's `CALIBRATION_LIMITATIONS.md`. The three-model ensemble (research context only,
++2.1 pts on a clean panel) and the failed 75/25 distillation are documented in
+`EVALUATION_REPORT.md`; neither is the deployed model.
 
 ## Test note
 
