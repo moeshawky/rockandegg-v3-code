@@ -18,6 +18,40 @@ is a reviewed reference copy of that canonical file, kept in sync for auditing.
 > full-backbone artifact is an explicitly **uncalibrated research/preview** release
 > (ECE ≤ 0.05 gate NOT met); no calibrated-confidence claim is made for it.
 
+## Canonical research/preview release (exact identifiers)
+
+The full-backbone BF16 preview is published on a versioned branch of the model
+repository, pinned by the exact identifiers below. These are the canonical references
+for downstream integration; the default `main` revision remains the historical
+head-only release.
+
+| Item | Exact value |
+|---|---|
+| Model | `moeshawky/RockAndEgg-313M-v3` |
+| Preview branch | `preview/fullbackbone-bf16-seed0` |
+| Preview revision | `0b60f73eda4293b4891f27c3106a977cef536a1f` |
+| Artifact subfolder | `fullbackbone-bf16-preview` |
+| Release model SHA-256 | `c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5` |
+| Source commit (this repo) | `215cc710a9da62a8d56a8a8e676a41293dc5fc1b` |
+| Source tag | `v3-fullbackbone-preview-1` |
+| Historical main tag | `v3-head-only-main` → `87c754951f9d4bd04c90e9ec78fc54295075e86c` |
+
+Load the exact preview (see `FULL_BACKBONE.md` and the model card for the full example):
+
+```python
+from transformers import AutoModel, AutoTokenizer
+model = AutoModel.from_pretrained(
+    "moeshawky/RockAndEgg-313M-v3",
+    revision="0b60f73eda4293b4891f27c3106a977cef536a1f",
+    subfolder="fullbackbone-bf16-preview", trust_remote_code=True, dtype="bfloat16",
+)
+tok = AutoTokenizer.from_pretrained(
+    "moeshawky/RockAndEgg-313M-v3",
+    revision="0b60f73eda4293b4891f27c3106a977cef536a1f",
+    subfolder="fullbackbone-bf16-preview",
+)
+```
+
 ## What is actually novel
 
 The intervention is **shared-state inference**, not a new classifier:
