@@ -64,3 +64,27 @@ canonical `AutoModel` + `SystemOneInference` path, and executed on `choice`, `sc
 - No claim of beating Laya; ensemble and distilled variants are research-only.
 - Next legitimate step (out of scope here): obtain a fresh, representative, unused typed
   population and pass a degeneracy-gated ECE fit to reach production qualification.
+
+## 4. Promotion to canonical main (2026-11-19)
+
+The full-backbone BF16 seed-0 checkpoint was promoted to the default `main`
+artifact of `moeshawky/RockAndEgg-313M-v3`. The historical head-only release is
+preserved and independently retrievable.
+
+- New main commit: `c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`.
+- New immutable tag: `v3-fullbackbone-main-1` → `c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`
+  (verified resolves to the new main commit).
+- Release model SHA-256: `c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5`
+  (verified on fresh download).
+- Old main commit preserved: `87c754951f9d4bd04c90e9ec78fc54295075e86c`.
+- Historical tag preserved: `v3-head-only-main` → `87c7549…` (verified unchanged).
+- Preview branch preserved: `preview/fullbackbone-bf16-seed0` → `0b60f73…`.
+- Published root files: 24 (model at root, no subfolder; obsolete `fp16/` variant
+  and stale head-only artifacts removed in the same commit).
+- Verification: `verify_main.py` passed 24/24 files + param count 313,161,733 +
+  3 decision types + probability normalization + option-order stability + raw
+  T=1.0 + no calibration file. Exact README loading snippet executed against the
+  published revision tag successfully.
+
+Final status: **RELEASED — CANONICAL MAIN / RESEARCH-PREVIEW**.
+Production calibration remains outstanding (ECE ≤ 0.05 NOT met).

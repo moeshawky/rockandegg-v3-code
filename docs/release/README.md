@@ -5,6 +5,12 @@ BF16 research/preview release**. Status: **FROZEN WITH DOCUMENTATION LIMITATIONS
 The model is **RESEARCH / PREVIEW, NOT production qualified** — probabilities are
 uncalibrated (raw T=1.0) and the ECE ≤ 0.05 gate is NOT met.
 
+As of 2026-11-19 this full-backbone BF16 seed-0 checkpoint is the **canonical
+`main` artifact** of the HF repository, tagged `v3-fullbackbone-main-1` (commit
+`c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`). The historical head-only release
+remains at tag `v3-head-only-main`; the original preview remains at branch
+`preview/fullbackbone-bf16-seed0`.
+
 ## Canonical identifiers
 
 - Model: `moeshawky/RockAndEgg-313M-v3`, branch `preview/fullbackbone-bf16-seed0`,

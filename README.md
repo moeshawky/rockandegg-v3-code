@@ -12,43 +12,56 @@ Do not create a second server implementation here: `serving/systemone_server.py`
 is a reviewed reference copy of that canonical file, kept in sync for auditing.
 
 > **Two training procedures, do not confuse them.** `scripts/train_jev_distill.py`
-> is the historical **head-only** (frozen-backbone) procedure behind the published
-> `main` weights. `scripts/train_full_backbone.py` is the **selected full-backbone**
-> procedure behind the research/preview BF16 release. See `FULL_BACKBONE.md`. The
-> full-backbone artifact is an explicitly **uncalibrated research/preview** release
-> (ECE ≤ 0.05 gate NOT met); no calibrated-confidence claim is made for it.
+> is the **historical head-only** (frozen-backbone) procedure behind the previous
+> `main` weights (now preserved at tag `v3-head-only-main`). `scripts/train_full_backbone.py`
+> is the **authoritative full-backbone** procedure behind the new canonical `main`
+> release (`v3-fullbackbone-main-1`). See `FULL_BACKBONE.md`. The backbone was
+> fully fine-tuned during training and is fixed only during inference.
+> The full-backbone artifact is an explicitly **uncalibrated research/preview**
+> release (ECE ≤ 0.05 gate NOT met); no calibrated-confidence claim is made for it.
 
-## Canonical research/preview release (exact identifiers)
+## Canonical main release (exact identifiers)
 
-The full-backbone BF16 preview is published on a versioned branch of the model
-repository, pinned by the exact identifiers below. These are the canonical references
-for downstream integration; the default `main` revision remains the historical
-head-only release.
+The full-backbone BF16 seed-0 checkpoint is now the **default `main` artifact** of
+the model repository. It ships at the repository root and loads without a subfolder.
+The historical head-only release remains available via its tag.
 
 | Item | Exact value |
 |---|---|
 | Model | `moeshawky/RockAndEgg-313M-v3` |
-| Preview branch | `preview/fullbackbone-bf16-seed0` |
-| Preview revision | `0b60f73eda4293b4891f27c3106a977cef536a1f` |
-| Artifact subfolder | `fullbackbone-bf16-preview` |
+| Canonical release tag | `v3-fullbackbone-main-1` |
+| Release commit | `c8d6f8c1e3cc32456ddb80640a7339789ca7dff8` |
 | Release model SHA-256 | `c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5` |
+| Source checkpoint (FP32) SHA-256 | `1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92` |
+| Parameters | 313,161,733 |
 | Source commit (this repo) | `215cc710a9da62a8d56a8a8e676a41293dc5fc1b` |
-| Source tag | `v3-fullbackbone-preview-1` |
-| Historical main tag | `v3-head-only-main` → `87c754951f9d4bd04c90e9ec78fc54295075e86c` |
+| Source tag | `v3-fullbackbone-preview-1` (now advanced to `v3-fullbackbone-main-1` on GitHub) |
+| Historical head-only tag | `v3-head-only-main` → `87c754951f9d4bd04c90e9ec78fc54295075e86c` |
+| Preserved preview branch | `preview/fullbackbone-bf16-seed0` → `0b60f73eda4293b4891f27c3106a977cef536a1f` |
 
-Load the exact preview (see `FULL_BACKBONE.md` and the model card for the full example):
+Load the canonical main release (no subfolder required):
 
 ```python
+import torch
 from transformers import AutoModel, AutoTokenizer
+
+model_id = "moeshawky/RockAndEgg-313M-v3"
+revision = "v3-fullbackbone-main-1"
 model = AutoModel.from_pretrained(
-    "moeshawky/RockAndEgg-313M-v3",
-    revision="0b60f73eda4293b4891f27c3106a977cef536a1f",
-    subfolder="fullbackbone-bf16-preview", trust_remote_code=True, dtype="bfloat16",
+    model_id, revision=revision, trust_remote_code=True, dtype=torch.bfloat16
+).eval()
+tokenizer = AutoTokenizer.from_pretrained(
+    model_id, revision=revision, trust_remote_code=True
 )
-tok = AutoTokenizer.from_pretrained(
-    "moeshawky/RockAndEgg-313M-v3",
-    revision="0b60f73eda4293b4891f27c3106a977cef536a1f",
-    subfolder="fullbackbone-bf16-preview",
+assert sum(p.numel() for p in model.parameters()) == 313_161_733
+```
+
+Load the historical head-only release (preserved, independently retrievable):
+
+```python
+model = AutoModel.from_pretrained(
+    "moeshawky/RockAndEgg-313M-v3", revision="v3-head-only-main",
+    trust_remote_code=True, dtype=torch.bfloat16,
 )
 ```
 
@@ -176,9 +189,12 @@ reported as passes. See `QUALIFICATION.md` for the status of all numeric claims.
 * The Laya benchmark arm cannot be independently reproduced: the public Laya
   checkpoint ships no inference wrapper. Its third-party accuracy stays
   third-party published; only the v3 arms were reproduced.
-* The architecture probe counts backbone forwards. It is **not** a wall-clock
-  latency benchmark and **not** a controlled ablation against Laya or
-  Verdict-MQ. No numerical speed advantage is claimed.
+* The shared-state speed claim is structural (two backbone forwards at every
+  measured fan-out, F1–F8), not a claim of wall-clock superiority. A controlled
+  matched single-request benchmark on one RTX PRO 6000 (64 states, 24 warmups,
+  BF16) measured RockAndEgg at 14.325/14.767/15.498/16.691 ms p50 (F1–F8)
+  versus Laya at 12.403/13.285/13.740/14.697 ms; Laya was faster on that
+  workload. See `BENCHMARK.md` in the model repository.
 * The intended differentiator is computation sharing, not superior accuracy.
   On the matched benchmark the alternative model scored higher accuracy; this
   release does not present that comparison as an accuracy victory.
