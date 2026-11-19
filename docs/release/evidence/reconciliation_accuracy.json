@@ -1,0 +1,983 @@
+{
+  "canonical_convention": {
+    "decision_rule": "argmax(predicted probabilities) \u2014 the shipped SystemOneInference rule",
+    "target": "dataset gold label (gold[qid].label), uniform across choice/score/noul",
+    "rationale": "gold probability vectors contain exact/near ties (9 noul [0.5,0.5] with label=true, 11 score level ties, 11 choice ties); the dataset label is the authoritative tie-breaker"
+  },
+  "conventions": {
+    "canonical_dataset_label": {
+      "A": 0.7325,
+      "B_fp32": 0.3425,
+      "B_fp16": 0.3395,
+      "C": 0.7665
+    },
+    "legacy_quality_hybrid_as_run": {
+      "A": 0.7315,
+      "B_fp32": 0.3405,
+      "B_fp16": 0.3375,
+      "C": 0.7665
+    },
+    "gold_distribution_argmax_parity": {
+      "A": 0.7285,
+      "B_fp32": 0.346,
+      "B_fp16": 0.3435,
+      "C": 0.7665
+    }
+  },
+  "canonical_paired": {
+    "A_minus_B_fp32": {
+      "n_dossiers": 400,
+      "n_boot": 5000,
+      "seed": 20261116,
+      "acc_a": 0.7325,
+      "acc_b": 0.3425000000000001,
+      "diff_point": 0.38999999999999996,
+      "ci95_low": 0.35949999999999993,
+      "ci95_high": 0.421,
+      "ci_excludes_zero": true
+    },
+    "A_minus_B_fp16": {
+      "n_dossiers": 400,
+      "n_boot": 5000,
+      "seed": 20261116,
+      "acc_a": 0.7325,
+      "acc_b": 0.3395,
+      "diff_point": 0.393,
+      "ci95_low": 0.36200000000000004,
+      "ci95_high": 0.4244999999999999,
+      "ci_excludes_zero": true
+    },
+    "A_minus_C": {
+      "n_dossiers": 400,
+      "n_boot": 5000,
+      "seed": 20261116,
+      "acc_a": 0.7325,
+      "acc_b": 0.7665000000000001,
+      "diff_point": -0.03400000000000003,
+      "ci95_low": -0.05500000000000005,
+      "ci95_high": -0.014499999999999954,
+      "ci_excludes_zero": true
+    }
+  },
+  "A_vs_B_fp32_flips_canonical": {
+    "n_decisions_compared": 2000,
+    "n_decisions_differ": 1176,
+    "corrections_A_fixes_B": 978,
+    "regressions_A_breaks_B": 198,
+    "dossiers_A_wins": 325,
+    "dossiers_B_wins": 29,
+    "dossiers_tie": 46
+  },
+  "canonical_per_workflow": {
+    "A": {
+      "agent_trace_observability": {
+        "n_decisions": 500,
+        "accuracy": 0.696
+      },
+      "customer_service": {
+        "n_decisions": 500,
+        "accuracy": 0.73
+      },
+      "invoice_processing": {
+        "n_decisions": 500,
+        "accuracy": 0.78
+      },
+      "security_incidents": {
+        "n_decisions": 500,
+        "accuracy": 0.724
+      }
+    },
+    "B_fp32": {
+      "agent_trace_observability": {
+        "n_decisions": 500,
+        "accuracy": 0.246
+      },
+      "customer_service": {
+        "n_decisions": 500,
+        "accuracy": 0.322
+      },
+      "invoice_processing": {
+        "n_decisions": 500,
+        "accuracy": 0.43
+      },
+      "security_incidents": {
+        "n_decisions": 500,
+        "accuracy": 0.372
+      }
+    },
+    "B_fp16": {
+      "agent_trace_observability": {
+        "n_decisions": 500,
+        "accuracy": 0.244
+      },
+      "customer_service": {
+        "n_decisions": 500,
+        "accuracy": 0.318
+      },
+      "invoice_processing": {
+        "n_decisions": 500,
+        "accuracy": 0.428
+      },
+      "security_incidents": {
+        "n_decisions": 500,
+        "accuracy": 0.368
+      }
+    },
+    "C": {
+      "agent_trace_observability": {
+        "n_decisions": 500,
+        "accuracy": 0.73
+      },
+      "customer_service": {
+        "n_decisions": 500,
+        "accuracy": 0.766
+      },
+      "invoice_processing": {
+        "n_decisions": 500,
+        "accuracy": 0.804
+      },
+      "security_incidents": {
+        "n_decisions": 500,
+        "accuracy": 0.766
+      }
+    }
+  },
+  "divergent_counts": {
+    "canonical_vs_quality": 12,
+    "quality_vs_parity": 22,
+    "target_source_divergent": 31
+  },
+  "divergent_decisions_canonical_vs_quality": [
+    {
+      "dossier_id": "agent_trace_observability_000048",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "stored_gold_label": "continue",
+      "dataset_label": "observe",
+      "predicted_label": "observe",
+      "quality_correct": 0,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "agent_trace_observability_000054",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "stored_gold_label": "continue",
+      "dataset_label": "observe",
+      "predicted_label": "observe",
+      "quality_correct": 0,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "agent_trace_observability_000057",
+      "question_index": 2,
+      "qid": "outcome",
+      "qtype": "choice",
+      "stored_gold_label": "partial",
+      "dataset_label": "success",
+      "predicted_label": "partial",
+      "quality_correct": 1,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "agent_trace_observability_000078",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "stored_gold_label": "human_review",
+      "dataset_label": "observe",
+      "predicted_label": "human_review",
+      "quality_correct": 1,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "agent_trace_observability_000092",
+      "question_index": 2,
+      "qid": "outcome",
+      "qtype": "choice",
+      "stored_gold_label": "partial",
+      "dataset_label": "success",
+      "predicted_label": "success",
+      "quality_correct": 0,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "agent_trace_observability_000098",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "stored_gold_label": "human_review",
+      "dataset_label": "observe",
+      "predicted_label": "observe",
+      "quality_correct": 0,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "customer_service_000022",
+      "question_index": 3,
+      "qid": "needs_human",
+      "qtype": "noul",
+      "stored_gold_label": "false",
+      "dataset_label": "false",
+      "predicted_label": "false",
+      "quality_correct": 0,
+      "canonical_correct": 1,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "customer_service_000040",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "stored_gold_label": "answer_directly",
+      "dataset_label": "escalate_to_human",
+      "predicted_label": "answer_directly",
+      "quality_correct": 1,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "customer_service_000046",
+      "question_index": 3,
+      "qid": "needs_human",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "false",
+      "quality_correct": 1,
+      "canonical_correct": 0,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "customer_service_000082",
+      "question_index": 1,
+      "qid": "category",
+      "qtype": "choice",
+      "stored_gold_label": "account",
+      "dataset_label": "billing",
+      "predicted_label": "billing",
+      "quality_correct": 0,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "security_incidents_000014",
+      "question_index": 1,
+      "qid": "disposition",
+      "qtype": "choice",
+      "stored_gold_label": "contain",
+      "dataset_label": "investigate",
+      "predicted_label": "investigate",
+      "quality_correct": 0,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "security_incidents_000067",
+      "question_index": 1,
+      "qid": "disposition",
+      "qtype": "choice",
+      "stored_gold_label": "investigate",
+      "dataset_label": "monitor",
+      "predicted_label": "investigate",
+      "quality_correct": 1,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    }
+  ],
+  "divergent_decisions_quality_vs_parity": [
+    {
+      "dossier_id": "agent_trace_observability_000001",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "stored_gold_label": "1",
+      "dataset_label": "1",
+      "predicted_label": "1",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "agent_trace_observability_000009",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "stored_gold_label": "3",
+      "dataset_label": "3",
+      "predicted_label": "3",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "agent_trace_observability_000050",
+      "question_index": 3,
+      "qid": "risk",
+      "qtype": "score",
+      "stored_gold_label": "2",
+      "dataset_label": "2",
+      "predicted_label": "2",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "agent_trace_observability_000092",
+      "question_index": 3,
+      "qid": "risk",
+      "qtype": "score",
+      "stored_gold_label": "2",
+      "dataset_label": "2",
+      "predicted_label": "2",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "customer_service_000022",
+      "question_index": 3,
+      "qid": "needs_human",
+      "qtype": "noul",
+      "stored_gold_label": "false",
+      "dataset_label": "false",
+      "predicted_label": "false",
+      "quality_correct": 0,
+      "canonical_correct": 1,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "customer_service_000046",
+      "question_index": 3,
+      "qid": "needs_human",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "false",
+      "quality_correct": 1,
+      "canonical_correct": 0,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "customer_service_000060",
+      "question_index": 3,
+      "qid": "needs_human",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "true",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "customer_service_000065",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "stored_gold_label": "3",
+      "dataset_label": "3",
+      "predicted_label": "3",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "customer_service_000067",
+      "question_index": 3,
+      "qid": "needs_human",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "true",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "invoice_processing_000049",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "stored_gold_label": "3",
+      "dataset_label": "3",
+      "predicted_label": "2",
+      "quality_correct": 0,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "invoice_processing_000067",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "stored_gold_label": "3",
+      "dataset_label": "3",
+      "predicted_label": "2",
+      "quality_correct": 0,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "invoice_processing_000069",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "stored_gold_label": "3",
+      "dataset_label": "3",
+      "predicted_label": "2",
+      "quality_correct": 0,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "invoice_processing_000077",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "stored_gold_label": "2",
+      "dataset_label": "2",
+      "predicted_label": "1",
+      "quality_correct": 0,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "invoice_processing_000091",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "stored_gold_label": "3",
+      "dataset_label": "3",
+      "predicted_label": "1",
+      "quality_correct": 0,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "security_incidents_000007",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "true",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "security_incidents_000025",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "true",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "security_incidents_000026",
+      "question_index": 3,
+      "qid": "true_positive",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "true",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "security_incidents_000027",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "true",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "security_incidents_000033",
+      "question_index": 2,
+      "qid": "severity",
+      "qtype": "score",
+      "stored_gold_label": "2",
+      "dataset_label": "2",
+      "predicted_label": "2",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "security_incidents_000042",
+      "question_index": 3,
+      "qid": "true_positive",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "true",
+      "quality_correct": 1,
+      "canonical_correct": 1,
+      "parity_correct": 0
+    },
+    {
+      "dossier_id": "security_incidents_000053",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "false",
+      "quality_correct": 0,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    },
+    {
+      "dossier_id": "security_incidents_000082",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "stored_gold_label": "true",
+      "dataset_label": "true",
+      "predicted_label": "false",
+      "quality_correct": 0,
+      "canonical_correct": 0,
+      "parity_correct": 1
+    }
+  ],
+  "target_source_divergences": [
+    {
+      "dossier_id": "agent_trace_observability_000001",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "dataset_label": "1",
+      "argmax_gold_key": "0",
+      "gold_probs": [
+        0.4333,
+        0.4333,
+        0.1133,
+        0.02
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000003",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "dataset_label": "human_review",
+      "argmax_gold_key": "continue",
+      "gold_probs": [
+        0.3333,
+        0.3333,
+        0.2833,
+        0.05
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000009",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "dataset_label": "3",
+      "argmax_gold_key": "2",
+      "gold_probs": [
+        0.0333,
+        0.1333,
+        0.4167,
+        0.4167
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000048",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "dataset_label": "observe",
+      "argmax_gold_key": "continue",
+      "gold_probs": [
+        0.4167,
+        0.1333,
+        0.4167,
+        0.0333
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000050",
+      "question_index": 3,
+      "qid": "risk",
+      "qtype": "score",
+      "dataset_label": "2",
+      "argmax_gold_key": "1",
+      "gold_probs": [
+        0.1,
+        0.4333,
+        0.4333,
+        0.0333
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000054",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "dataset_label": "observe",
+      "argmax_gold_key": "continue",
+      "gold_probs": [
+        0.4,
+        0.2,
+        0.4,
+        0.0
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000057",
+      "question_index": 2,
+      "qid": "outcome",
+      "qtype": "choice",
+      "dataset_label": "success",
+      "argmax_gold_key": "partial",
+      "gold_probs": [
+        0.15,
+        0.0167,
+        0.4167,
+        0.4167
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000078",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "dataset_label": "observe",
+      "argmax_gold_key": "human_review",
+      "gold_probs": [
+        0.1833,
+        0.3833,
+        0.3833,
+        0.05
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000092",
+      "question_index": 2,
+      "qid": "outcome",
+      "qtype": "choice",
+      "dataset_label": "success",
+      "argmax_gold_key": "partial",
+      "gold_probs": [
+        0.0467,
+        0.02,
+        0.4667,
+        0.4667
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000092",
+      "question_index": 3,
+      "qid": "risk",
+      "qtype": "score",
+      "dataset_label": "2",
+      "argmax_gold_key": "1",
+      "gold_probs": [
+        0.2,
+        0.3833,
+        0.3833,
+        0.0333
+      ]
+    },
+    {
+      "dossier_id": "agent_trace_observability_000098",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "dataset_label": "observe",
+      "argmax_gold_key": "human_review",
+      "gold_probs": [
+        0.1333,
+        0.4,
+        0.4,
+        0.0667
+      ]
+    },
+    {
+      "dossier_id": "customer_service_000040",
+      "question_index": 0,
+      "qid": "action",
+      "qtype": "choice",
+      "dataset_label": "escalate_to_human",
+      "argmax_gold_key": "answer_directly",
+      "gold_probs": [
+        0.4767,
+        0.0,
+        0.4767,
+        0.0,
+        0.0467
+      ]
+    },
+    {
+      "dossier_id": "customer_service_000060",
+      "question_index": 3,
+      "qid": "needs_human",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "dossier_id": "customer_service_000065",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "dataset_label": "3",
+      "argmax_gold_key": "2",
+      "gold_probs": [
+        0.0,
+        0.0667,
+        0.4667,
+        0.4667
+      ]
+    },
+    {
+      "dossier_id": "customer_service_000067",
+      "question_index": 3,
+      "qid": "needs_human",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "dossier_id": "customer_service_000082",
+      "question_index": 1,
+      "qid": "category",
+      "qtype": "choice",
+      "dataset_label": "billing",
+      "argmax_gold_key": "account",
+      "gold_probs": [
+        0.4667,
+        0.4667,
+        0.0,
+        0.0333,
+        0.0333
+      ]
+    },
+    {
+      "dossier_id": "invoice_processing_000049",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "dataset_label": "3",
+      "argmax_gold_key": "2",
+      "gold_probs": [
+        0.0,
+        0.1,
+        0.45,
+        0.45
+      ]
+    },
+    {
+      "dossier_id": "invoice_processing_000067",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "dataset_label": "3",
+      "argmax_gold_key": "2",
+      "gold_probs": [
+        0.0067,
+        0.06,
+        0.4667,
+        0.4667
+      ]
+    },
+    {
+      "dossier_id": "invoice_processing_000069",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "dataset_label": "3",
+      "argmax_gold_key": "2",
+      "gold_probs": [
+        0.0,
+        0.0333,
+        0.4833,
+        0.4833
+      ]
+    },
+    {
+      "dossier_id": "invoice_processing_000077",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "dataset_label": "2",
+      "argmax_gold_key": "1",
+      "gold_probs": [
+        0.0333,
+        0.3833,
+        0.3833,
+        0.2
+      ]
+    },
+    {
+      "dossier_id": "invoice_processing_000091",
+      "question_index": 4,
+      "qid": "urgency",
+      "qtype": "score",
+      "dataset_label": "3",
+      "argmax_gold_key": "1",
+      "gold_probs": [
+        0.0167,
+        0.3333,
+        0.3167,
+        0.3333
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000007",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000014",
+      "question_index": 1,
+      "qid": "disposition",
+      "qtype": "choice",
+      "dataset_label": "investigate",
+      "argmax_gold_key": "contain",
+      "gold_probs": [
+        0.0333,
+        0.45,
+        0.45,
+        0.0667
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000025",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000026",
+      "question_index": 3,
+      "qid": "true_positive",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000027",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000033",
+      "question_index": 2,
+      "qid": "severity",
+      "qtype": "score",
+      "dataset_label": "2",
+      "argmax_gold_key": "1",
+      "gold_probs": [
+        0.1333,
+        0.3667,
+        0.3667,
+        0.1333,
+        0.0
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000042",
+      "question_index": 3,
+      "qid": "true_positive",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000053",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000067",
+      "question_index": 1,
+      "qid": "disposition",
+      "qtype": "choice",
+      "dataset_label": "monitor",
+      "argmax_gold_key": "investigate",
+      "gold_probs": [
+        0.1333,
+        0.0667,
+        0.4,
+        0.4
+      ]
+    },
+    {
+      "dossier_id": "security_incidents_000082",
+      "question_index": 0,
+      "qid": "credential_compromise",
+      "qtype": "noul",
+      "dataset_label": "true",
+      "argmax_gold_key": "false",
+      "gold_probs": [
+        0.5,
+        0.5
+      ]
+    }
+  ]
+}

@@ -1,61 +1,147 @@
 {
-  "model_identity": {
-    "model_id": "moeshawky/RockAndEgg-313M-v3",
-    "release_name": "fullbackbone-bf16-seed0",
-    "release_state": "RESEARCH/PREVIEW (NOT production qualified)",
-    "parameters": 313161733,
-    "architecture": "10x Qwen3-derived decoder blocks + native SystemOne decision head; no lm_head, no generate",
-    "decision_types": [
-      "choice",
-      "score",
-      "noul"
-    ],
-    "precision": "bfloat16"
+  "model_id": "moeshawky/RockAndEgg-313M-v3",
+  "release_name": "fullbackbone-fp16-1",
+  "release_state": "RESEARCH/PREVIEW (NOT production qualified)",
+  "release_tag": "v3-fullbackbone-fp16-1",
+  "selected_source_checkpoint_sha256": "1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92",
+  "source_artifact": {
+    "kind": "published BF16 release",
+    "repo_id": "moeshawky/RockAndEgg-313M-v3",
+    "revision": "main",
+    "tag": "v3-fullbackbone-main-1",
+    "commit": "c8d6f8c1e3cc32456ddb80640a7339789ca7dff8",
+    "model_safetensors_sha256": "c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5",
+    "bytes": 626337274,
+    "dtype": "bfloat16"
   },
-  "source_commit": {
-    "repository": "https://github.com/moeshawky/rockandegg-v3-code",
-    "base_commit": "74658b1c7f3d2572d02c863626a8b4954e4221cd",
-    "release_commit": "215cc710a9da62a8d56a8a8e676a41293dc5fc1b",
-    "release_tag": "v3-fullbackbone-preview-1",
-    "tag_object": "e3c64366ea29ea9de1e76e89c5ae11241bf7ffc7",
-    "history": "fast-forward; original public history preserved"
+  "release_model_sha256": "17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28",
+  "release_model_bytes": 626337154,
+  "param_count": 313161733,
+  "architecture": "10x Qwen3-decoder backbone + native SystemOne head; no lm_head, no generate",
+  "precision": "float16",
+  "dtype_conversion": {
+    "from": "bfloat16 (published BF16 release)",
+    "to": "float16",
+    "method": "torch.Tensor.to(torch.float16), direct, no FP32 intermediate",
+    "report": "evidence/precision_cast_report.json",
+    "changed_values": 47755,
+    "total_values": 313161733,
+    "max_abs_diff": 2.9802322387695312e-08,
+    "overflow_to_inf": 0,
+    "non_finite_after_cast": 0,
+    "note": "The trained FP32 master is recorded but unrecoverable; this artifact is BF16-derived and is never described as an FP32 export."
   },
-  "model_revision": {
-    "hf_preview_branch": "preview/fullbackbone-bf16-seed0",
-    "hf_preview_revision": "0b60f73eda4293b4891f27c3106a977cef536a1f",
-    "hf_main_revision_preserved": "87c754951f9d4bd04c90e9ec78fc54295075e86c",
-    "hf_historical_tag": "v3-head-only-main",
-    "artifact_subfolder": "fullbackbone-bf16-preview",
-    "canonical_main_promotion": {
-      "hf_tag": "v3-fullbackbone-main-1",
-      "hf_commit": "c8d6f8c1e3cc32456ddb80640a7339789ca7dff8",
-      "date": "2026-11-19",
-      "note": "Promotion of the preview artifact to canonical main; preview branch and revision preserved."
-    }
-  },
-  "checkpoint_hashes": {
-    "selected_source_fp32": "1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92",
-    "released_bf16": "c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5",
-    "published_head_only_main": "3b208b86d6b5b87306091cbaec1b71007454eb4864b47efc636b4f633c875ac8"
-  },
-  "file_hashes": {
-    "_note": "Authoritative per-file SHA-256 for the published artifact is in the artifact's RELEASE_MANIFEST.json; all 17 verified against remote download.",
-    "manifest_path": "release/RockAndEgg-313M-v3-fullbackbone-bf16-preview/RELEASE_MANIFEST.json",
-    "n_files": 17,
-    "remote_all_hashes_match": true
-  },
-  "training_configuration": {
-    "objective": "soft-label CE; EMD weight 0 for selected config",
+  "training": {
+    "objective": "soft-label CE (squared-EMD weight 0.0 for the selected config)",
     "full_backbone": true,
     "optimizer": "AdamW lr_backbone 2.5e-5 / lr_head 1e-4, wd 0.01, 3% warmup + cosine",
     "epochs": 8,
     "micro_batch": 64,
     "precision": "bf16 autocast / fp32 master",
     "dataset": "LocalLLaMA/typed-decisions",
-    "dataset_config": "all",
+    "config": "all",
     "dataset_revision": "e6aa632c4db73b59c7713bb21066ad1a8e1bfce6",
-    "selection": "DEV best 0.7800 @ step 320",
-    "seed": 0
+    "selected_best_step": 320,
+    "dev_best_accuracy": 0.78,
+    "provenance_doc": "TRAINING_PROVENANCE.md"
+  },
+  "evaluation": {
+    "panel": "LocalLLaMA/typed-decisions test (400 dossiers / 2000 decisions)",
+    "panel_sha256": "441ba1b97b99f2e409e82e7186a1458751696f2e3fb7de5a573fe65185b00852",
+    "accuracy": 0.7315,
+    "accuracy_ci95": [
+      0.7095,
+      0.7525
+    ],
+    "nll": 0.6956,
+    "brier": 0.0777,
+    "score_mae": 0.29,
+    "within_one": 0.9788,
+    "per_type": {
+      "choice": 0.7017,
+      "noul": 0.8217,
+      "score": 0.6863
+    },
+    "comparison_laya": {
+      "accuracy": 0.7665,
+      "delta_pp": -3.5,
+      "ci95": [
+        -5.6,
+        -1.55
+      ]
+    },
+    "comparison_head_only": {
+      "accuracy": 0.3405,
+      "delta_pp": 39.1,
+      "ci95": [
+        36.0,
+        42.2
+      ],
+      "note": "lineage comparison; changes both corpus and backbone training"
+    },
+    "protocol_doc": "BENCHMARK.md",
+    "metrics": "evidence/quality_metrics.json",
+    "predictions": "evidence/predictions.jsonl",
+    "evaluation_doc": "EVALUATION_REPORT.md"
+  },
+  "gates": {
+    "option_order_invariance": {
+      "value": 0.0,
+      "bound": 1e-06,
+      "pass": true
+    },
+    "question_order_invariance": {
+      "value": 0.0,
+      "bound": 1e-06,
+      "pass": true
+    },
+    "state_independence_shape_fixed": {
+      "value": 0.0,
+      "bound": 1e-06,
+      "pass": true
+    },
+    "cross_question_leakage_width_matched": {
+      "value": 0.0,
+      "bound": 1e-06,
+      "pass": true
+    },
+    "moving_control": {
+      "value": 0.2826,
+      "pass": true
+    },
+    "reload_parity_fresh_process": {
+      "value": 0.0,
+      "bound": 1e-06,
+      "pass": true
+    },
+    "structural_no_lm_head": {
+      "pass": true
+    },
+    "structural_no_generate": {
+      "pass": true
+    },
+    "all_fp16": {
+      "pass": true
+    },
+    "all_finite": {
+      "pass": true
+    },
+    "n3_max_abs_prob_diff_vs_fp32_compute": {
+      "value": 0.005038,
+      "bound": 0.005,
+      "pass": false,
+      "note": "pre-registered bound EXCEEDED; reported as a failure"
+    }
+  },
+  "calibration": {
+    "production_ece_gate": "NOT MET",
+    "ece_bound": 0.05,
+    "raw_ece_reserved": 0.1599,
+    "raw_ece_ssf1_sealed": 0.2755,
+    "raw_ece_test_panel_fp16": 0.1313,
+    "c2_status": "rejected (sealed NLL 1.4563 vs raw 1.0510)",
+    "limitations_doc": "CALIBRATION_LIMITATIONS.md",
+    "temperature": 1.0
   },
   "dependencies": [
     "torch>=2.11",
@@ -63,19 +149,184 @@
     "huggingface-hub>=1.5,<2.0",
     "safetensors>=0.4"
   ],
-  "evaluation_references": {
-    "integrity": "artifacts/release_integrity.json",
-    "performance": "artifacts/release_performance.json",
-    "remote_verification": "artifacts/remote_verification.json",
-    "ensemble": "artifacts/ensemble_validation_report.json",
-    "distillation": "artifacts/distillation_experiment_report.json"
+  "license": "Apache-2.0",
+  "files": {
+    ".gitattributes": {
+      "sha256": "786e879a1bd80d20e1693da7e0be8dcf8920004e22a04e75ad73263b52053cae",
+      "bytes": 1577
+    },
+    ".gitignore": {
+      "sha256": "0a123414f751aa89107d0f1c04d406d2ea753c0705e1df3cb6cd40ca1ed44df9",
+      "bytes": 152
+    },
+    "ATTRIBUTION.md": {
+      "sha256": "7cb823eabec07b0e3a5e12c41bef261a568b60cc3160f1f2a8531332ff565dda",
+      "bytes": 688
+    },
+    "BENCHMARK.md": {
+      "sha256": "097b95429c76ef7ced4e3a9cc81c594682117411a1a8633e35aa1616c9841e6b",
+      "bytes": 9967
+    },
+    "CALIBRATION_LIMITATIONS.md": {
+      "sha256": "dcdb002589bececbf402dd0ba9e54be996b0d3d47a9e62aba5df338bd3c518ad",
+      "bytes": 5612
+    },
+    "EVALUATION_REPORT.md": {
+      "sha256": "1f79dc12da9054e96aefdc65ec1223ee6aab9a0d308949cfeb8be05c27cd062b",
+      "bytes": 15209
+    },
+    "FINAL_REPORT.md": {
+      "sha256": "426dee4d8d89df149984cd263f08f069318839cdb5dcdd35b9d6f758f6307fd1",
+      "bytes": 12797
+    },
+    "LICENSE": {
+      "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+      "bytes": 11343
+    },
+    "README.md": {
+      "sha256": "4d3dd5a4fbce871aed13c87a08455aed0ee4c3f17ac61799aa9bc0876c7702a6",
+      "bytes": 42499
+    },
+    "TRAINING_PROVENANCE.md": {
+      "sha256": "28bfebe8f8f4d2c262f467d02e8c3e16f5feed53cfbfdcfd4714a4ed8a435c4f",
+      "bytes": 9461
+    },
+    "assets/rockandegg.png": {
+      "sha256": "9f988ed7615c995dc7ecbece40131b5444da8b7a9656081b3f1e5f1a6c89b8db",
+      "bytes": 1120828
+    },
+    "config.json": {
+      "sha256": "06d9d4bad660e7c40163ae16b7f870bbdca5ce77e7956b89c9e9420017111c03",
+      "bytes": 2790
+    },
+    "configuration_rockandegg_v3.py": {
+      "sha256": "c1a4f1f78f86b74d0151b100f3ace583ec133141a7b0b31ee8115c13fb86a4e9",
+      "bytes": 3145
+    },
+    "evidence/FP16_QUALIFICATION_VERDICT.md": {
+      "sha256": "264fa801434b7ec6932d0a64e139555ed7fcf1edc54f56855020829855ee4d99",
+      "bytes": 4088
+    },
+    "evidence/PRECISION_ACCEPTANCE_CRITERIA.md": {
+      "sha256": "21f710313111096bee3d9b5e1d59e19402c3ccfa51ba54782e72454f4299062f",
+      "bytes": 4683
+    },
+    "evidence/arm_accuracy_ci.json": {
+      "sha256": "d111854e66a60ea5e5fddaac5c3007d6e287edf74baec9c88f3fa6b8756b65b4",
+      "bytes": 526
+    },
+    "evidence/environment.json": {
+      "sha256": "4cd13b44512846dc365d288c3f2d46be0d74525e0a480d1a908fa967a1d31dca",
+      "bytes": 13442
+    },
+    "evidence/fp16_invariance.json": {
+      "sha256": "8531e2d6758af503c55501cf0af6e99829f306c4e95f4be79448486154d3fb99",
+      "bytes": 2136
+    },
+    "evidence/fp16_invariance.json.child.json": {
+      "sha256": "cd1fb141c1551d0ff9ae9fa51abd8400d0a69b8144f0b4398d75c03e7b63ae49",
+      "bytes": 473
+    },
+    "evidence/isolation_probe.json": {
+      "sha256": "48b217e35cd40b8dbc7cb2e5890e5dfe2657fa42125dc4cd1511b13b681b1a4d",
+      "bytes": 19284
+    },
+    "evidence/latency_results.json": {
+      "sha256": "14a8eb32d2e4eb6e1f5860ff2bca3af1a44b51678f1e6dbfd9e62c73c6ceeb16",
+      "bytes": 382584
+    },
+    "evidence/license_audit.json": {
+      "sha256": "cd96d1cb71577fda25eb1106529726bc6c71420e00b8abebdf853765d449e0e3",
+      "bytes": 2506
+    },
+    "evidence/memory_results.json": {
+      "sha256": "ad4900080e1ab36cdf7711644a814995b96292cd45f87c9785db4be3362844cd",
+      "bytes": 49287
+    },
+    "evidence/precision_cast_report.json": {
+      "sha256": "8773c4d7fc24ea605774f58d744b79049f3ed9df75e870df9578f4249e34b1a3",
+      "bytes": 56626
+    },
+    "evidence/precision_parity.json": {
+      "sha256": "b1377b020551834821a4cb91011fd5271dc659da55282d9435721e1fc4bc408e",
+      "bytes": 7740
+    },
+    "evidence/predictions.jsonl": {
+      "sha256": "195ef5aaa2a70755f4fa5703953dda51abf9afca72bb52af9c80a352b9c7fa6e",
+      "bytes": 3100292
+    },
+    "evidence/qualify_fp16.json": {
+      "sha256": "1a604875baa33ea0642a8ae6eb92b0caf50f6170752565345bd3ddec8ad27f4d",
+      "bytes": 2896
+    },
+    "evidence/quality_metrics.json": {
+      "sha256": "9c5e2d075a47c9e0f6db13451e9821aa070ac653f29a04b876bf4fc41aee79d9",
+      "bytes": 9234
+    },
+    "evidence/reconciliation_accuracy.json": {
+      "sha256": "31bc0f6895d98b807011226f039d81695314bc3a9449d5f8bf72f5f698a76464",
+      "bytes": 23921
+    },
+    "evidence/server_smoke.json": {
+      "sha256": "1adc4ab432c4d0e782eecf5214ebf67011de69de28d33c2441fc04e7d01a3b79",
+      "bytes": 3148
+    },
+    "evidence/shared_state_instrumentation.json": {
+      "sha256": "874a2957e2c94f2879951e90124b5386b01e4d3177cc6dad530b4d3e16184d57",
+      "bytes": 31033
+    },
+    "evidence/throughput_results.json": {
+      "sha256": "b316e90ba1834c8e58cdad920992f79f0e1c5fe4c2e8ff9318431f65ad602dec",
+      "bytes": 68145
+    },
+    "make_release_manifest.py": {
+      "sha256": "90f212417b95869f866969132e4ef2b8357bdf018a5c71a76cea192969205ea1",
+      "bytes": 7606
+    },
+    "merges.txt": {
+      "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+      "bytes": 1671853
+    },
+    "model.safetensors": {
+      "sha256": "17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28",
+      "bytes": 626337154
+    },
+    "modeling_rockandegg_v3.py": {
+      "sha256": "71ca50b21c4f7efd73d42d1c7de4fe4b29ecf78503adb36c626e889e058354e7",
+      "bytes": 14766
+    },
+    "publish_hf.py": {
+      "sha256": "b39d69554bf8d3a62c21b1195a7c5b12fddc5bcb5f8754253b8393bd7486bb8f",
+      "bytes": 9637
+    },
+    "requirements-server.txt": {
+      "sha256": "02d77cb11d75bf5101892e91573d8b152700aae43a7aa626aaebaae062e74e1f",
+      "bytes": 769
+    },
+    "requirements.txt": {
+      "sha256": "a76e6378d844e941bd0e4c83f789cd207f853d54842ee5387ccc5c86ad865e4e",
+      "bytes": 77
+    },
+    "systemone_inference.py": {
+      "sha256": "84cf13fe6c730875bafbc38c8fde875ed7f540089c49cf939285e91407535bae",
+      "bytes": 7178
+    },
+    "systemone_server.py": {
+      "sha256": "9a27ccdf59f7d986dcb7e65db80d019787bf766fd6ceebb9ac558cc15f15a051",
+      "bytes": 25329
+    },
+    "tokenizer.json": {
+      "sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539",
+      "bytes": 7031645
+    },
+    "tokenizer_config.json": {
+      "sha256": "5f007d04324afa93876e2a484190e868136c69dfe0e1a29a1063eae583df9d32",
+      "bytes": 696
+    },
+    "vocab.json": {
+      "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+      "bytes": 2776833
+    }
   },
-  "calibration": {
-    "production_gate_met": false,
-    "ece_bound": 0.05,
-    "raw_ece_reserved": 0.1599,
-    "raw_ece_ssf1_sealed": 0.2755,
-    "temperature": 1.0,
-    "c2_rejected": true
-  }
+  "generated_utc": "2026-11-19T14:50:40+00:00"
 }

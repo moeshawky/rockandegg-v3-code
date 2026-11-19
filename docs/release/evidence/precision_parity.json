@@ -1,0 +1,319 @@
+{
+  "panel": {
+    "dataset": "LocalLLaMA/typed-decisions",
+    "revision": "e6aa632c4db73b59c7713bb21066ad1a8e1bfce6",
+    "dossiers": 400,
+    "decisions": 2000
+  },
+  "comparisons": {
+    "A_storage_identity__fp16_vs_bf16artefact_in_fp16": {
+      "decisions": 2000,
+      "argmax_agreement": 1.0,
+      "argmax_flips": 0,
+      "flip_types": {},
+      "flip_examples": [],
+      "mean_abs_prob_diff": 0.0,
+      "p99_abs_prob_diff": 0.0,
+      "max_abs_prob_diff": 0.0,
+      "accuracy_a": 0.7285,
+      "accuracy_b": 0.7285,
+      "abs_accuracy_delta": 0.0,
+      "per_type_a": {
+        "choice": 0.7016666666666667,
+        "noul": 0.8133333333333334,
+        "score": 0.685
+      },
+      "per_type_b": {
+        "choice": 0.7016666666666667,
+        "noul": 0.8133333333333334,
+        "score": 0.685
+      },
+      "per_type_abs_delta": {
+        "choice": 0.0,
+        "noul": 0.0,
+        "score": 0.0
+      }
+    },
+    "B_deployment_parity__fp16_vs_bf16artefact_in_fp32": {
+      "decisions": 2000,
+      "argmax_agreement": 0.9975,
+      "argmax_flips": 5,
+      "flip_types": {
+        "choice": 2,
+        "score": 1,
+        "noul": 2
+      },
+      "flip_examples": [
+        {
+          "qid": "outcome",
+          "type": "choice",
+          "a": "partial",
+          "b": "success"
+        },
+        {
+          "qid": "needs_human",
+          "type": "noul",
+          "a": "false",
+          "b": "true"
+        },
+        {
+          "qid": "needs_human",
+          "type": "noul",
+          "a": "false",
+          "b": "true"
+        },
+        {
+          "qid": "action",
+          "type": "choice",
+          "a": "escalate_to_human",
+          "b": "answer_directly"
+        },
+        {
+          "qid": "discrepancy_severity",
+          "type": "score",
+          "a": "2",
+          "b": "3"
+        }
+      ],
+      "mean_abs_prob_diff": 0.0006535545001126183,
+      "p99_abs_prob_diff": 0.00321805477142334,
+      "max_abs_prob_diff": 0.005037844181060791,
+      "accuracy_a": 0.7285,
+      "accuracy_b": 0.729,
+      "abs_accuracy_delta": 0.0004999999999999449,
+      "per_type_a": {
+        "choice": 0.7016666666666667,
+        "noul": 0.8133333333333334,
+        "score": 0.685
+      },
+      "per_type_b": {
+        "choice": 0.705,
+        "noul": 0.8133333333333334,
+        "score": 0.68375
+      },
+      "per_type_abs_delta": {
+        "choice": 0.0033333333333332993,
+        "noul": 0.0,
+        "score": 0.0012500000000000844
+      }
+    },
+    "C_context__fp16_vs_bf16artefact_in_bf16_native": {
+      "decisions": 2000,
+      "argmax_agreement": 0.984,
+      "argmax_flips": 32,
+      "flip_types": {
+        "choice": 6,
+        "score": 11,
+        "noul": 15
+      },
+      "flip_examples": [
+        {
+          "qid": "urgency",
+          "type": "score",
+          "a": "3",
+          "b": "2"
+        },
+        {
+          "qid": "urgency",
+          "type": "score",
+          "a": "3",
+          "b": "2"
+        },
+        {
+          "qid": "needs_human",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        },
+        {
+          "qid": "needs_human",
+          "type": "noul",
+          "a": "false",
+          "b": "true"
+        },
+        {
+          "qid": "needs_human",
+          "type": "noul",
+          "a": "false",
+          "b": "true"
+        },
+        {
+          "qid": "needs_human",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        },
+        {
+          "qid": "action",
+          "type": "choice",
+          "a": "escalate_to_human",
+          "b": "answer_directly"
+        },
+        {
+          "qid": "churn_risk",
+          "type": "score",
+          "a": "2",
+          "b": "1"
+        },
+        {
+          "qid": "action",
+          "type": "choice",
+          "a": "answer_directly",
+          "b": "escalate_to_human"
+        },
+        {
+          "qid": "discrepancy_severity",
+          "type": "score",
+          "a": "3",
+          "b": "2"
+        },
+        {
+          "qid": "matches_order",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        },
+        {
+          "qid": "urgency",
+          "type": "score",
+          "a": "1",
+          "b": "2"
+        },
+        {
+          "qid": "matches_order",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        },
+        {
+          "qid": "urgency",
+          "type": "score",
+          "a": "1",
+          "b": "2"
+        },
+        {
+          "qid": "urgency",
+          "type": "score",
+          "a": "3",
+          "b": "2"
+        },
+        {
+          "qid": "matches_order",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        },
+        {
+          "qid": "disposition",
+          "type": "choice",
+          "a": "manual_review",
+          "b": "hold"
+        },
+        {
+          "qid": "disposition",
+          "type": "choice",
+          "a": "manual_review",
+          "b": "hold"
+        },
+        {
+          "qid": "disposition",
+          "type": "choice",
+          "a": "manual_review",
+          "b": "hold"
+        },
+        {
+          "qid": "urgency",
+          "type": "score",
+          "a": "3",
+          "b": "2"
+        },
+        {
+          "qid": "credential_compromise",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        },
+        {
+          "qid": "true_positive",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        },
+        {
+          "qid": "credential_compromise",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        },
+        {
+          "qid": "disposition",
+          "type": "choice",
+          "a": "contain",
+          "b": "investigate"
+        },
+        {
+          "qid": "true_positive",
+          "type": "noul",
+          "a": "true",
+          "b": "false"
+        }
+      ],
+      "mean_abs_prob_diff": 0.00478017385785868,
+      "p99_abs_prob_diff": 0.02269911766052246,
+      "max_abs_prob_diff": 0.04323035478591919,
+      "accuracy_a": 0.7285,
+      "accuracy_b": 0.7235,
+      "abs_accuracy_delta": 0.0050000000000000044,
+      "per_type_a": {
+        "choice": 0.7016666666666667,
+        "noul": 0.8133333333333334,
+        "score": 0.685
+      },
+      "per_type_b": {
+        "choice": 0.695,
+        "noul": 0.8083333333333333,
+        "score": 0.68125
+      },
+      "per_type_abs_delta": {
+        "choice": 0.00666666666666671,
+        "noul": 0.0050000000000000044,
+        "score": 0.003750000000000031
+      }
+    }
+  },
+  "vram_mib": {
+    "fp16": 904.7,
+    "bf16_artifact_fp16": 904.6,
+    "bf16_artifact_fp32": 1798.9,
+    "bf16_artifact_bf16": 1204.2
+  },
+  "gate_reference": "B_deployment_parity__fp16_vs_bf16artefact_in_fp32",
+  "gate_rationale": "The pre-registered criteria name the 'highest-precision available reference'. The FP32 master is unrecoverable, so the highest-precision reference is the same BF16-valued weights computed in FP32. Native BF16 compute has a 7-bit mantissa vs FP16's 10 and is therefore a LOWER-precision arm, not a reference.",
+  "gates": {
+    "N1_argmax_agreement_ge_0.99": {
+      "pass": true,
+      "value": 0.9975
+    },
+    "N2_mean_abs_prob_le_1e-3": {
+      "pass": true,
+      "value": 0.0006535545001126183
+    },
+    "N3_max_abs_prob_le_5e-3": {
+      "pass": false,
+      "value": 0.005037844181060791
+    },
+    "N4_abs_acc_delta_le_0.005": {
+      "pass": true,
+      "value": 0.0004999999999999449
+    },
+    "N5_per_type_delta_le_0.01": {
+      "pass": true,
+      "value": {
+        "choice": 0.0033333333333332993,
+        "noul": 0.0,
+        "score": 0.0012500000000000844
+      }
+    }
+  },
+  "all_pass": false
+}

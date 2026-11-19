@@ -1,0 +1,1106 @@
+{
+  "mechanism": {
+    "rae_v3": {
+      "computed_once_per_case": [
+        "state prefill: backbone(input_ids=[1,S], use_cache=True) -> state_hidden [1,S,d] + progenitor DynamicCache (modeling_rockandegg_v3.py:148-171, encode_state; call site forward_case line 227)",
+        "state_norm on the prefill hidden states (line 170)"
+      ],
+      "recomputed_per_case": [
+        "option read: backbone(input_ids=[M,L], past_key_values=fork, use_cache=False) over ALL option rows of the case (modeling_rockandegg_v3.py:173-199, _read_options; call site line 228)",
+        "deepcopy of the progenitor cache + in-place batch_repeat_interleave(M) before the option read (lines 182-183)",
+        "head: qtype embedding + scorer MLP + temperature per question (_head_forward lines 316-364; no backbone involvement)"
+      ],
+      "forward_case_backbone_forwards": "exactly 2 (hook-verified)",
+      "forward_batch_backbone_forwards": "exactly 2 (encode_state line 268 + option read line 273)",
+      "head_components_active": "none \u2014 use_cosine_prior/use_cross_attn/use_option_mixer all false (config.json:72-74)"
+    },
+    "laya": {
+      "per_request": [
+        "build_sequence per question: [CLS] head [SEP] [MASK]opt0 [MASK]opt1 ... [SEP] <state tokens> [SEP] (rl_common.py:47-77; state tokens DUPLICATED into every row, lines 73-76)",
+        "collate_items: F rows padded to [F, max_len] (rl_common.py:265-293)",
+        "ONE batched encoder forward: ModernBERTForMaskedLM over [F, <=1024] (rl_common.py:101)",
+        "2-layer TransformerEncoder head over full rows + marker gather + scorer (rl_common.py:105-115)"
+      ],
+      "state_reuse": "NONE \u2014 state is re-encoded once per question row inside the single batched pass",
+      "max_len": 1024,
+      "head_max_len": 256,
+      "encoder": "answerdotai/ModernBERT-large, 28 layers, hidden 1024, bidirectional, sliding(128)+full attention"
+    }
+  },
+  "forward_count_proof": {
+    "rae_shared_F4_k4": {
+      "n_backbone_forwards": 2,
+      "calls": [
+        {
+          "in": [
+            1,
+            256
+          ],
+          "cache_len": null,
+          "out": [
+            1,
+            256,
+            1024
+          ]
+        },
+        {
+          "in": [
+            16,
+            33
+          ],
+          "cache_len": 256,
+          "out": [
+            16,
+            33,
+            1024
+          ]
+        }
+      ]
+    },
+    "rae_independent_F4_k4": {
+      "n_backbone_forwards": 8,
+      "calls": [
+        {
+          "in": [
+            1,
+            256
+          ],
+          "cache_len": null,
+          "out": [
+            1,
+            256,
+            1024
+          ]
+        },
+        {
+          "in": [
+            4,
+            33
+          ],
+          "cache_len": 256,
+          "out": [
+            4,
+            33,
+            1024
+          ]
+        },
+        {
+          "in": [
+            1,
+            256
+          ],
+          "cache_len": null,
+          "out": [
+            1,
+            256,
+            1024
+          ]
+        },
+        {
+          "in": [
+            4,
+            28
+          ],
+          "cache_len": 256,
+          "out": [
+            4,
+            28,
+            1024
+          ]
+        },
+        {
+          "in": [
+            1,
+            256
+          ],
+          "cache_len": null,
+          "out": [
+            1,
+            256,
+            1024
+          ]
+        },
+        {
+          "in": [
+            4,
+            33
+          ],
+          "cache_len": 256,
+          "out": [
+            4,
+            33,
+            1024
+          ]
+        },
+        {
+          "in": [
+            1,
+            256
+          ],
+          "cache_len": null,
+          "out": [
+            1,
+            256,
+            1024
+          ]
+        },
+        {
+          "in": [
+            4,
+            28
+          ],
+          "cache_len": 256,
+          "out": [
+            4,
+            28,
+            1024
+          ]
+        }
+      ]
+    },
+    "laya_F4_k4": {
+      "n_encoder_forwards": 1,
+      "calls": [
+        {
+          "in": [
+            4,
+            185
+          ],
+          "out": [
+            4,
+            185,
+            1024
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "rae_shared": "2 (1 state prefill [1,256] + 1 option read [M,L] on forked cache)",
+      "rae_independent": "2*F (F state prefills + F option reads)",
+      "laya": "1 (batched encoder over F rows; state duplicated inside each row)"
+    }
+  },
+  "cache": {
+    "S256": {
+      "n_real_tokens": 20,
+      "n_layers": 10,
+      "layer0": {
+        "layer": 0,
+        "keys_shape": [
+          1,
+          8,
+          256,
+          128
+        ],
+        "values_shape": [
+          1,
+          8,
+          256,
+          128
+        ],
+        "dtype": "torch.float16",
+        "bytes": 1048576
+      },
+      "all_layers_identical": true,
+      "total_cache_bytes": 10485760,
+      "total_cache_mib": 10.0
+    },
+    "S512": {
+      "n_real_tokens": 20,
+      "n_layers": 10,
+      "layer0": {
+        "layer": 0,
+        "keys_shape": [
+          1,
+          8,
+          512,
+          128
+        ],
+        "values_shape": [
+          1,
+          8,
+          512,
+          128
+        ],
+        "dtype": "torch.float16",
+        "bytes": 2097152
+      },
+      "all_layers_identical": true,
+      "total_cache_bytes": 20971520,
+      "total_cache_mib": 20.0
+    }
+  },
+  "parity_gate": {
+    "gate": "shared (1 forward_case, F questions) vs independent (F forward_case calls, 1 question each)",
+    "n_dossiers": 50,
+    "n_decisions": 250,
+    "n_probability_entries": 900,
+    "max_abs_probability_diff": 0.004988372325897217,
+    "mean_abs_probability_diff": 0.0006378670502454043,
+    "argmax_flips": 3,
+    "flips_detail": [
+      {
+        "case_id": "tr_agent_trace_observability_000017",
+        "q_index": 3,
+        "width": 4,
+        "margin": 0.0017871856689453125
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000017",
+        "q_index": 4,
+        "width": 4,
+        "margin": 0.001702725887298584
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000034",
+        "q_index": 4,
+        "width": 4,
+        "margin": 0.006454259157180786
+      }
+    ],
+    "max_flip_margin": 0.006454259157180786,
+    "tolerance": 0.01,
+    "tolerance_basis": "AGENTS.md documents 1e-2 fp16 for comparisons that change batch composition/padding (the split path). The 1e-6 same-batch option permutation gate is measured separately and passes at exactly 0.0.",
+    "strict_tolerance_reported_only": 1e-06,
+    "verdict": "PASS",
+    "per_case": [
+      {
+        "case_id": "tr_agent_trace_observability_000000",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002688199281692505
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000001",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0017031431198120117
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000002",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0018995702266693115
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000003",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0019660592079162598
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000004",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0018419921398162842
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000005",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0015131831169128418
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000006",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0019488632678985596
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000007",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0027895569801330566
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000008",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0016172528266906738
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000009",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0006589889526367188
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000010",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002463221549987793
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000011",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.003327280282974243
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000012",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.004988372325897217
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000013",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002558499574661255
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000014",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0023310184478759766
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000015",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.000800013542175293
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000016",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0009713470935821533
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000017",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0015550851821899414
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000018",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0019456148147583008
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000019",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002260357141494751
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000020",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0034988224506378174
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000021",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002321302890777588
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000022",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002744019031524658
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000023",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0021485984325408936
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000024",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0019336342811584473
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000025",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0017946064472198486
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000026",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0015281736850738525
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000027",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0019016861915588379
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000028",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.001895308494567871
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000029",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002061992883682251
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000030",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0012932419776916504
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000031",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0022261738777160645
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000032",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002696424722671509
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000033",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.001887887716293335
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000034",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.003307819366455078
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000035",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.001986265182495117
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000036",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0034120678901672363
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000037",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0018358230590820312
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000038",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0009685158729553223
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000039",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.002246350049972534
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000040",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0018894374370574951
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000041",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0009732544422149658
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000042",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0021255314350128174
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000043",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.001796633005142212
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000044",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0029292404651641846
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000045",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.003981292247772217
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000046",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0019524693489074707
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000047",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.001595526933670044
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000048",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0015609562397003174
+      },
+      {
+        "case_id": "tr_agent_trace_observability_000049",
+        "widths": [
+          4,
+          2,
+          4,
+          4,
+          4
+        ],
+        "max_dp": 0.0019118189811706543
+      }
+    ]
+  },
+  "environment": {
+    "seed": 20261119,
+    "cuda_visible_devices": "0",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.16.1",
+    "physical_gpu_timed": "GPU 0 (logical index 0; CUDA_VISIBLE_DEVICES='0')",
+    "other_gpu": "all other NVML indices sampled continuously; only index 0 is this run's device",
+    "rae_model_sha256": "17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28",
+    "laya_model_sha256": "4fa56de72383a9d3efa9cfa78955733c81b9fc8067a587ca4beb82c78107a24e",
+    "gpu_state_at_start": {
+      "gpu0": {
+        "name": "Tesla T4",
+        "mem_total_mib": 15360,
+        "mem_used_mib_at_start": 448,
+        "util_at_start_pct": 0
+      },
+      "gpu1": {
+        "name": "Tesla T4",
+        "mem_total_mib": 15360,
+        "mem_used_mib_at_start": 448,
+        "util_at_start_pct": 0
+      }
+    },
+    "v3_params_M": 313.2,
+    "laya_params_M": 421.3,
+    "v3_dtype": "torch.float16",
+    "laya_amp_dtype": "torch.float16",
+    "bucket_S64": {
+      "n_states": 124,
+      "v3_token_len_min": 76,
+      "v3_token_len_max": 100
+    },
+    "bucket_S128": {
+      "n_states": 116,
+      "v3_token_len_min": 110,
+      "v3_token_len_max": 146
+    },
+    "bucket_S256": {
+      "n_states": 81,
+      "v3_token_len_min": 240,
+      "v3_token_len_max": 256
+    },
+    "choice_pool_n": 600,
+    "bench_wall_s": 2931.6,
+    "gpu_utilization_run": {
+      "gpu0": {
+        "n_samples": 54229,
+        "util_pct_mean": 55.93767172546055,
+        "util_pct_max": 96,
+        "util_pct_p95": 92.0,
+        "mem_used_mib_mean": 3902.2718656069633,
+        "mem_used_mib_max": 4259
+      },
+      "gpu1": {
+        "n_samples": 54229,
+        "util_pct_mean": 0.0,
+        "util_pct_max": 0,
+        "util_pct_p95": 0.0,
+        "mem_used_mib_mean": 448.2028988179756,
+        "mem_used_mib_max": 451
+      }
+    },
+    "tokenization_ms_median": {
+      "r0|S64|F1|k2|rae_shared": 1.0970049988827668,
+      "r0|S64|F1|k4|rae_shared": 1.4923150010872632,
+      "r0|S64|F1|k5|rae_shared": 1.561994999065064,
+      "r0|S64|F2|k2|rae_shared": 1.3481600017257733,
+      "r0|S64|F2|k4|rae_shared": 1.8939545007015113,
+      "r0|S64|F2|k5|rae_shared": 2.0700099994428456,
+      "r0|S64|F4|k2|rae_shared": 2.718211500905454,
+      "r0|S64|F4|k4|rae_shared": 2.8024995008308906,
+      "r0|S64|F4|k5|rae_shared": 3.541867999956594,
+      "r0|S64|F5|k2|rae_shared": 2.098418999594287,
+      "r0|S64|F5|k4|rae_shared": 3.2573495009273756,
+      "r0|S64|F5|k5|rae_shared": 4.0620104991830885,
+      "r0|S128|F1|k2|rae_shared": 1.035433499055216,
+      "r0|S128|F1|k4|rae_shared": 1.3050899979134556,
+      "r0|S128|F1|k5|rae_shared": 1.4408980005100602,
+      "r0|S128|F2|k2|rae_shared": 1.3101050008117454,
+      "r0|S128|F2|k4|rae_shared": 1.7836325005191611,
+      "r0|S128|F2|k5|rae_shared": 2.3406834989145864,
+      "r0|S128|F4|k2|rae_shared": 2.040021001448622,
+      "r0|S128|F4|k4|rae_shared": 4.448945001058746,
+      "r0|S128|F4|k5|rae_shared": 3.8005565002094954,
+      "r0|S128|F5|k2|rae_shared": 2.618893000544631,
+      "r0|S128|F5|k4|rae_shared": 3.8426529990829295,
+      "r0|S128|F5|k5|rae_shared": 4.946653500155662,
+      "r0|S256|F1|k2|rae_shared": 1.5368029999081045,
+      "r0|S256|F1|k4|rae_shared": 1.7887624981085537,
+      "r0|S256|F1|k5|rae_shared": 2.051980500255013,
+      "r0|S256|F2|k2|rae_shared": 1.819151000745478,
+      "r0|S256|F2|k4|rae_shared": 2.4741670004004845,
+      "r0|S256|F2|k5|rae_shared": 4.522869499851367,
+      "r0|S256|F4|k2|rae_shared": 2.550618999521248,
+      "r0|S256|F4|k4|rae_shared": 4.55088999842701,
+      "r0|S256|F4|k5|rae_shared": 4.294650498195551,
+      "r0|S256|F5|k2|rae_shared": 2.8813274984713644,
+      "r0|S256|F5|k4|rae_shared": 4.288417998395744,
+      "r0|S256|F5|k5|rae_shared": 5.25218500115443,
+      "r1|S64|F1|k2|rae_shared": 1.1337670002831146,
+      "r1|S64|F1|k4|rae_shared": 1.6415900008723838,
+      "r1|S64|F1|k5|rae_shared": 1.638572499359725,
+      "r1|S64|F2|k2|rae_shared": 1.4845910009171348,
+      "r1|S64|F2|k4|rae_shared": 2.0793920011783484,
+      "r1|S64|F2|k5|rae_shared": 4.386257502119406,
+      "r1|S64|F4|k2|rae_shared": 2.2211904997675447,
+      "r1|S64|F4|k4|rae_shared": 7.207236500107683,
+      "r1|S64|F4|k5|rae_shared": 3.896145000908291,
+      "r1|S64|F5|k2|rae_shared": 2.299228499396122,
+      "r1|S64|F5|k4|rae_shared": 4.161138998824754,
+      "r1|S64|F5|k5|rae_shared": 4.273577000276418,
+      "r1|S128|F1|k2|rae_shared": 1.0597359996609157,
+      "r1|S128|F1|k4|rae_shared": 1.4780875008000294,
+      "r1|S128|F1|k5|rae_shared": 1.6663170008541783,
+      "r1|S128|F2|k2|rae_shared": 1.3206785006332211,
+      "r1|S128|F2|k4|rae_shared": 2.1540000016102567,
+      "r1|S128|F2|k5|rae_shared": 2.355190999878687,
+      "r1|S128|F4|k2|rae_shared": 2.230434502052958,
+      "r1|S128|F4|k4|rae_shared": 3.187400499882642,
+      "r1|S128|F4|k5|rae_shared": 3.8596164995396975,
+      "r1|S128|F5|k2|rae_shared": 2.617917498355382,
+      "r1|S128|F5|k4|rae_shared": 4.568430500512477,
+      "r1|S128|F5|k5|rae_shared": 4.247320499416674,
+      "r1|S256|F1|k2|rae_shared": 1.5405850008392008,
+      "r1|S256|F1|k4|rae_shared": 1.8196794990217313,
+      "r1|S256|F1|k5|rae_shared": 1.9997135004814481,
+      "r1|S256|F2|k2|rae_shared": 2.016575499510509,
+      "r1|S256|F2|k4|rae_shared": 2.4869224998838035,
+      "r1|S256|F2|k5|rae_shared": 2.7521479987626662,
+      "r1|S256|F4|k2|rae_shared": 2.449001500281156,
+      "r1|S256|F4|k4|rae_shared": 3.7137564995646244,
+      "r1|S256|F4|k5|rae_shared": 3.960243000619812,
+      "r1|S256|F5|k2|rae_shared": 2.6976414992532227,
+      "r1|S256|F5|k4|rae_shared": 4.290318500352441,
+      "r1|S256|F5|k5|rae_shared": 4.729976999442442,
+      "r2|S64|F1|k2|rae_shared": 1.1292460003460292,
+      "r2|S64|F1|k4|rae_shared": 1.3359100012166891,
+      "r2|S64|F1|k5|rae_shared": 1.5032360006443923,
+      "r2|S64|F2|k2|rae_shared": 1.352254001176334,
+      "r2|S64|F2|k4|rae_shared": 3.5127284991176566,
+      "r2|S64|F2|k5|rae_shared": 2.238368500911747,
+      "r2|S64|F4|k2|rae_shared": 2.1130305012775352,
+      "r2|S64|F4|k4|rae_shared": 3.0899405010131886,
+      "r2|S64|F4|k5|rae_shared": 3.5252884990768507,
+      "r2|S64|F5|k2|rae_shared": 2.621189998535556,
+      "r2|S64|F5|k4|rae_shared": 3.6156895002932288,
+      "r2|S64|F5|k5|rae_shared": 4.519738500675885,
+      "r2|S128|F1|k2|rae_shared": 1.2332834994595032,
+      "r2|S128|F1|k4|rae_shared": 1.4562780015694443,
+      "r2|S128|F1|k5|rae_shared": 1.6171510014828527,
+      "r2|S128|F2|k2|rae_shared": 1.518503500847146,
+      "r2|S128|F2|k4|rae_shared": 1.8679780023376225,
+      "r2|S128|F2|k5|rae_shared": 2.4507694997737417,
+      "r2|S128|F4|k2|rae_shared": 1.9138360003125854,
+      "r2|S128|F4|k4|rae_shared": 4.089632499017171,
+      "r2|S128|F4|k5|rae_shared": 3.665655500299181,
+      "r2|S128|F5|k2|rae_shared": 2.3027039987937314,
+      "r2|S128|F5|k4|rae_shared": 3.5422809996816795,
+      "r2|S128|F5|k5|rae_shared": 4.553722999844467,
+      "r2|S256|F1|k2|rae_shared": 1.5393779995065415,
+      "r2|S256|F1|k4|rae_shared": 1.942202999998699,
+      "r2|S256|F1|k5|rae_shared": 1.890805999209988,
+      "r2|S256|F2|k2|rae_shared": 1.7158874998131068,
+      "r2|S256|F2|k4|rae_shared": 2.3944189997564536,
+      "r2|S256|F2|k5|rae_shared": 2.6091900017490843,
+      "r2|S256|F4|k2|rae_shared": 2.390335999734816,
+      "r2|S256|F4|k4|rae_shared": 3.5332529987499584,
+      "r2|S256|F4|k5|rae_shared": 4.30421899909561,
+      "r2|S256|F5|k2|rae_shared": 2.9001304992561927,
+      "r2|S256|F5|k4|rae_shared": 3.936827000870835,
+      "r2|S256|F5|k5|rae_shared": 4.885626000032062,
+      "r0|S64|F1|k2|laya_native": 1.001402501060511,
+      "r0|S64|F1|k4|laya_native": 1.8208404999313643,
+      "r0|S64|F1|k5|laya_native": 1.2879179976152955,
+      "r0|S64|F2|k2|laya_native": 1.463267999497475,
+      "r0|S64|F2|k4|laya_native": 2.7429995006968966,
+      "r0|S64|F2|k5|laya_native": 2.012992501477129,
+      "r0|S64|F4|k2|laya_native": 2.589305999208591,
+      "r0|S64|F4|k4|laya_native": 3.447860999585828,
+      "r0|S64|F4|k5|laya_native": 3.683713997816085,
+      "r0|S64|F5|k2|laya_native": 3.189248498529196,
+      "r0|S64|F5|k4|laya_native": 4.139360498811584,
+      "r0|S64|F5|k5|laya_native": 5.7389419998798985,
+      "r0|S128|F1|k2|laya_native": 0.8831744999042712,
+      "r0|S128|F1|k4|laya_native": 0.9601300007489044,
+      "r0|S128|F1|k5|laya_native": 1.1239215018576942,
+      "r0|S128|F2|k2|laya_native": 1.6230490000452846,
+      "r0|S128|F2|k4|laya_native": 1.7896365006890846,
+      "r0|S128|F2|k5|laya_native": 1.9279130010545487,
+      "r0|S128|F4|k2|laya_native": 2.741587000855361,
+      "r0|S128|F4|k4|laya_native": 3.851200501230778,
+      "r0|S128|F4|k5|laya_native": 4.347608499301714,
+      "r0|S128|F5|k2|laya_native": 3.699701999721583,
+      "r0|S128|F5|k4|laya_native": 5.032159000620595,
+      "r0|S128|F5|k5|laya_native": 4.9278064998361515,
+      "r0|S256|F1|k2|laya_native": 1.2326899995969143,
+      "r0|S256|F1|k4|laya_native": 1.3821699994878145,
+      "r0|S256|F1|k5|laya_native": 1.4269509993027896,
+      "r0|S256|F2|k2|laya_native": 2.459812501911074,
+      "r0|S256|F2|k4|laya_native": 2.7479110012791352,
+      "r0|S256|F2|k5|laya_native": 3.4390159999020398,
+      "r0|S256|F4|k2|laya_native": 4.843272998186876,
+      "r0|S256|F4|k4|laya_native": 9.101894500417984,
+      "r0|S256|F4|k5|laya_native": 9.514942499663448,
+      "r0|S256|F5|k2|laya_native": 5.9428989989100955,
+      "r0|S256|F5|k4|laya_native": 6.729028000336257,
+      "r0|S256|F5|k5|laya_native": 11.757566500818939,
+      "r1|S64|F1|k2|laya_native": 0.8976664994406747,
+      "r1|S64|F1|k4|laya_native": 1.2803505014744587,
+      "r1|S64|F1|k5|laya_native": 1.247412001248449,
+      "r1|S64|F2|k2|laya_native": 1.5990384999895468,
+      "r1|S64|F2|k4|laya_native": 2.048189498964348,
+      "r1|S64|F2|k5|laya_native": 3.808896999544231,
+      "r1|S64|F4|k2|laya_native": 5.580560000453261,
+      "r1|S64|F4|k4|laya_native": 10.909564000030514,
+      "r1|S64|F4|k5|laya_native": 7.001174999459181,
+      "r1|S64|F5|k2|laya_native": 4.048505499667954,
+      "r1|S64|F5|k4|laya_native": 4.751813499751734,
+      "r1|S64|F5|k5|laya_native": 4.6932665009080665,
+      "r1|S128|F1|k2|laya_native": 0.8630170013930183,
+      "r1|S128|F1|k4|laya_native": 1.1684835008054506,
+      "r1|S128|F1|k5|laya_native": 1.1868624987982912,
+      "r1|S128|F2|k2|laya_native": 1.6905229986150516,
+      "r1|S128|F2|k4|laya_native": 1.936612999998033,
+      "r1|S128|F2|k5|laya_native": 2.19204550194263,
+      "r1|S128|F4|k2|laya_native": 3.0618919990956783,
+      "r1|S128|F4|k4|laya_native": 3.9242105012817774,
+      "r1|S128|F4|k5|laya_native": 4.406349500641227,
+      "r1|S128|F5|k2|laya_native": 4.006439499789849,
+      "r1|S128|F5|k4|laya_native": 4.394220497488277,
+      "r1|S128|F5|k5|laya_native": 4.914201001156471,
+      "r1|S256|F1|k2|laya_native": 1.1931900007766671,
+      "r1|S256|F1|k4|laya_native": 1.3975954989291495,
+      "r1|S256|F1|k5|laya_native": 1.491291001002537,
+      "r1|S256|F2|k2|laya_native": 2.9758939999737777,
+      "r1|S256|F2|k4|laya_native": 2.8068285009794636,
+      "r1|S256|F2|k5|laya_native": 3.139720500257681,
+      "r1|S256|F4|k2|laya_native": 4.701003001173376,
+      "r1|S256|F4|k4|laya_native": 5.170693002582993,
+      "r1|S256|F4|k5|laya_native": 5.512004499905743,
+      "r1|S256|F5|k2|laya_native": 5.524268499357277,
+      "r1|S256|F5|k4|laya_native": 7.271905500601861,
+      "r1|S256|F5|k5|laya_native": 7.578536500659538,
+      "r2|S64|F1|k2|laya_native": 0.8552200015401468,
+      "r2|S64|F1|k4|laya_native": 1.1098984996351646,
+      "r2|S64|F1|k5|laya_native": 1.5968714997143252,
+      "r2|S64|F2|k2|laya_native": 1.6241825014731148,
+      "r2|S64|F2|k4|laya_native": 2.050098501058528,
+      "r2|S64|F2|k5|laya_native": 2.0720010015793378,
+      "r2|S64|F4|k2|laya_native": 2.868201501769363,
+      "r2|S64|F4|k4|laya_native": 3.806259501288878,
+      "r2|S64|F4|k5|laya_native": 4.0964395011542365,
+      "r2|S64|F5|k2|laya_native": 3.523401001075399,
+      "r2|S64|F5|k4|laya_native": 4.428710999491159,
+      "r2|S64|F5|k5|laya_native": 4.60403050055902,
+      "r2|S128|F1|k2|laya_native": 0.903906498933793,
+      "r2|S128|F1|k4|laya_native": 2.24559349953779,
+      "r2|S128|F1|k5|laya_native": 1.2322924994805362,
+      "r2|S128|F2|k2|laya_native": 1.651003998631495,
+      "r2|S128|F2|k4|laya_native": 2.007761499044136,
+      "r2|S128|F2|k5|laya_native": 3.4317734989599558,
+      "r2|S128|F4|k2|laya_native": 2.8593539991561556,
+      "r2|S128|F4|k4|laya_native": 4.0616245023556985,
+      "r2|S128|F4|k5|laya_native": 4.12844899983611,
+      "r2|S128|F5|k2|laya_native": 3.5637874989333795,
+      "r2|S128|F5|k4|laya_native": 4.610482999851229,
+      "r2|S128|F5|k5|laya_native": 5.047523001849186,
+      "r2|S256|F1|k2|laya_native": 1.1702274987328565,
+      "r2|S256|F1|k4|laya_native": 1.5395434984384337,
+      "r2|S256|F1|k5|laya_native": 1.4763529998162994,
+      "r2|S256|F2|k2|laya_native": 2.418412499537226,
+      "r2|S256|F2|k4|laya_native": 2.7013065009668935,
+      "r2|S256|F2|k5|laya_native": 2.980983501402079,
+      "r2|S256|F4|k2|laya_native": 4.918697999528376,
+      "r2|S256|F4|k4|laya_native": 5.475104502693284,
+      "r2|S256|F4|k5|laya_native": 5.774561999714933,
+      "r2|S256|F5|k2|laya_native": 5.9340734987927135,
+      "r2|S256|F5|k4|laya_native": 5.886885001018527,
+      "r2|S256|F5|k5|laya_native": 6.73659200037946
+    },
+    "n_raw_requests": 32400,
+    "n_gpu_samples": 54229
+  },
+  "claims": [
+    "RAE shared performs 1 state prefill per case; RAE independent performs F. Laya performs 1 encoder call but processes the state F times (once per row).",
+    "Computational reuse (state-prefill operations) is measured separately from wall-clock latency; no FLOP/cost conversion is asserted."
+  ]
+}

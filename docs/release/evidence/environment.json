@@ -1,0 +1,339 @@
+{
+  "timestamp_utc": "2026-11-19T10:04:06Z",
+  "host": "f993aa7144ae",
+  "kernel": "Linux 6.18.55+ x86_64 (Oct 22 2026 build)",
+  "platform": {
+    "arch": "x86_64",
+    "hypervisor": "KVM (full virtualization)"
+  },
+  "cpu": {
+    "model": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+    "logical_cpus": 4,
+    "cores_per_socket": 2,
+    "sockets": 1,
+    "l3_cache_MiB": 38.5,
+    "features": "avx512f,avx2,fma,f16c,aes"
+  },
+  "memory": {
+    "total_GiB": 31,
+    "available_GiB": 28,
+    "swap": "none"
+  },
+  "disk": {
+    "filesystem": "overlay on /",
+    "size": "8.0T",
+    "used": "5.6T",
+    "avail": "2.5T",
+    "use_pct": "70%",
+    "note": "single overlay fs serves /, /tmp, /kaggle, /kaggle/working, /kaggle/input"
+  },
+  "gpu_driver": {
+    "nvidia_smi": "580.178.04",
+    "driver_version": "580.178.04",
+    "driver_max_cuda_version": "13.0",
+    "attached_gpus": 2
+  },
+  "devices": [
+    {
+      "index": 0,
+      "name": "Tesla T4",
+      "mem_total_MiB": 15360,
+      "gpu_uuid": "GPU-269d81ce-74dc-c6e7-c10c-407a602635ae",
+      "serial": "1563421023243"
+    },
+    {
+      "index": 1,
+      "name": "Tesla T4",
+      "mem_total_MiB": 15360,
+      "gpu_uuid": "GPU-ec7ea5bd-d046-6299-d4ec-7201bd880d52",
+      "serial": "1563621004613"
+    }
+  ],
+  "software": {
+    "interpreter": "/kaggle/working/rockandegg-v3-code/.venv/bin/python",
+    "python": "3.13.18",
+    "torch": "2.11.0+cu128",
+    "torch.version.cuda": "12.8",
+    "transformers": "5.16.1",
+    "huggingface_hub": "1.33.0",
+    "datasets": "4.8.5",
+    "safetensors": "0.8.0",
+    "tokenizers": "0.23.1",
+    "numpy": "2.5.5",
+    "scipy": "1.16.3",
+    "accelerate": "1.14.0"
+  },
+  "gpu0_capability": {
+    "name": "Tesla T4",
+    "compute_capability": "7.5",
+    "sm_count": 40,
+    "total_memory_MiB": 14911.7,
+    "native_bf16_tensor_cores": false,
+    "note": "SM 7.5 (Turing) has NO native bf16 tensor cores; bf16 tensor-core ops (BMMA/HMMA.16816) begin at SM 8.0 (Ampere)."
+  },
+  "precision_probe": {
+    "workload": "2048x2048x2048 torch matmul (a@b) on cuda:0, median of 5 after 2 warmups, torch.cuda.synchronize bracketed, CUDA_VISIBLE_DEVICES=0",
+    "results": {
+      "fp16": {
+        "median_ms": 0.896,
+        "reps_ms": [
+          0.931,
+          0.952,
+          0.896,
+          0.882,
+          0.872
+        ],
+        "max_abs_diff_vs_fp32_ref": 0.1059,
+        "out_dtype": "torch.float16"
+      },
+      "fp32": {
+        "median_ms": 5.391,
+        "reps_ms": [
+          5.408,
+          5.38,
+          5.375,
+          5.391,
+          5.426
+        ],
+        "max_abs_diff_vs_fp32_ref": 0.0003,
+        "out_dtype": "torch.float32"
+      },
+      "bf16": {
+        "median_ms": 9.878,
+        "reps_ms": [
+          9.897,
+          9.868,
+          9.869,
+          9.878,
+          9.902
+        ],
+        "max_abs_diff_vs_fp32_ref": 0.822,
+        "out_dtype": "torch.bfloat16"
+      }
+    },
+    "bf16_flag": true,
+    "ratios": {
+      "fp16_vs_fp32_speedup_x": 6.02,
+      "bf16_vs_fp16_slower_x": 11.02,
+      "bf16_vs_fp32_slower_x": 1.83
+    },
+    "verdict": "bf16 is EMULATED (slower than fp32 = upcast-to-fp32 + cast-back overhead); fp16 uses native tensor cores (~6x faster than fp32). Deployment dtype = fp16, NOT bf16."
+  },
+  "network": {
+    "method": "curl -s -o /dev/null -w '%{http_code}' --max-time 15; HTTP status codes only (no body dumps); curl_rc captured separately (non-zero = DNS/conn/timeout/SSL failure, i.e. unreachable)",
+    "endpoints": [
+      {
+        "label": "huggingface_api",
+        "http_code": "404",
+        "curl_rc": "0",
+        "url": "https://huggingface.co/api"
+      },
+      {
+        "label": "huggingface_root",
+        "http_code": "200",
+        "curl_rc": "0",
+        "url": "https://huggingface.co/"
+      },
+      {
+        "label": "modelscope_infer",
+        "http_code": "404",
+        "curl_rc": "0",
+        "url": "https://api-inference.modelscope.ai"
+      },
+      {
+        "label": "gogs",
+        "http_code": "200",
+        "curl_rc": "0",
+        "url": "https://gogs.prankh.libermoe.com"
+      },
+      {
+        "label": "github",
+        "http_code": "200",
+        "curl_rc": "0",
+        "url": "https://github.com"
+      },
+      {
+        "label": "hf_api_models",
+        "http_code": "200",
+        "curl_rc": "0",
+        "url": "https://huggingface.co/api/models?limit=1"
+      },
+      {
+        "label": "hf_whoami",
+        "http_code": "401",
+        "curl_rc": "0",
+        "url": "https://huggingface.co/api/whoami-v2"
+      },
+      {
+        "label": "ms_infer_v1",
+        "http_code": "404",
+        "curl_rc": "0",
+        "url": "https://api-inference.modelscope.ai/v1/"
+      }
+    ],
+    "reachability_summary": "ALL endpoints reachable (every curl_rc=0). HF API functional (200 on /api/models; 401 on /api/whoami-v2 = auth-gated, expected). ModelScope base path 404 = reachable, route needs model path."
+  },
+  "kaggle_input": {
+    "path": "/kaggle/input",
+    "entries": 0,
+    "empty": true,
+    "positive_control": "find /kaggle/working -mindepth 1 | wc -l = 15004 (same enumeration channel detects files when present)",
+    "implication": "No pre-mounted models/datasets at /kaggle/input; weights must be fetched (HF reachable) or otherwise staged."
+  },
+  "repo": {
+    "path": "/kaggle/working/rockandegg-v3-code",
+    "head": "32417a6c8b673fc5fc85829943b96c9114af86b7",
+    "remote_origin": "https://gogs.prankh.libermoe.com/moe/rockandegg-v3-code.git"
+  },
+  "commands_executed": [
+    {
+      "cmd": "nvidia-smi",
+      "exit_code": 0,
+      "key_output": "NVIDIA-SMI 580.178.04 Driver 580.178.04 CUDA 13.0; GPU0 Tesla T4 0MiB/15360MiB; GPU1 Tesla T4 0MiB/15360MiB; no running processes"
+    },
+    {
+      "cmd": "nvidia-smi -q",
+      "exit_code": 0,
+      "key_output": "GPU0/GPU1 Product Name: Tesla T4; FB Total 15360 MiB (Reserved 449, Free 14912); Max SM 1590 MHz; Power Limit 70W; Compute Mode Default"
+    },
+    {
+      "cmd": "lscpu",
+      "exit_code": 0,
+      "key_output": "Intel Xeon @ 2.00GHz; 4 CPU (1 socket, 2 cores, 2 threads/core); KVM hypervisor; L3 38.5 MiB; AVX-512"
+    },
+    {
+      "cmd": "free -h",
+      "exit_code": 0,
+      "key_output": "Mem: 31Gi total, 3.0Gi used, 23Gi buff/cache, 28Gi available; Swap 0B"
+    },
+    {
+      "cmd": "df -h /kaggle/working /tmp / /kaggle/input /kaggle",
+      "exit_code": 0,
+      "key_output": "overlay 8.0T total, 5.6T used, 2.5T avail, 70% use, mounted on / (single filesystem for all probed paths)"
+    },
+    {
+      "cmd": "uname -a",
+      "exit_code": 0,
+      "key_output": "Linux f993aa7144ae 6.18.55+ #1 SMP Thu Oct 22 16:37:21 UTC 2026 x86_64 GNU/Linux"
+    },
+    {
+      "cmd": "git rev-parse HEAD",
+      "exit_code": 0,
+      "key_output": "32417a6c8b673fc5fc85829943b96c9114af86b7"
+    },
+    {
+      "cmd": "git remote -v",
+      "exit_code": 0,
+      "key_output": "origin https://gogs.prankh.libermoe.com/moe/rockandegg-v3-code.git (fetch+push)"
+    },
+    {
+      "cmd": ".venv/bin/python versions.py",
+      "exit_code": 0,
+      "key_output": "python 3.13.18; torch 2.11.0+cu128 (cuda 12.8); transformers 5.16.1; huggingface_hub 1.33.0; datasets 4.8.5; safetensors 0.8.0; tokenizers 0.23.1; numpy 2.5.5; scipy 1.16.3; accelerate 1.14.0"
+    },
+    {
+      "cmd": "CUDA_VISIBLE_DEVICES=0 .venv/bin/python gpu_probe.py",
+      "exit_code": 0,
+      "key_output": "device0 Tesla T4 CC 7.5 (40 SM); is_bf16_supported()=True; 2048^3 matmul median ms: fp16=0.896, fp32=5.391, bf16=9.878 (bf16 SLOWER than fp32)"
+    },
+    {
+      "cmd": "bash net_probe.sh (curl -o /dev/null -w http_code)",
+      "exit_code": 0,
+      "key_output": "hf /api=404, hf / =200, hf /api/models=200, hf /api/whoami-v2=401; modelscope base=404; gogs=200; github=200; all curl_rc=0 (reachable)"
+    },
+    {
+      "cmd": "ls -la /kaggle/input ; find /kaggle/input -mindepth 1 | wc -l",
+      "exit_code": 0,
+      "key_output": "input_entries=0 (only . and ..); POSITIVE CONTROL: find /kaggle/working -mindepth 1 = 15004 entries (channel detects files when present)"
+    }
+  ],
+  "branch_divergence": {
+    "summary": "The repo has TWO branches with directly conflicting hardware claims. The measured box matches MASTER (the Gogs clone at HEAD 32417a6) and CONTRADICTS the GH/MAIN release dossier.",
+    "master_working_tree": {
+      "commit": "32417a6 (origin/Gogs, current checkout)",
+      "docs_release_dir": "ABSENT",
+      "hardware_notes": "AGENTS.md:66-67, prompt.md:9, notes.md:12-14 all state 2x Tesla T4, torch 2.11.0+cu128, 'T4 is Turing: no bf16 -> fp16', interpreter .venv/bin/python",
+      "matches_measured_box": true
+    },
+    "gh_main_release_dossier": {
+      "branch": "remotes/gh/main",
+      "tip_commit": "77611fe22f7e8cbbc16f72dda283258f181ddacb",
+      "dossier_commit": "0c81334 (Add V3 release dossier and release engineering scripts)",
+      "docs_release_dir": "PRESENT (docs/release/)",
+      "hardware_claims": {
+        "MODEL_CARD.md:45-46": "Conditions: 1x NVIDIA RTX PRO 6000 Blackwell (driver 595.112.07), cuda:0, bfloat16, torch 2.13.0+cu130 / transformers 5.23.0",
+        "MODEL_CARD.md:36": "Precision: bfloat16 (all tensors/params) [cites artifacts/release_integrity.json:all_bf16]",
+        "V3_OPERATIONAL_HANDOFF.md:89-90": "Measured on 1x NVIDIA RTX PRO 6000 Blackwell Server Edition (driver 595.112.07), cuda:0, bfloat16, transformers 5.23.0 / torch 2.13.0+cu130",
+        "V3_RELEASE_FREEZE.md:56": "RTX PRO 6000 (cuda:0, bfloat16, label-blind inputs): p50 14.13-14.35 ms, p95 14.21-14.67 ms",
+        "RELEASE_QUALIFICATION.md:34,40": "CPU and RTX PRO 6000 loads both work; RTX PRO 6000 label-blind inputs -> artifacts/release_performance.json",
+        "archive/experimental_conclusions/DATA_LINEAGE_AUDIT.md:16-18": "interpreter /opt/pytorch/bin/python, Python 3.13.18, torch 2.13.0+cu130, transformers 5.23.0, datasets 5.2.0; one NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB"
+      },
+      "dossier_claim_about_AGENTS_md": "DATA_LINEAGE_AUDIT.md:18 asserts 'AGENTS.md is stale about hardware: it claims 2xT4 / .venv/bin/python / no datasets. VERIFIED false for this runtime.'",
+      "matches_measured_box": false
+    },
+    "contradiction_table": [
+      {
+        "attr": "GPU",
+        "gh_main_dossier": "1x RTX PRO 6000 Blackwell Server Edition, 97887 MiB (~96 GB, SM 12.x)",
+        "measured_this_box": "2x Tesla T4, 15360 MiB each (SM 7.5 Turing)",
+        "status": "CONTRADICTION"
+      },
+      {
+        "attr": "Driver",
+        "gh_main_dossier": "595.112.07",
+        "measured_this_box": "580.178.04",
+        "status": "CONTRADICTION"
+      },
+      {
+        "attr": "torch",
+        "gh_main_dossier": "2.13.0+cu130",
+        "measured_this_box": "2.11.0+cu128 (CUDA 12.8 runtime)",
+        "status": "CONTRADICTION"
+      },
+      {
+        "attr": "transformers",
+        "gh_main_dossier": "5.23.0",
+        "measured_this_box": "5.16.1",
+        "status": "CONTRADICTION"
+      },
+      {
+        "attr": "deployment precision",
+        "gh_main_dossier": "bfloat16 (native TC on Blackwell)",
+        "measured_this_box": "fp16 (bf16 EMULATED: 1.83x slower than fp32, 11.0x slower than fp16; no native bf16 TC on SM 7.5)",
+        "status": "CONTRADICTION + not reproducible on this box"
+      },
+      {
+        "attr": "interpreter",
+        "gh_main_dossier": "/opt/pytorch/bin/python",
+        "measured_this_box": ".venv/bin/python -> /usr/bin/python3",
+        "status": "CONTRADICTION"
+      },
+      {
+        "attr": "Python",
+        "gh_main_dossier": "3.13.18",
+        "measured_this_box": "3.13.18",
+        "status": "CONSISTENT"
+      }
+    ],
+    "exhaustive_search": {
+      "tokens": [
+        "Blackwell",
+        "RTX",
+        "RTX PRO 6000",
+        "6000",
+        "cu130",
+        "2.13.0",
+        "5.23.0"
+      ],
+      "master_working_tree": "0 matches (rg --no-ignore over all files; git grep @ HEAD)",
+      "gh_main": "many matches (docs/release/ as listed above)",
+      "never_in_any_commit": [
+        "2.13.0 (no commit ever added/removed this token)",
+        "5.23.0 (no commit ever added/removed this token)"
+      ],
+      "note": "git log -S counts bare-token additions/removals; the dossier prose contains 'torch 2.13.0+cu130' and 'transformers 5.23.0' as shown by the cited lines, even though -S on the isolated numeric token reported 0 (they move only as part of whole-line dossier edits)."
+    },
+    "lead_context_reconciliation": "The lead's premise ('existing docs claim RTX PRO 6000 Blackwell / torch 2.13.0+cu130 / transformers 5.23.0; real box is 2x T4') is CONFIRMED and now precisely located: the claim lives in the gh/main release dossier (docs/release/*), NOT in master. Measurement proves this box is the master/AGENTS.md box (2x T4 / cu128 / fp16), so the dossier's hardware + bf16 claims are unsupported on this box. The dossier's counter-claim that AGENTS.md is 'stale/VERIFIED false' is itself refuted by the measurement.",
+    "release_integrity_implication": "If the gh/main release dossier is the artifact being qualified, its 'measured on RTX PRO 6000 Blackwell / bfloat16' claims and its bf16 latency numbers (p50 ~14 ms) CANNOT be reproduced or certified on this 2x T4 box. On this box bf16 is emulated (slower than fp32) and the compliant precision is fp16. The release must either be re-qualified on the box it was actually measured (Blackwell), or re-scoped to fp16/T4 with matching evidence."
+  }
+}

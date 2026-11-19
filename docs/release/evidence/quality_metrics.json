@@ -1,0 +1,308 @@
+{
+  "definitions": {
+    "convention": "CANONICAL \u2014 dataset gold label target, argmax decision, uniform across types",
+    "accuracy": "mean correct; correct = (argmax(predicted probs) == dataset gold label) for all types",
+    "nll": "mean -ln p(gold label), p clipped at 1e-12",
+    "brier_all": "mean sum_k (p_k - g_k)^2 vs normalized gold soft vector",
+    "brier_categ": "same restricted to choice+noul",
+    "ece_maxprob_M15": "Guo 2017 eq.(3) equal-width 15 bins, conf=max p",
+    "score_mae": "mean |sum_i i p_i - gold score| over score decisions",
+    "within_one": "fraction |sum_i i p_i - gold score| <= 1.0",
+    "accuracy_tie_aware": "prediction matching ANY gold-distribution argmax counts correct",
+    "paired_diff_ci": "dossier-clustered bootstrap, 5000 resamples, seed 20261116, 95% percentile CI",
+    "supersedes": {
+      "legacy_quality_hybrid": "as-run harness used argmax(gold) for choice and p(true)>=0.5 for noul",
+      "parity_argmax": "precision ladder used argmax(pred) vs argmax(gold); see reconciliation_accuracy.json"
+    },
+    "source": "recomputed from predictions.jsonl + pinned dataset gold labels; no GPU inference"
+  },
+  "panel": {
+    "dossiers": 400,
+    "decisions": 2000,
+    "dataset": "LocalLLaMA/typed-decisions",
+    "revision": "e6aa632c4db73b59c7713bb21066ad1a8e1bfce6"
+  },
+  "arms": {
+    "A": {
+      "n_decisions": 2000,
+      "accuracy": 0.7325,
+      "accuracy_tie_aware": 0.739,
+      "nll": 0.6944570942642602,
+      "brier_all": 0.07772808199739882,
+      "ece_maxprob_M15": 0.13231728136170215,
+      "score_mae": 0.290291246633599,
+      "within_one": 0.97875,
+      "n_score": 800,
+      "brier_categ": 0.0772497649859184,
+      "n_categ": 1200,
+      "per_type": {
+        "choice": {
+          "n_decisions": 600,
+          "accuracy": 0.705,
+          "nll": 0.7810204808181809,
+          "brier": 0.09286272699081359,
+          "ece_maxprob_M15": 0.14769635001697215
+        },
+        "noul": {
+          "n_decisions": 600,
+          "accuracy": 0.8216666666666667,
+          "nll": 0.4644168570714919,
+          "brier": 0.06163680298102321,
+          "ece_maxprob_M15": 0.11224419579878812
+        },
+        "score": {
+          "n_decisions": 800,
+          "accuracy": 0.68625,
+          "nll": 0.802064732243396,
+          "brier": 0.07844555751461943,
+          "ece_maxprob_M15": 0.14690493437512997,
+          "score_mae": 0.290291246633599,
+          "within_one": 0.97875
+        }
+      },
+      "per_workflow": {
+        "agent_trace_observability": {
+          "n_decisions": 500,
+          "accuracy": 0.696
+        },
+        "customer_service": {
+          "n_decisions": 500,
+          "accuracy": 0.73
+        },
+        "invoice_processing": {
+          "n_decisions": 500,
+          "accuracy": 0.78
+        },
+        "security_incidents": {
+          "n_decisions": 500,
+          "accuracy": 0.724
+        }
+      }
+    },
+    "B_fp32": {
+      "n_decisions": 2000,
+      "accuracy": 0.3425,
+      "accuracy_tie_aware": 0.3505,
+      "nll": 1.3244200432431024,
+      "brier_all": 0.30586959434675964,
+      "ece_maxprob_M15": 0.19451136377265507,
+      "score_mae": 0.6913157945678466,
+      "within_one": 0.75375,
+      "n_score": 800,
+      "brier_categ": 0.34023904055654425,
+      "n_categ": 1200,
+      "per_type": {
+        "choice": {
+          "n_decisions": 600,
+          "accuracy": 0.20666666666666667,
+          "nll": 1.5674834200157242,
+          "brier": 0.3452376602003318,
+          "ece_maxprob_M15": 0.2469278457449248
+        },
+        "noul": {
+          "n_decisions": 600,
+          "accuracy": 0.49166666666666664,
+          "nll": 0.9179596220282743,
+          "brier": 0.33524042091275663,
+          "ece_maxprob_M15": 0.2919929089618754
+        },
+        "score": {
+          "n_decisions": 800,
+          "accuracy": 0.3325,
+          "nll": 1.446967826574757,
+          "brier": 0.25431542503208265,
+          "ece_maxprob_M15": 0.11069190557471006,
+          "score_mae": 0.6913157945678466,
+          "within_one": 0.75375
+        }
+      },
+      "per_workflow": {
+        "agent_trace_observability": {
+          "n_decisions": 500,
+          "accuracy": 0.246
+        },
+        "customer_service": {
+          "n_decisions": 500,
+          "accuracy": 0.322
+        },
+        "invoice_processing": {
+          "n_decisions": 500,
+          "accuracy": 0.43
+        },
+        "security_incidents": {
+          "n_decisions": 500,
+          "accuracy": 0.372
+        }
+      }
+    },
+    "B_fp16": {
+      "n_decisions": 2000,
+      "accuracy": 0.3395,
+      "accuracy_tie_aware": 0.3475,
+      "nll": 1.323380816459952,
+      "brier_all": 0.3053043864295614,
+      "ece_maxprob_M15": 0.19260472991540978,
+      "score_mae": 0.6911812867081585,
+      "within_one": 0.75125,
+      "n_score": 800,
+      "brier_categ": 0.33923462063799803,
+      "n_categ": 1200,
+      "per_type": {
+        "choice": {
+          "n_decisions": 600,
+          "accuracy": 0.20666666666666667,
+          "nll": 1.566761542044363,
+          "brier": 0.34467044576340367,
+          "ece_maxprob_M15": 0.246169224011188
+        },
+        "noul": {
+          "n_decisions": 600,
+          "accuracy": 0.49166666666666664,
+          "nll": 0.9153399594114678,
+          "brier": 0.33379879551259245,
+          "ece_maxprob_M15": 0.2904132143690239
+        },
+        "score": {
+          "n_decisions": 800,
+          "accuracy": 0.325,
+          "nll": 1.446875915058007,
+          "brier": 0.25440903511690655,
+          "ece_maxprob_M15": 0.10680130665314601,
+          "score_mae": 0.6911812867081585,
+          "within_one": 0.75125
+        }
+      },
+      "per_workflow": {
+        "agent_trace_observability": {
+          "n_decisions": 500,
+          "accuracy": 0.244
+        },
+        "customer_service": {
+          "n_decisions": 500,
+          "accuracy": 0.318
+        },
+        "invoice_processing": {
+          "n_decisions": 500,
+          "accuracy": 0.428
+        },
+        "security_incidents": {
+          "n_decisions": 500,
+          "accuracy": 0.368
+        }
+      }
+    },
+    "C": {
+      "n_decisions": 2000,
+      "accuracy": 0.7665,
+      "accuracy_tie_aware": 0.775,
+      "nll": 0.7068979180717072,
+      "brier_all": 0.061465647879173455,
+      "ece_maxprob_M15": 0.2137387190950032,
+      "score_mae": 0.24240958086979567,
+      "within_one": 0.995,
+      "n_score": 800,
+      "brier_categ": 0.0657833101239805,
+      "n_categ": 1200,
+      "per_type": {
+        "choice": {
+          "n_decisions": 600,
+          "accuracy": 0.7333333333333333,
+          "nll": 0.8650092521058057,
+          "brier": 0.082128886416041,
+          "ece_maxprob_M15": 0.2548481686896733
+        },
+        "noul": {
+          "n_decisions": 600,
+          "accuracy": 0.8566666666666667,
+          "nll": 0.4560772115719036,
+          "brier": 0.049437733831919996,
+          "ece_maxprob_M15": 0.1920716666666667
+        },
+        "score": {
+          "n_decisions": 800,
+          "accuracy": 0.72375,
+          "nll": 0.7764299474209859,
+          "brier": 0.05498915451196287,
+          "ece_maxprob_M15": 0.199926421220253,
+          "score_mae": 0.24240958086979567,
+          "within_one": 0.995
+        }
+      },
+      "per_workflow": {
+        "agent_trace_observability": {
+          "n_decisions": 500,
+          "accuracy": 0.73
+        },
+        "customer_service": {
+          "n_decisions": 500,
+          "accuracy": 0.766
+        },
+        "invoice_processing": {
+          "n_decisions": 500,
+          "accuracy": 0.804
+        },
+        "security_incidents": {
+          "n_decisions": 500,
+          "accuracy": 0.766
+        }
+      }
+    }
+  },
+  "comparisons": {
+    "A_minus_B_fp32": {
+      "n_dossiers": 400,
+      "n_boot": 5000,
+      "seed": 20261116,
+      "acc_a": 0.7325,
+      "acc_b": 0.3425000000000001,
+      "diff_point": 0.38999999999999996,
+      "ci95_low": 0.35949999999999993,
+      "ci95_high": 0.421,
+      "ci_excludes_zero": true
+    },
+    "A_minus_B_fp16": {
+      "n_dossiers": 400,
+      "n_boot": 5000,
+      "seed": 20261116,
+      "acc_a": 0.7325,
+      "acc_b": 0.3395,
+      "diff_point": 0.393,
+      "ci95_low": 0.36200000000000004,
+      "ci95_high": 0.4244999999999999,
+      "ci_excludes_zero": true
+    },
+    "A_minus_C": {
+      "n_dossiers": 400,
+      "n_boot": 5000,
+      "seed": 20261116,
+      "acc_a": 0.7325,
+      "acc_b": 0.7665000000000001,
+      "diff_point": -0.03400000000000003,
+      "ci95_low": -0.05500000000000005,
+      "ci95_high": -0.014499999999999954,
+      "ci_excludes_zero": true
+    },
+    "B_fp32_minus_C": {
+      "n_dossiers": 400,
+      "n_boot": 5000,
+      "seed": 20261116,
+      "acc_a": 0.3425000000000001,
+      "acc_b": 0.7665000000000001,
+      "diff_point": -0.424,
+      "ci95_low": -0.45399999999999996,
+      "ci95_high": -0.3954999999999998,
+      "ci_excludes_zero": true
+    },
+    "B_fp16_minus_C": {
+      "n_dossiers": 400,
+      "n_boot": 5000,
+      "seed": 20261116,
+      "acc_a": 0.3395,
+      "acc_b": 0.7665000000000001,
+      "diff_point": -0.42700000000000005,
+      "ci95_low": -0.4575,
+      "ci95_high": -0.39750000000000013,
+      "ci_excludes_zero": true
+    }
+  }
+}

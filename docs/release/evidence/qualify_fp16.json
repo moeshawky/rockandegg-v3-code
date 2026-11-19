@@ -1,0 +1,110 @@
+{
+  "artifact": "/tmp/opencode/work/A_provenance/fp16",
+  "device": "cuda:0",
+  "gates": {
+    "S3_total_params": {
+      "pass": true,
+      "detail": 313161733
+    },
+    "S4_backbone_params": {
+      "pass": true,
+      "detail": 312892928
+    },
+    "S5_head_params": {
+      "pass": true,
+      "detail": 268805
+    },
+    "S6_no_lm_head_tensor": {
+      "pass": true,
+      "detail": 122
+    },
+    "S7_no_generate": {
+      "pass": true,
+      "detail": false
+    },
+    "S9_all_float16": {
+      "pass": true,
+      "detail": [
+        "torch.float16"
+      ]
+    },
+    "S8_all_finite": {
+      "pass": true,
+      "detail": "checked all tensors"
+    },
+    "R6_three_decision_types": {
+      "pass": true,
+      "detail": [
+        "choice",
+        "score",
+        "noul"
+      ]
+    },
+    "R7_normalized": {
+      "pass": true,
+      "detail": 4.470348358154297e-08
+    },
+    "R7b_confidence_is_max": {
+      "pass": true,
+      "detail": true
+    },
+    "R8_option_order_invariance": {
+      "pass": true,
+      "detail": 0.0
+    },
+    "R8b_chosen_key_preserved": {
+      "pass": true,
+      "detail": [
+        "Roll back the release",
+        "Roll back the release"
+      ]
+    },
+    "R4_state_len_256": {
+      "pass": true,
+      "detail": 256
+    },
+    "R5_option_len_64": {
+      "pass": true,
+      "detail": 64
+    },
+    "R4b_long_inputs_run": {
+      "pass": true,
+      "detail": "escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation escalation"
+    },
+    "R3_peak_vram_le_4GiB": {
+      "pass": true,
+      "detail": 1339.2
+    }
+  },
+  "peak_vram_mib": 1339.2,
+  "decisions": [
+    {
+      "type": "choice",
+      "chosen": "Roll back the release",
+      "p": [
+        0.529499,
+        0.207355,
+        0.263147
+      ]
+    },
+    {
+      "type": "score",
+      "chosen": "level 1: medium",
+      "p": [
+        0.093055,
+        0.447423,
+        0.260979,
+        0.198543
+      ]
+    },
+    {
+      "type": "noul",
+      "chosen": "true: yes, it did",
+      "p": [
+        0.317426,
+        0.682574
+      ]
+    }
+  ],
+  "all_pass": true
+}

@@ -1,4 +1,4 @@
-# V3 Operational Handoff — RockAndEgg-313M-v3 Full-Backbone BF16 (RESEARCH / PREVIEW)
+# V3 Operational Handoff — RockAndEgg-313M-v3 Full-Backbone FP16 (RESEARCH / PREVIEW)
 
 This document is written for an engineer encountering RockAndEgg v3 for the first time.
 It needs no access to the private research history — just the identifiers and steps below.
@@ -33,9 +33,9 @@ by the canonical server with the four-field error block (`error / Cause / Action
 ## 4. Shared-state advantage (encode-once)
 
 Verified on the published artifact: a request produces exactly **two** backbone
-forwards regardless of fan-out — one `[1, 256]` state prefill plus one `[4, 21]`
-option-row pass — at F1, F2, F4 and F8. Naive per-option re-encoding would need up to 9
-calls at F8. The native `DynamicCache` is preserved; no custom attention mask or RoPE
+forwards regardless of fan-out — one `[1, 256]` state prefill plus one `[4, 64]`
+option-row pass — at F1, F2, F4 and F5. Naive per-option re-encoding would need up to 10
+calls at F5. The native `DynamicCache` is preserved; no custom attention mask or RoPE
 surgery. No alternative server or abstraction layer should be introduced.
 
 ## 5. Requirements
@@ -44,8 +44,8 @@ surgery. No alternative server or abstraction layer should be introduced.
   safetensors ≥ 0.4. Install: `python -m pip install -r requirements.txt` (from the
   artifact folder) or the source repo's `serving/requirements-server.txt` for the server.
 - `transformers 5.x` requires `huggingface-hub < 2.0` (a newer hub breaks import).
-- BF16 weights require an BF16-capable GPU (e.g. RTX PRO 6000 / Ampere+ / Blackwell).
-  T4 (Turing) has no bf16: for T4 use an fp16/fp32 variant or CPU with `dtype="float32"`.
+- FP16 weights load on any CUDA device (T4/Turing supported natively) or CPU
+  (`dtype="float32"`). No bf16 required.
 
 ## 6. Load and run (executable example)
 
@@ -56,13 +56,12 @@ from transformers import AutoModel, AutoTokenizer
 from systemone_inference import Question, SystemOneInference, SystemOneRequest
 
 REPO = "moeshawky/RockAndEgg-313M-v3"
-REV  = "0b60f73eda4293b4891f27c3106a977cef536a1f"   # preview revision
-SUB  = "fullbackbone-bf16-preview"
+REV  = "v3-fullbackbone-fp16-1"   # FP16 research/preview tag
 
 model = AutoModel.from_pretrained(
-    REPO, revision=REV, subfolder=SUB, trust_remote_code=True, dtype="bfloat16",
+    REPO, revision=REV, trust_remote_code=True, dtype="float16",
 ).to("cuda").eval()
-tok = AutoTokenizer.from_pretrained(REPO, revision=REV, subfolder=SUB)
+tok = AutoTokenizer.from_pretrained(REPO, revision=REV)
 
 adapter = SystemOneInference(model, tok)   # confidence_temperature defaults to 1.0
 req = SystemOneRequest(
@@ -86,41 +85,43 @@ For an HTTP server, use the canonical `systemone_server.py` in the model reposit
 
 ## 7. Measured performance (exact conditions — do not generalize)
 
-Measured on **1× NVIDIA RTX PRO 6000 Blackwell Server Edition** (driver 595.112.07),
-`cuda:0`, `bfloat16`, transformers 5.23.0 / torch 2.13.0+cu130, 65 label-blind
-typed-decision inputs drawn from the exposed clean panel (used as input payloads only),
-40 warmup+timed iterations per fan-out, wall-clock with `torch.cuda.synchronize()`:
+Measured on **1× NVIDIA Tesla T4** (driver 580.178.04), `cuda:0`, **fp16**,
+transformers 5.16.1 / torch 2.11.0+cu128, serial single-request workload,
+3 rounds per cell, 100 timed requests per cell, wall-clock with `torch.cuda.synchronize()`:
 
-| Fan-out | backbone calls (naive) | p50 ms | p95 ms | req/s | peak VRAM MiB |
-|---:|---:|---:|---:|---:|---:|
-| F1 | 2 (2) | 14.35 | 14.67 | 69.7 | 654 |
-| F2 | 2 (3) | 14.13 | 14.21 | 70.8 | 668 |
-| F4 | 2 (5) | 14.31 | 14.41 | 69.9 | 694 |
-| F8 | 2 (9) | 14.31 | 14.45 | 69.9 | 694 |
+| Arm | Backbone calls (naive) | mean p50 ms | req/s | decisions/s | peak VRAM MiB |
+|---|---:|---:|---:|---:|---:|
+| `rae_shared` (this release) | 2 | 43.5 | 22.49 | 67.46 | 2,575 |
+| `rae_independent` (naive) | 2F | 111.9 | 8.71 | 26.13 | 2,297 |
+| `laya_native` | 1 | 65.1 | 15.20 | 45.60 | 3,001 |
 
 These numbers are specific to this hardware/runtime/build and must not be quoted for
-other devices. They are not a controlled comparison against Laya or any other system.
+other devices. They are not serving throughput (single-request, no concurrency) and are
+not a controlled comparison against Laya or any other system. The shared path trades
++278 MiB peak memory for less compute (2 vs 2F forwards).
 
 ## 8. Known limitations and status
 
 - **RESEARCH / PREVIEW — NOT production qualified.** Probabilities are uncalibrated
-  raw softmax at T=1.0. Production ECE bound 0.05 is NOT met (0.1599 RESERVED, 0.2755
-  SSF-1 sealed). C2 calibration rejected (sealed NLL 1.0510 → 1.4563). `confidence` is
-  **not** a calibrated guarantee — do not use it for risk thresholds or gating.
-- No accuracy superiority over Laya is claimed. The three-model ensemble (+2.1 pts on a
-  clean panel) and the failed 75/25 distillation are research context only, not deployed.
-- The published card at the frozen revision uses generic branch/subfolder placeholders;
-  the exact identifiers are in this handoff, the freeze document, and the source README.
+  raw softmax at T=1.0. Production ECE bound 0.05 is NOT met (0.1323 on the FP16 test
+  panel; BF16-era panels 0.1599 / 0.2755). C2 calibration rejected (sealed NLL 1.0510
+  → 1.4563). `confidence` is **not** a calibrated guarantee — do not use it for risk
+  thresholds or gating.
+- No accuracy superiority over Laya is claimed. On this panel Laya measured higher
+  (−3.40 pp, CI [−5.50, −1.45], excludes zero); this is not a universal ranking.
+- No superiority claim on speed; concurrency unmeasured and could invert the shared-path
+  result. Encoded-once is structural, not a wall-clock superiority claim.
+- N3 pre-registered max-probability bound vs FP32 compute is NOT met (5.038e-3 > 5.0e-3).
 
 ## 9. Reporting failures or regressions
 
 When reporting an issue, include:
-1. Exact model revision (`0b60f73…`), subfolder, and `dtype` used.
+1. Exact model revision (`v3-fullbackbone-fp16-1`), `dtype`, and source commit.
 2. Full input (state + questions) and the decision output (probabilities, chosen key, confidence).
 3. Hardware/GPU, driver, torch/transformers/hub versions, OS, and device (CPU/CUDA).
 4. Expected vs observed behavior and whether probabilities still sum to ~1.
-5. For latency regressions: fan-out (F1/F2/F4/F8), warmup/iteration counts, and whether
-   the measurement conditions match §7 (do not compare across different hardware).
+5. For latency regressions: fan-out, warmup/iteration counts, and whether measurement
+   conditions match §7 (do not compare across different hardware).
 
 Log issues against `moeshawky/rockandegg-v3-code`. Do not respond to a regression by
 reopening training or recalibration — this release is frozen; new work requires a new

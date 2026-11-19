@@ -93,3 +93,33 @@ preserved and independently retrievable.
 
 Final status: **RELEASED — CANONICAL MAIN / RESEARCH-PREVIEW**.
 Production calibration remains outstanding (ECE ≤ 0.05 NOT met).
+
+## 7. FP16 precision publication (2026-11-19)
+
+A precision cast of the published BF16 artifact (`c8b3aafb…`) was published as the
+full-backbone FP16 research/preview release on `moeshawky/RockAndEgg-313M-v3` at tag
+`v3-fullbackbone-fp16-1`. No weights were retrained; the cast is direct `to(float16)`
+from the BF16-valued weights with no FP32 intermediate, and is labelled BF16-derived.
+
+- Repository: `https://huggingface.co/moeshawky/RockAndEgg-313M-v3`.
+- Immutable tag created: `v3-fullbackbone-fp16-1` → commit `48e42035a66299b803d1a545963913f90dbc3a2e`.
+- Released FP16 model SHA-256: `17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28`.
+- Released model bytes: 626,337,154; 122 tensors, all `torch.float16`, all finite.
+- `config.json` SHA-256: `06d9d4bad660e7c40163ae16b7f870bbdca5ce77e7956b89c9e9420017111c03`.
+- Files uploaded: 46 (docs, evidence, weights, tokenizer, modeling code, manifest);
+  no remote deletions (explicit allow-list only; no `delete_patterns`).
+- Remote verification: 46/46 files re-hashed byte-identical against `RELEASE_MANIFEST.json`
+  before tagging; tag created with `exist_ok=False`.
+- Historical tags preserved and verified unchanged: `v3-fullbackbone-main-1` →
+  `c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`; `v3-head-only-main` →
+  `87c754951f9d4bd04c90e9ec78fc54295075e86c`. Preview branch
+  `preview/fullbackbone-bf16-seed0` → `0b60f73eda4293b4891f27c3106a977cef536a1f` preserved.
+- No force-push; no tag moved.
+
+**Qualification status:** RESEARCH/PREVIEW; NOT production qualified. ECE 0.1323 on the
+FP16 test panel (gate ≤ 0.05 NOT met); N3 max-probability bound vs FP32 compute FAIL
+(5.038e-3 > 5.0e-3). Both failures are published, not smoothed.
+
+Canonical accuracy (dataset gold label, argmax decision, 400 dossiers / 2,000 decisions):
+A 73.25% [71.05, 75.35], B_fp32 34.25% [32.25, 36.30], C(Laya) 76.65% [74.60, 78.65].
+Paired: A−B_fp32 +39.00 pp [+35.95, +42.10]; A−C −3.40 pp [−5.50, −1.45].

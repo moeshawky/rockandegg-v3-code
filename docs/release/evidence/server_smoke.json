@@ -1,0 +1,93 @@
+{
+  "verified_utc": "2026-11-19T11:15:21+00:00",
+  "purpose": "Execute every HTTP interface claim in the model card against the shipped server",
+  "server": "systemone_server.py (shipped, unmodified)",
+  "artifact_dir": "/tmp/opencode/release/fp16",
+  "weights_sha256": "17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28",
+  "invocations": [
+    {
+      "name": "local directory, no env vars",
+      "command": "python systemone_server.py",
+      "cwd_with_config_json": true,
+      "result": "STARTED",
+      "evidence": "loaded 122/122 tensors, dtype torch.float16, device cuda:0, uvicorn on 127.0.0.1:8123"
+    },
+    {
+      "name": "Hub source WITHOUT revision pin (card's original documented command)",
+      "command": "RAE_MODEL_ID=moeshawky/RockAndEgg-313M-v3 RAE_PORT=8125 python systemone_server.py",
+      "result": "REFUSED",
+      "exit_code": 3,
+      "stderr": "RuntimeError: RAE_MODEL_ID points to a Hub repository: set RAE_MODEL_REVISION to the exact commit SHA the adapter and weights were qualified against"
+    },
+    {
+      "name": "non-loopback bind WITHOUT token",
+      "command": "RAE_HOST=0.0.0.0 RAE_PORT=8124 python systemone_server.py",
+      "result": "REFUSED",
+      "stderr": "RuntimeError: Refusing to bind a non-loopback address without RAE_API_TOKEN."
+    }
+  ],
+  "endpoints": {
+    "GET /healthz": {
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "model": "/tmp/opencode/release/fp16",
+        "dtype": "torch.float16",
+        "max_state_len": 256,
+        "max_option_len": 64,
+        "uptime_s": 44.717
+      }
+    },
+    "GET /ready": {
+      "status": 200,
+      "body": {
+        "ready": true,
+        "checks": {
+          "model_loaded": true,
+          "device_ready": true
+        },
+        "gpu_available": true,
+        "device": "cuda:0"
+      }
+    },
+    "POST /v1/systemone": {
+      "status": 200,
+      "request": "choice + score, 2 questions",
+      "response_decisions": [
+        {
+          "type": "choice",
+          "probabilities": [
+            0.531209409236908,
+            0.4687906503677368
+          ],
+          "chosen_key": "The deployment failed",
+          "confidence": 0.531209409236908
+        },
+        {
+          "type": "score",
+          "probabilities": [
+            0.2309836745262146,
+            0.1870562732219696,
+            0.2458808273077011,
+            0.3360792398452759
+          ],
+          "chosen_key": "high",
+          "confidence": 0.3360792398452759
+        }
+      ],
+      "envelope": {
+        "truncated": false,
+        "state_tokens": 31,
+        "options_truncated": 0,
+        "option_rows": 6
+      },
+      "matches_direct_adapter_call": true,
+      "adapter_call_evidence": "card_example_check.py produced byte-identical probabilities (0.531209409236908..., 0.3360792398452759...)"
+    }
+  },
+  "findings": [
+    "The card's originally documented command (RAE_MODEL_ID without RAE_MODEL_REVISION) FAILS with exit 3. Corrected in README.md.",
+    "All three documented endpoints exist and respond as described.",
+    "Server and direct adapter paths produce identical probabilities."
+  ]
+}

@@ -1,48 +1,52 @@
-# V3 Release Freeze — RockAndEgg-313M-v3 Full-Backbone BF16
+# V3 Release Freeze — RockAndEgg-313M-v3 Full-Backbone FP16
 
-Release date: 2026-11-19. Status: **FROZEN WITH DOCUMENTATION LIMITATIONS**.
-The release identity, weights, artifacts and remote references agree; one non-blocking
-documentation discrepancy is recorded in §8. No gate was weakened or hidden.
+Release date: 2026-11-19. Status: **FROZEN — RESEARCH/PREVIEW**.
+The release identity, weights, artifacts and remote references agree; no gate was
+weakened or hidden. The BF16 preview artifact remains published on HF branch
+`preview/fullbackbone-bf16-seed0` @ `0b60f73…` and is not modified.
 
 ## 1. Exact model identity
 
 | Item | Exact value |
 |---|---|
 | Model | `moeshawky/RockAndEgg-313M-v3` |
-| Variant | Full-backbone BF16, seed 0 |
-| HF preview branch | `preview/fullbackbone-bf16-seed0` |
-| HF preview revision | `0b60f73eda4293b4891f27c3106a977cef536a1f` |
-| Artifact subfolder | `fullbackbone-bf16-preview` |
-| Released BF16 model SHA-256 | `c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5` |
-| Selected source FP32 checkpoint SHA-256 | `1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92` |
+| Variant | Full-backbone FP16, seed 0 |
+| HF tag | `v3-fullbackbone-fp16-1` |
+| HF tag commit | `48e42035a66299b803d1a545963913f90dbc3a2e` |
+| Released FP16 model SHA-256 | `17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28` |
+| Released model bytes | 626,337,154 |
+| `config.json` SHA-256 | `06d9d4bad660e7c40163ae16b7f870bbdca5ce77e7956b89c9e9420017111c03` |
+| Precision provenance | cast from published BF16 artifact `c8b3aafb…` (direct `to(float16)`, no FP32 intermediate); labelled BF16-derived, never as an FP32 export |
 | Parameters | 313,161,733 (312,892,928 backbone + 268,805 head) |
+| Tensors | 122, all `torch.float16`, all finite |
 
 ## 2. Exact source identity
 
 | Item | Exact value |
 |---|---|
-| GitHub repository | `moeshawky/rockandegg-v3-code` |
-| Release commit (authoritative) | `215cc710a9da62a8d56a8a8e676a41293dc5fc1b` |
-| Release tag | `v3-fullbackbone-preview-1` (annotated `e3c6436…`, resolves to `215cc71`) |
-| `main` HEAD after doc-only correction | `8912fb3fe03d7eb1f9eb2c7bf6a7ef48461ae98e` |
+| GitHub repository | `moeshawky/rockandegg-v3-code` (public, sanitized history) |
+| Source commit | `aaa274566ab749cd7b993dcfb3c728dedc8c7fdf` |
+| Source tag | none (release engineering committed in alpha repo `moe/rockandegg-v3-code` @ `aaa2745`) |
+| Canonical main tag (BF16) | `v3-fullbackbone-main-1` → `c8d6f8c1e3cc32456ddb80640a7339789ca7dff8` |
 | Historical main tag | `v3-head-only-main` → `87c754951f9d4bd04c90e9ec78fc54295075e86c` |
 | Historical head-only checkpoint SHA-256 | `3b208b86d6b5b87306091cbaec1b71007454eb4864b47efc636b4f633c875ac8` |
+| Preserved preview branch | `preview/fullbackbone-bf16-seed0` → `0b60f73eda4293b4891f27c3106a977cef536a1f` |
 
-The `main` advance `215cc71 → 8912fb3` is a documentation-only commit that added exact
-preview identifiers to `README.md`; it changed no weights, code or checkpoints. The
-authoritative release identity remains the tag `v3-fullbackbone-preview-1` → `215cc71`.
+No tag was rewritten; no force-push; no historical file deleted.
 
 ## 3. Qualification status
 
 **RELEASED — RESEARCH/PREVIEW; NOT production qualified.**
 
-- Production ECE bound **0.05** unchanged and **NOT met**: raw ECE 0.1599 (RESERVED),
-  0.2755 (SSF-1 sealed).
+- Production ECE bound **0.05** unchanged and **NOT met**: FP16 test panel ECE 0.1323
+  (BF16-era panels 0.1599 RESERVED, 0.2755 SSF-1 sealed).
 - C2 calibration rejected: sealed NLL regressed 1.0510 → 1.4563 (degenerate noul fit).
 - No eligible unused representative calibration population exists.
+- N3 pre-registered max-probability bound vs FP32 compute **FAIL** (5.038e-3 > 5.0e-3,
+  0.76% overshoot on one decision of 2,000); reported as a failure, not relaxed.
 - Probabilities are uncalibrated raw softmax at **T=1.0**; `confidence` is not a
   calibrated guarantee. No new temperature was fitted; no exposed partition reused.
-- No superiority over Laya is claimed (student−Laya CI includes zero).
+- No superiority over Laya is claimed (student−Laya −3.40 pp, CI [−5.50, −1.45]).
 
 ## 4. Frozen architectural contract
 
@@ -52,13 +56,14 @@ authoritative release identity remains the tag `v3-fullbackbone-preview-1` → `
 
 ## 5. Frozen behavioral contract
 
-- Shared-state inference: exactly **2** backbone forwards at F1/F2/F4/F8 (verified).
-- RTX PRO 6000 (cuda:0, bfloat16, label-blind inputs): p50 14.13–14.35 ms, p95 14.21–14.67 ms,
-  throughput ~69.7–70.8 req/s, peak VRAM 654–694 MiB. These do **not** generalize to other hardware.
-- Fresh-process integrity: 16/16 checks; FP32→BF16 parity 0 argmax flips / 50 decisions;
-  remote↔local inference parity exact (max diff 0.0).
-- Clean-process smoke test of the documented interface: 10/10 checks (load model,
-  tokenizer, `SystemOneInference`, 3 decision types, normalization, confidence, encode-once).
+- Shared-state inference: exactly **2** backbone forwards at every fan-out for
+  `rae_shared` (verified hook-verified); `rae_independent` uses `2F`; `laya_native` 1.
+- T4 (cuda:0, fp16, serial single-request): shared 22.49 req/s / 43.5 ms p50 vs
+  independent 8.71 req/s / 111.9 ms p50 vs Laya 15.20 req/s / 65.1 ms p50.
+  These do **not** generalize to other hardware or to concurrent serving.
+- Fresh-process integrity: 122 tensors, all float16, no `lm_head`, no `generate`;
+  FP32→BF16 storage identity 0.0 (FP16 artifact vs BF16 artifact under identical compute);
+  remote↔local inference parity verified byte-identical on publish.
 
 ## 6. Research cycle closed
 
@@ -79,24 +84,17 @@ Any new model variant requires a new versioned branch/tag; this frozen identity 
 
 ## 8. Non-blocking documentation limitation
 
-The copy of the model card inside the frozen preview revision
-(`fullbackbone-bf16-preview/README.md` at `0b60f73…`) uses generic
-`<preview-branch>`/`<preview-subdir>` placeholders in its load snippet and does not spell
-out the source commit/revision. Correcting it would require a new HF commit that would move
-the preview branch off `0b60f73…`, violating §1/§3 of the freeze mandate and the
-"do not replace the published model / preserve identity" constraints. The exact identifiers
-are therefore published in the GitHub source README (doc-only commit `8912fb3`), in the
-local canonical `MODEL_CARD.md` and `RELEASE_MANIFEST.json`, and in
-`V3_OPERATIONAL_HANDOFF.md`. This is a non-blocking documentation discrepancy; no artifact
-integrity or release-identity problem exists.
+The copy of release documentation inside this source repository (`docs/release/`) was
+converted to describe the FP16 release at tag `v3-fullbackbone-fp16-1`. The BF16 preview
+remains documented in its frozen HF revision `0b60f73…` (not modified) and in the alpha
+repo `moe/rockandegg-v3-code`. No artifact integrity or release-identity problem exists.
 
 ## 9. Evidence archive
 
-`V3_RELEASE_ARCHIVE/` holds all 5 release reports, `V3_RELEASE_FREEZE.md`,
-`V3_OPERATIONAL_HANDOFF.md`, integrity/remote/smoke/performance results, both
-preregistrations, and experimental conclusions. `ARCHIVE_HASHES.json` records SHA-256 for
-**20** archived files and explicitly excludes itself (**21** files on disk); zero hash
-mismatches. The published artifact manifest records **17** payload files + the manifest
-itself = **18** published files (independently confirmed against the remote); all payload
-hashes verified. This payload-vs-manifest distinction is intentional and consistent across
-both manifests.
+`evidence/` holds machine-readable results: `quality_metrics.json` (16/16 arm metrics),
+`arm_accuracy_ci.json` (paired dossier bootstrap), `reconciliation_accuracy.json`
+(three-convention comparison + divergent decision IDs), `precision_parity.json`
+(N-gates), `fp16_invariance.json` (export gates), `throughput_results.json`,
+`latency_results.json`, `memory_results.json`, `shared_state_instrumentation.json`,
+`server_smoke.json`, `precision_cast_report.json`, `environment.json`. All payload
+hashes verified against `RELEASE_MANIFEST.json` / `SHA256SUMS` (44 files).

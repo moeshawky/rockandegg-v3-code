@@ -1,0 +1,70 @@
+{
+  "artifact": "/tmp/opencode/work/A_provenance/fp16",
+  "dtype": "float16",
+  "device": "Tesla T4",
+  "tolerance": 1e-06,
+  "gates": {
+    "1_option_order_invariance": {
+      "max_abs_delta": 0.0,
+      "chosen_preserved": true,
+      "pass": true
+    },
+    "2_question_order_invariance": {
+      "max_abs_delta": 0.0,
+      "pass": true
+    },
+    "3_state_independence_sibling_content": {
+      "max_abs_delta_A_vs_identical_sibling": 0.00390625,
+      "max_abs_delta_A_vs_different_sibling_state": 0.0,
+      "basis": "[A,A] vs [A,B] hold batch shape FIXED at 2 states x 5 option rows; only the sibling STATE's content changes. The first figure compares against a solo forward_case and therefore also carries a batch-shape term; the second is the pure content test.",
+      "gate_value": 0.0,
+      "pass": true
+    },
+    "4_cross_question_leakage": {
+      "shape_confounded_probe_max_abs_delta": 0.0016951560974121094,
+      "changed_question_moved": 0.2637271285057068,
+      "note": "row count 12 -> 9; this probe cannot isolate content and is not the gate",
+      "width_matched_gate": {
+        "n_trials": 40,
+        "max_abs_delta": 0.0,
+        "argmax_flips": 0,
+        "basis": "dup=[q,q] vs mix=[q,q_matched] where row_width(q_matched) == row_width(q); row count AND padded width held FIXED, only token content differs",
+        "gate_value": 0.0,
+        "pass": true
+      },
+      "pass": true
+    },
+    "5_moving_control_state_substitution": {
+      "max_abs_delta": 0.28262753784656525,
+      "discriminates": true,
+      "pass": true
+    },
+    "6_fresh_process_reload_parity": {
+      "child_exit_code": 0,
+      "max_abs_delta": 0.0,
+      "child_started_from_cwd": "/",
+      "pass": true
+    }
+  },
+  "all_pass": true,
+  "base_probabilities": [
+    [
+      0.4103233218193054,
+      0.16068491339683533,
+      0.20471790432929993,
+      0.11848163604736328,
+      0.10579218715429306
+    ],
+    [
+      0.07298649102449417,
+      0.3481990694999695,
+      0.2046956717967987,
+      0.1545124053955078,
+      0.21960638463497162
+    ],
+    [
+      0.3191213607788086,
+      0.6808785796165466
+    ]
+  ]
+}

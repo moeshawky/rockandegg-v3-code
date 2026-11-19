@@ -38,8 +38,10 @@ Justification:
    under those numbers. The artifact discrepancy (0.7800/0.7533/0.7711) is flagged, not
    hidden; the selection is unchanged under both.
 
-The released BF16 artifact is a precision cast of this checkpoint:
-`model.safetensors` SHA-256 `c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5`.
+The released FP16 artifact is a precision cast of this checkpoint:
+`model.safetensors` SHA-256 `17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28`
+(direct `to(float16)` from the published BF16 artifact `c8b3aafb…`; no FP32 intermediate;
+labelled BF16-derived, never as an FP32 export).
 
 ## 4. Rejected candidates and reasons
 

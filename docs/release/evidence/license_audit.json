@@ -1,0 +1,74 @@
+{
+  "audited_utc": "2026-11-19T10:50:14+00:00",
+  "method": "HfApi model_info/dataset_info at the revision actually used; license from card tags and card_data",
+  "components": [
+    {
+      "repo_id": "LocalLLaMA/typed-decisions",
+      "kind": "dataset",
+      "revision_used": "e6aa632c4db73b59c7713bb21066ad1a8e1bfce6",
+      "role": "training corpus",
+      "sha": "e6aa632c4db73b59c7713bb21066ad1a8e1bfce6",
+      "license_tags": [
+        "license:apache-2.0"
+      ],
+      "card_license": "apache-2.0",
+      "license": "apache-2.0"
+    },
+    {
+      "repo_id": "moeshawky/RockAndEgg-313M-v2",
+      "kind": "model",
+      "revision_used": "e309c9afc41450c67011425f0a62eb467c463e54",
+      "role": "lineage ancestor (headless backbone)",
+      "sha": "e309c9afc41450c67011425f0a62eb467c463e54",
+      "license_tags": [
+        "license:apache-2.0"
+      ],
+      "card_license": "apache-2.0",
+      "license": "apache-2.0"
+    },
+    {
+      "repo_id": "moeshawky/RockAndEgg-313M-v3",
+      "kind": "model",
+      "revision_used": "c8d6f8c1e3cc32456ddb80640a7339789ca7dff8",
+      "role": "BF16 source artifact",
+      "sha": "c8d6f8c1e3cc32456ddb80640a7339789ca7dff8",
+      "license_tags": [
+        "license:apache-2.0"
+      ],
+      "card_license": "apache-2.0",
+      "license": "apache-2.0"
+    },
+    {
+      "repo_id": "Qwen/Qwen3-0.6B-Base",
+      "kind": "model",
+      "revision_used": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "role": "backbone architecture/initialization",
+      "sha": "da87bfb608c14b7cf20ba1ce41287e8de496c0cd",
+      "license_tags": [
+        "license:apache-2.0"
+      ],
+      "card_license": "apache-2.0",
+      "license": "apache-2.0"
+    },
+    {
+      "repo_id": "convaiinnovations/laya",
+      "kind": "model",
+      "revision_used": "e333cb7c823cd1787276228260f56d02fbf5180b",
+      "role": "benchmark arm, decision-head lineage",
+      "sha": "e333cb7c823cd1787276228260f56d02fbf5180b",
+      "license_tags": [
+        "license:apache-2.0"
+      ],
+      "card_license": "apache-2.0",
+      "license": "apache-2.0"
+    }
+  ],
+  "release_license_file": {
+    "path": "/tmp/opencode/work/A_provenance/fp16/LICENSE",
+    "bytes": 11343,
+    "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+    "spdx": "Apache-2.0"
+  },
+  "verdict": "ALL-PERMISSIVE",
+  "note": "Declared card licenses only. No per-record provenance is asserted beyond the dataset card; redistribution of the corpus is not performed by this release."
+}

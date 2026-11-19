@@ -30,8 +30,10 @@ The historical head-only release remains available via its tag.
 |---|---|
 | Model | `moeshawky/RockAndEgg-313M-v3` |
 | Canonical release tag | `v3-fullbackbone-main-1` |
+| FP16 precision tag | `v3-fullbackbone-fp16-1` |
 | Release commit | `c8d6f8c1e3cc32456ddb80640a7339789ca7dff8` |
 | Release model SHA-256 | `c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5` |
+| FP16 model SHA-256 | `17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28` |
 | Source checkpoint (FP32) SHA-256 | `1b7fee92a9f8825ac001100232ad87e740bd7e0808ee49abc46386cc89c53f92` |
 | Parameters | 313,161,733 |
 | Source commit (this repo) | `215cc710a9da62a8d56a8a8e676a41293dc5fc1b` |
