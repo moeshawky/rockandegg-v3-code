@@ -198,6 +198,15 @@ reported as passes. See `QUALIFICATION.md` for the status of all numeric claims.
   BF16) measured RockAndEgg at 14.325/14.767/15.498/16.691 ms p50 (F1–F8)
   versus Laya at 12.403/13.285/13.740/14.697 ms; Laya was faster on that
   workload. See `BENCHMARK.md` in the model repository.
+* A newer matched in-process benchmark on one T4 (fp16) compared the optimized
+  (A+D) serving path shipped here with the original published implementation and
+  with native Laya over identical text. The optimized path is 1.52 ms faster than
+  the original (95% CI [1.42, 1.62], ~4.3%, exact decision parity) and faster than
+  Laya in all 11 populated configurations (1.05–2.07× depending on fan-out;
+  stratified ~1.33×). These are in-process latency and memory results only — no
+  accuracy claim is derived from them, and the older ~1.48× T4 figure is not
+  reproduced as a single settled number. See
+  [`docs/INFERENCE_BENCHMARKS.md`](docs/INFERENCE_BENCHMARKS.md).
 * The intended differentiator is computation sharing, not superior accuracy.
   On the matched benchmark the alternative model scored higher accuracy; this
   release does not present that comparison as an accuracy victory.
