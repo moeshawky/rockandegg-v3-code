@@ -83,7 +83,7 @@ per-request gain; HTTP latency is not compared here.)
 | Measurement | Optimized RockAndEgg | Native Laya |
 |---|---:|---:|
 | F1 p50 relative result | reference | 1.05–1.22× slower |
-| F2 p50 relative result | reference | 1.26–2.07× slower |
+| F2 p50 relative result | reference | 1.26–2.00× slower |
 | Stratified paired ratio | reference | ~1.33× slower |
 | Mean paired latency difference | reference | +13.17 ms slower |
 | 95% CI of difference | — | [12.82, 13.52] ms |
@@ -123,7 +123,7 @@ with `python -m pytest serving/test_systemone_server_cpu.py -q`.
 
 A previously reported ~1.48× T4 advantage is **not reproduced as a single
 settled number** here. The current stratified ratio is ~1.33×, with a
-configuration-dependent range of roughly 1.05–2.07× measured under the
+configuration-dependent range of roughly 1.05–2.00× measured under the
 conditions in §2. A separate matched workload on an RTX PRO 6000 favored Laya
 on p50 latency. These results differ by hardware and workload and should not be
 combined or cherry-picked.
