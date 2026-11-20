@@ -202,7 +202,7 @@ reported as passes. See `QUALIFICATION.md` for the status of all numeric claims.
   (A+D) serving path shipped here with the original published implementation and
   with native Laya over identical text. The optimized path is 1.52 ms faster than
   the original (95% CI [1.42, 1.62], ~4.3%, exact decision parity) and faster than
-  Laya in all 11 populated configurations (1.05–2.07× depending on fan-out;
+  Laya in all 11 populated configurations (1.05–2.00× depending on fan-out;
   stratified ~1.33×). These are in-process latency and memory results only — no
   accuracy claim is derived from them, and the older ~1.48× T4 figure is not
   reproduced as a single settled number. See
