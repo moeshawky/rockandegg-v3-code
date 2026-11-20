@@ -185,7 +185,7 @@ class SystemOneResponseOut(BaseModel):
 
     ``options_truncated`` reports the number of option rows whose text exceeded
     the qualified option budget and was therefore cut by the adapter. Reporting
-    is additive only — the established tokenization contract is unchanged.
+    is additive only — the qualified tokenization contract is unchanged.
     """
 
     decisions: list[QuestionDecisionOut]
@@ -500,33 +500,19 @@ def _device_ready() -> bool:
         return False
 
 
-def _option_truncation_counts(
-    questions: list[QuestionIn], inference: Any
-) -> tuple[int, int]:
-    """Mirror the adapter's option encoding to count silently cut option rows.
+def _run_inference(inference: Any, request: Any) -> tuple[Any, int, int]:
+    """Score one request under the single-inference concurrency bound.
 
-    The adapter reserves one token for the readout marker and truncates each
-    option string to ``max_option_len - 1``. This helper only *counts*; it never
-    changes the text submitted to the adapter, so the qualified contract holds.
+    Returns the response together with the option-truncation counters the
+    adapter's batched option encode recorded for this request. They are read in
+    this worker thread, immediately after the adapter returns, so the HTTP
+    layer needs no second tokenization pass and no mutable state crosses
+    requests.
     """
-    limit = max(1, inference.max_option_len - 1)
-    tokenizer = inference.tokenizer
-    truncated = 0
-    rows = 0
-    for question in questions:
-        for option in question.options:
-            text = f"{question.instruction} [SEP] {option} [SEP]"
-            n_tokens = len(tokenizer(text, add_special_tokens=False)["input_ids"])
-            rows += 1
-            if n_tokens > limit:
-                truncated += 1
-    return truncated, rows
-
-
-def _run_inference(inference: Any, request: Any) -> Any:
-    """Score one request under the single-inference concurrency bound."""
     with _INFERENCE_SLOTS:
-        return inference(request)
+        response = inference(request)
+        options_truncated, option_rows = inference.last_option_truncation
+        return response, options_truncated, option_rows
 
 
 @app.get("/healthz", response_model=HealthOut, summary="Liveness and configuration")
@@ -629,18 +615,20 @@ async def systemone(request: Request) -> SystemOneResponseOut | JSONResponse:
     inference = _inference_or_raise()
     # Tokenize the state ourselves so truncation is observable: the adapter
     # truncates silently, and a caller cannot otherwise tell whether its state
-    # was cut. Do the same for option rows.
+    # was cut. Option truncation is NOT a second pass: the adapter's batched
+    # option encode records it per request (see _run_inference).
     state_tokens = len(
         inference.tokenizer(body.state, add_special_tokens=False)["input_ids"]
     )
-    options_truncated, option_rows = _option_truncation_counts(questions, inference)
 
     request_obj = infer.SystemOneRequest(state=body.state, questions=questions)
     try:
         # Inference is synchronous and CPU/GPU bound. Run it in a worker thread
         # so health probes stay responsive, under a single-slot bound so the
         # model is never entered concurrently.
-        response = await asyncio.to_thread(_run_inference, inference, request_obj)
+        response, options_truncated, option_rows = await asyncio.to_thread(
+            _run_inference, inference, request_obj
+        )
     except Exception:
         # Full exception (type, message, traceback) stays in the server log.
         # The client receives no internal detail, file path or tensor shape.

@@ -81,8 +81,9 @@ class RockAndEggV3SystemOneModel(PreTrainedModel):
         self.head_config = dict(head)
 
         self.backbone = Qwen3Model(config.backbone_config)
-        # config.json declares backbone_frozen; honour it so the published
-        # artifact does not advertise a freeze it never performed.
+        # config.json declares backbone_frozen; honour the declaration so the
+        # artifact does not advertise a freeze it never performed (inference
+        # is unchanged; this affects gradient flow only).
         _apply_backbone_freeze(self)
         self.register_load_state_dict_post_hook(_apply_backbone_freeze)
 
@@ -178,8 +179,14 @@ class RockAndEggV3SystemOneModel(PreTrainedModel):
     ) -> torch.Tensor:
         """Run all option rows through a forked cache; read their final states."""
         m = suffix_ids.shape[0]
-        fork = copy.deepcopy(cache)
-        fork.batch_repeat_interleave(m)  # in-place; returns None
+        # `cache` is freshly created by this request's encode_state() and is not
+        # referenced again after this call. Transformers 5.18
+        # DynamicLayer.batch_repeat_interleave rebinds each layer's keys/values
+        # to a fresh repeat_interleave tensor (verified in cache_utils.py); it
+        # does not mutate the original tensors in place. A deep copy therefore
+        # duplicates every K/V block for no isolation benefit. Expand in place.
+        fork = cache
+        fork.batch_repeat_interleave(m)  # in-place rebind; returns None
         if state_mask is not None:
             state_part = state_mask.expand(m, -1)
         else:

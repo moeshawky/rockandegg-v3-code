@@ -100,6 +100,9 @@ class SystemOneInference:
         device: device of the model parameters.
         confidence_temperature: optional held-out-fitted temperature for the
             reported confidence. Defaults to 1.0 (raw softmax).
+        last_option_truncation: ``(truncated_rows, option_rows)`` recorded by
+            the most recent ``_encode_options`` call. The HTTP layer reads it
+            instead of tokenizing every option a second time.
     """
 
     def __init__(
@@ -119,6 +122,7 @@ class SystemOneInference:
         self.device = next(model.parameters()).device
         pad = tokenizer.pad_token_id
         self.pad_id = pad if pad is not None else tokenizer.eos_token_id
+        self.last_option_truncation: tuple[int, int] = (0, 0)
 
     def _encode_state(self, text: str) -> tuple[torch.Tensor, torch.Tensor]:
         """Tokenize and right-pad the state to ``S``; return ids and a mask."""
@@ -142,26 +146,52 @@ class SystemOneInference:
     def _encode_options(
         self, questions: list[Question]
     ) -> tuple[torch.Tensor, torch.Tensor, list[int]]:
-        """Build padded option rows with the marker as the readout token."""
-        rows: list[list[int]] = []
+        """Build padded option rows with the marker as the readout token.
+
+        Every option row is tokenized in ONE batched call. Each text is cut to
+        ``limit + 1`` tokens: the ids are exactly the ones the former per-row
+        ``max_length=limit`` call produced (head truncation), and the extra slot
+        reveals whether anything was cut. The per-row truncation verdict is
+        recorded in ``last_option_truncation`` so the HTTP layer can report it
+        without tokenizing every option a second time.
+        """
+        limit = max(1, self.max_option_len - 1)
         counts: list[int] = []
+        texts: list[str] = []
         for question in questions:
             counts.append(len(question.options))
             for option in question.options:
-                text = f"{question.instruction} [SEP] {option} [SEP]"
-                ids = self.tokenizer(
-                    text,
-                    add_special_tokens=False,
-                    truncation=True,
-                    max_length=max(1, self.max_option_len - 1),
-                )["input_ids"]
-                rows.append([*ids, MARKER_ID])
-        width = max(len(row) for row in rows)
+                texts.append(f"{question.instruction} [SEP] {option} [SEP]")
+
+        encoded = self.tokenizer(
+            texts,
+            add_special_tokens=False,
+            truncation=True,
+            max_length=limit + 1,
+        )["input_ids"]
+
+        rows: list[list[int]] = []
+        truncated = 0
+        for ids in encoded:
+            if len(ids) > limit:
+                truncated += 1
+            rows.append([*ids[:limit], MARKER_ID])
+        self.last_option_truncation = (truncated, len(rows))
+
+        row_lens = [len(row) for row in rows]
+        width = max(row_lens)
+        # One tensor build for every row: flatten once, then copy slices into
+        # the padded buffer (no per-row ``torch.tensor(row)`` construction).
+        flat_ids = torch.tensor(
+            [token for row in rows for token in row], dtype=torch.long
+        )
         suffix_ids = torch.full((len(rows), width), self.pad_id, dtype=torch.long)
         suffix_mask = torch.zeros((len(rows), width), dtype=torch.long)
-        for i, row in enumerate(rows):
-            suffix_ids[i, : len(row)] = torch.tensor(row, dtype=torch.long)
-            suffix_mask[i, : len(row)] = 1
+        offset = 0
+        for i, n in enumerate(row_lens):
+            suffix_ids[i, :n] = flat_ids[offset : offset + n]
+            suffix_mask[i, :n] = 1
+            offset += n
         return suffix_ids.to(self.device), suffix_mask.to(self.device), counts
 
     def __call__(self, request: SystemOneRequest) -> SystemOneResponse:

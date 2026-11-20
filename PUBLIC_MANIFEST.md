@@ -9,10 +9,54 @@ Hashes are SHA-256 of the files as committed.
 | --- | ---: | --- |
 | .gitignore | 139 | 8b2ec16ad919ead95ee8b19161233b9493af6167e18e5f5b6c607a742e7d4e5c |
 | ATTRIBUTION.md | 1860 | 50eecf758f29467406be50bed90d183c8b724b608869dd2d212a6281a9dd645c |
+| FULL_BACKBONE.md | 3544 | 8e53893323bf385222f93dc4555d50bd3afe5a7361056c9c7ef8f45d1f1e6d33 |
 | LICENSE | 11343 | 832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e |
 | QUALIFICATION.md | 6481 | ac47bc00c72af2eeef0afd290eb25942e069b6a844450e719d25a79c90915be1 |
-| README.md | 7084 | 04db2051ead7de7d8cec614298c4bd681793412a5b69a1e068ff671f1ba223eb |
+| README.md | 11278 | 227b80cd04da52cf8ebd54a79287ece4bf927f1a6a2506a7350c7e5ffcd31599 |
 | REPRODUCTION.md | 3221 | 1f11f1cdff4b5fadd90893a6b7818ae88b8a90582b68a18c2cecc32d6bcc2603 |
+| docs/INFERENCE_BENCHMARKS.md | 6985 | 6f3f6288b81410ddba14f795ee87eb21beb8ee78401d6f248ca982262e19b3b8 |
+| docs/release/MODEL_CARD.md | 10815 | 00fc618618777f41bb0f0cb595de723ce0a8e6f346cf686993bc8d918d4d6d2e |
+| docs/release/MODEL_SELECTION_REPORT.md | 4138 | fc3a7eca17edaaeb110505c0d98a5f8c4d1db29d161073ce776c86e789d8609e |
+| docs/release/PUBLICATION_REPORT.md | 7229 | 1c4dea2fac3d6287d7836b2b786c755d2566413dd926c6c0c9ee3ae8328d9576 |
+| docs/release/README.md | 2706 | 0cafe1ba227a8ae6cb2df017175fa88e0adde3d30028da2b860b3e32bf8a832e |
+| docs/release/RELEASE_MANIFEST.json | 10975 | 0dc0a5bbb60c26da75de3d247bb44ff3cdef5041631f3e6411b559143f26ff7e |
+| docs/release/RELEASE_QUALIFICATION.md | 5178 | 338a52ba0982711ed85a3973d8377417a2801171821d4f5f768aeb74be41b420 |
+| docs/release/V3_OPERATIONAL_HANDOFF.md | 6812 | 91d1fd9bd60aee29538c7191e1a0e8d6e7971c039a6e6097f205dd45ac095e39 |
+| docs/release/V3_RELEASE_FREEZE.md | 5606 | af1f8166525ab9b26498f00c38af6d69b2875f57d150fbf94025356ac0c29c64 |
+| docs/release/archive/ARCHIVE_HASHES.json | 4183 | 236f015c28e0f58a3e3cc4a40793f9e3e78a34886389d26861cfc7d6567c347c |
+| docs/release/archive/MODEL_CARD.md | 10353 | a96af8464942fd85e947073144e9c0b7f925253f523fbb42d020550a6e01ac61 |
+| docs/release/archive/MODEL_SELECTION_REPORT.md | 3998 | 4903884eaba9ba3add74757890636ee343e6211f5a50011429906272f3b0206d |
+| docs/release/archive/PUBLICATION_REPORT.md | 3520 | d505ba7021aebdf9a70f5847ba77d007124c6666f6da98dc3095b9073c01ccd8 |
+| docs/release/archive/RELEASE_MANIFEST.json | 3280 | 6b9e9a93203dfa968f50ae03d9a4fe82f254aed2d9a3ca89be3bdb92d37f7d7b |
+| docs/release/archive/RELEASE_QUALIFICATION.md | 4265 | bd6cadb8dfd820c80becbb9b38f75d2198f240f6dc834d180c92deb4adde89a6 |
+| docs/release/archive/V3_OPERATIONAL_HANDOFF.md | 6789 | 386d1ca82b3231ef89062a622db4a4a7d8eb946f21d60035810c3ac5200cff5b |
+| docs/release/archive/V3_RELEASE_FREEZE.md | 5667 | 482d6d9a2145c91e41e09e59c03321d37a209c492de2a3e2d2ae240d9b0e437e |
+| docs/release/archive/experimental_conclusions/DATA_LINEAGE_AUDIT.md | 25291 | ce4fa2c17a43ac3ce1ea073c37359915007107533697d1cabfbb3599b4c4722f |
+| docs/release/archive/experimental_conclusions/DISTILLATION_EXPERIMENT.md | 5124 | 0e92b323d29516785a2171398e8e13593527ed8261fb6efa0e4c183a0ec2a479 |
+| docs/release/archive/experimental_conclusions/ENSEMBLE_VALIDATION_REPORT.md | 5001 | 30061639ade1eda9d99a1965dc1a7f754e530fbbaf8ba8ad46767e016a60bf19 |
+| docs/release/archive/experimental_conclusions/FINAL_QUALIFICATION_REPORT.md | 7122 | c3e79c1aacc78705342f466f728c5077f7f00cc78efaa407f9a87bb8081cf9a7 |
+| docs/release/archive/experimental_conclusions/distillation_experiment_report.json | 8114 | 6d751f5448d097a2fa5557d1943b14cf2a51688b337ee89f9611cd14b284e5e7 |
+| docs/release/archive/experimental_conclusions/ensemble_validation_report.json | 8857 | 4cf71e8a27c9e435efedc2a27c11d27470d3a07fe9e3e6ae1d7fe7900115eb9d |
+| docs/release/archive/preregistration/distillation_preregistration.md | 3919 | d599e77abe2ffccfb22753cf5ede84f1ef897470876219393a266b5e90b73f4b |
+| docs/release/archive/preregistration/ensemble_validation_preregistration.md | 3168 | 2d68cc783308ce5c9cdc8cf35de9a91c2458888586c0b266f0426bfd32203b2c |
+| docs/release/evidence/FP16_QUALIFICATION_VERDICT.md | 4088 | 264fa801434b7ec6932d0a64e139555ed7fcf1edc54f56855020829855ee4d99 |
+| docs/release/evidence/PRECISION_ACCEPTANCE_CRITERIA.md | 4683 | 21f710313111096bee3d9b5e1d59e19402c3ccfa51ba54782e72454f4299062f |
+| docs/release/evidence/arm_accuracy_ci.json | 526 | d111854e66a60ea5e5fddaac5c3007d6e287edf74baec9c88f3fa6b8756b65b4 |
+| docs/release/evidence/environment.json | 13442 | 4cd13b44512846dc365d288c3f2d46be0d74525e0a480d1a908fa967a1d31dca |
+| docs/release/evidence/fp16_invariance.json | 2136 | 8531e2d6758af503c55501cf0af6e99829f306c4e95f4be79448486154d3fb99 |
+| docs/release/evidence/fp16_invariance.json.child.json | 473 | cd1fb141c1551d0ff9ae9fa51abd8400d0a69b8144f0b4398d75c03e7b63ae49 |
+| docs/release/evidence/isolation_probe.json | 19284 | 48b217e35cd40b8dbc7cb2e5890e5dfe2657fa42125dc4cd1511b13b681b1a4d |
+| docs/release/evidence/latency_results.json | 382584 | 14a8eb32d2e4eb6e1f5860ff2bca3af1a44b51678f1e6dbfd9e62c73c6ceeb16 |
+| docs/release/evidence/license_audit.json | 2506 | cd96d1cb71577fda25eb1106529726bc6c71420e00b8abebdf853765d449e0e3 |
+| docs/release/evidence/memory_results.json | 49287 | ad4900080e1ab36cdf7711644a814995b96292cd45f87c9785db4be3362844cd |
+| docs/release/evidence/precision_cast_report.json | 56626 | 8773c4d7fc24ea605774f58d744b79049f3ed9df75e870df9578f4249e34b1a3 |
+| docs/release/evidence/precision_parity.json | 7740 | b1377b020551834821a4cb91011fd5271dc659da55282d9435721e1fc4bc408e |
+| docs/release/evidence/qualify_fp16.json | 2896 | 1a604875baa33ea0642a8ae6eb92b0caf50f6170752565345bd3ddec8ad27f4d |
+| docs/release/evidence/quality_metrics.json | 9234 | 9c5e2d075a47c9e0f6db13451e9821aa070ac653f29a04b876bf4fc41aee79d9 |
+| docs/release/evidence/reconciliation_accuracy.json | 23921 | 31bc0f6895d98b807011226f039d81695314bc3a9449d5f8bf72f5f698a76464 |
+| docs/release/evidence/server_smoke.json | 3148 | 1adc4ab432c4d0e782eecf5214ebf67011de69de28d33c2441fc04e7d01a3b79 |
+| docs/release/evidence/shared_state_instrumentation.json | 31033 | 874a2957e2c94f2879951e90124b5386b01e4d3177cc6dad530b4d3e16184d57 |
+| docs/release/evidence/throughput_results.json | 68145 | b316e90ba1834c8e58cdad920992f79f0e1c5fe4c2e8ff9318431f65ad602dec |
 | evidence/README.md | 1709 | 553518a47b1ef9145a1b4c5ca91a7e634027a23f1fd34b441a315ca55da775e9 |
 | evidence/banking77_result.json | 441 | 34e96a19025bc9000c971f26da6d478e886ccd53edc6a256888483328d75a2cc |
 | evidence/benchmark_v3_matched_typed.json | 429 | c8c505fe3803a0a38167de1b46984fcfaf2b875264e492d10a8fd35d236d0db9 |
@@ -29,21 +73,33 @@ Hashes are SHA-256 of the files as committed.
 | scripts/evaluate_trained.py | 5370 | 5c58696419be2106790d7bbea07355ad1c49364f67c455705ba8e7381b682203 |
 | scripts/export_fp16_variant.py | 4518 | a17e68399ae112dee71a7cd4a4d7a34724eec185ce4d7e404294052e74d397d3 |
 | scripts/export_v3_checkpoint.py | 4778 | 4c2ca026e43428a4282068b5263e3ec647a2a52559a6d105f7ab30e18de38631 |
+| scripts/full_backbone_config.json | 915 | 64678d3fde6f53dd2561808e33ba72486dfef10a63df053a963f1f85d55d29f6 |
+| scripts/full_backbone_utils.py | 4458 | 2fa51cb9935ed80cfbfe6fa0eb8837f38e5d18a5f9155dd9b8539f87d768aeb7 |
 | scripts/gpu_verify.py | 9738 | fa3e0f46a2db106971bf429f3839b21646845ebbd11f5e776e7f88f73b960fa6 |
 | scripts/probe_architecture.py | 3746 | f0f229c668e80539d5cda1b56ed9e0add2661d73833fc98484fda04fefcd64e0 |
 | scripts/probe_eval_determinism.py | 2347 | 931736b15edfaaf2d07378abe45a7c3bb90814a23a631ff14f691759576df558 |
+| scripts/release/README.md | 1218 | 1566881fd481377b7830cd871ef6d42504dd9c41b30d80b0cf3520d9381fb656 |
+| scripts/release/build_release.py | 4845 | c61b35635f97a88ced88d168c165003765a895d0530fc185352ef1102043cabe |
+| scripts/release/make_manifest.py | 3283 | 4bed4d2fe68150f976c2cb38ad37ce9f77102508be95c1bb56c8c34700874221 |
+| scripts/release/perf_release.py | 5055 | 99773eb1383bdea14302b288665dd6c2e3c7be4f80aafe8679ba411b258b91ee |
+| scripts/release/publish_hf.py | 2425 | 522a86febe77fd8b1745bfcf6d6009d564d2930c4fdd88ed8fed866033a1a330 |
+| scripts/release/reconcile_hashes.py | 2651 | 60fe92821ecfc2c9e998f19b0bf581ab111935b992917796861470ddb5ee4fa9 |
+| scripts/release/smoke_documented_interface.py | 4602 | fe6da3bf4001b033f53d3ac1cf9eeb53e733f8d9563ba3aba69dd09259a47b08 |
+| scripts/release/verify_release.py | 8925 | 321cdf6e98b66061889a92ecd9d40d57845a984629bc390ef9fa24a6d0a4479d |
+| scripts/release/verify_remote.py | 5790 | 56b9e30aae1c6caa5140c803a97c44efd36186b587a72e844155a6959092f4d0 |
 | scripts/reload_parity_child.py | 1575 | 4e2033f48ca67c837055c27f15be8382756bcd95354ec5133fdd74c45877c9e4 |
 | scripts/run_systemone_gates.py | 14004 | e89c1d5bc743ed18db27aafb83b66bbf012c77887b77bb8a67e610f8fe8dbd29 |
+| scripts/train_full_backbone.py | 28883 | e1644394e64025eada180b38041916442d904c821fc0004b59d29a3a35164503 |
 | scripts/train_jev_distill.py | 30380 | c9c63cc6e885b0163a037244eebcefe01bd5e7608721c83bc74fb616e5fa5e72 |
 | scripts/typed_decisions_data.py | 4944 | df99a553f394e34a4d54acac997daaa39d4c713ca72ce6cd1094b94675a1f401 |
 | scripts/verify_card_claims.py | 20294 | 07fd1260921457ea526c704f5502a0683401c01f8402a35ad8920cd46cfbb2d7 |
 | scripts/verify_export_metadata.py | 8608 | 36ca7a9edf454a3d349c45884c493034c6ed82f57675953248c7c1411b4fd8a3 |
 | scripts/verify_fp16_variant.py | 8820 | 297c0e2a61a053eedbc45506627f9d6df5eef16a84702dfb482f53454fb5283f |
 | serving/configuration_rockandegg_v3.py | 3218 | 2653c55677c42630468af4981ff0be4ec1a3bba198da430cfe779f4b1d46e23b |
-| serving/modeling_rockandegg_v3.py | 14695 | 4c35986ed31bcf0c0acb72006376da3d396360a341571ea9366555751c8487b2 |
+| serving/modeling_rockandegg_v3.py | 15219 | bcd51b15ea5b058b13216964c71bb72e33e591a12b4ebdfdd1e8940dceab89c3 |
 | serving/requirements-server.txt | 769 | 02d77cb11d75bf5101892e91573d8b152700aae43a7aa626aaebaae062e74e1f |
-| serving/systemone_inference.py | 7178 | 84cf13fe6c730875bafbc38c8fde875ed7f540089c49cf939285e91407535bae |
-| serving/systemone_server.py | 25329 | 9a27ccdf59f7d986dcb7e65db80d019787bf766fd6ceebb9ac558cc15f15a051 |
+| serving/systemone_inference.py | 8440 | c3996be3e50e1698696e8d4ec7958a43c206d3dd4003bb539912728a7551119c |
+| serving/systemone_server.py | 24991 | 660521e7cad285a69eb1582214b1f36245dadeff53e10ae1635782f89721795c |
 | serving/test_systemone_server_cpu.py | 11201 | 15aa862c0765cc1afe85a32be904aa53567074be7cb313de268be4fb0bde5f12 |
 | src/rockandegg_v3/__init__.py | 1605 | f7894e10e2e32080117ba91d5808c66cff435b0a9e6e99344cb96541a2ac6e12 |
 | src/rockandegg_v3/config.py | 3340 | 3501f580f5b76f43c4388667d3f4069b55b5902dbad39b50225d0b634dfd9d6a |
@@ -58,12 +114,3 @@ Hashes are SHA-256 of the files as committed.
 | tests/test_parallel.py | 898 | 0d62d117b90252d822f581dea00060cc6cedae9176e771fac4e5617e3574b6d7 |
 | tests/test_training_epochs.py | 5931 | 4cd3c61f890c875444dfe951888fe5014639a15752d01ddfee0c6f1f5e856530 |
 | tests/test_typed_decisions.py | 4562 | 6f00b3056b73d54642379c6d85cfd305f7072c1ed5975031d024d200aca42e87 |
-
-Total files: 51
-
-## Explicitly excluded
-
-- Private agent directives, informal notes, falsified-claim registers and internal workpapers (`AGENTS.md`, `notes.md`, `prompt*.md`, `VALIDATION.md`, `EVALUATION_CLAIMS*.md`, `SERVER_DESIGN.md`, the private mission directive, and others).
-- Private-dependency code/tests (`banking77_probe.py`, `benchmark_vs_laya.py`, `tests/test_ece_definition.py`).
-- Published weight binaries (~1.9 GB), tokenizer binaries, caches, logs, local checkpoints and original Git history.
-- Evidence paths were normalized to public identifiers before bundling; measured values were not changed.
