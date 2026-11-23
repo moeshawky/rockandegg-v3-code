@@ -1,0 +1,13 @@
+{
+  "counts": {
+    "scenarios": 810,
+    "decisions": 3240
+  },
+  "validation": {
+    "over_state": 0,
+    "over_option": 0,
+    "bad_gold": 0,
+    "passed": true
+  },
+  "sha256": "e39a772ef7a39aaa26d154bd98e1496abbe4a69249d0123a9f6b1043b38f55b0"
+}

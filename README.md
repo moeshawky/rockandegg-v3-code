@@ -22,9 +22,14 @@ is a reviewed reference copy of that canonical file, kept in sync for auditing.
 
 ## Canonical main release (exact identifiers)
 
-The full-backbone BF16 seed-0 checkpoint is now the **default `main` artifact** of
-the model repository. It ships at the repository root and loads without a subfolder.
-The historical head-only release remains available via its tag.
+The default `main` artifact of the model repository is now the **FP16 cast** of the
+full-backbone seed-0 checkpoint (commit `1e323f06cc0ab5c66753e80f944b0badf487afea`,
+model SHA-256 `17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28`).
+It ships at the repository root and loads without a subfolder. The original BF16
+seed-0 checkpoint is preserved at tag `v3-fullbackbone-main-1`
+(`c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`, model SHA-256
+`c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5`). The
+historical head-only release remains available via its tag.
 
 | Item | Exact value |
 |---|---|
@@ -42,6 +47,27 @@ The historical head-only release remains available via its tag.
 | Historical head-only tag | `v3-head-only-main` → `87c754951f9d4bd04c90e9ec78fc54295075e86c` |
 | Preserved preview branch | `preview/fullbackbone-bf16-seed0` → `0b60f73eda4293b4891f27c3106a977cef536a1f` |
 
+### Release state after Stage 4 (2026-11-23)
+
+The `R_final3` candidate (branch `stage4-final3`, commit
+`98f82b6351718a2b4b1938ac3f7456cac3c9956d`, model SHA-256
+`bd30d80e546534b866e3c25f94a7551d34be412ec6209e36ab999b10c95c646f`) was
+**not** promoted to `main`. Blocking checks, recorded in `QUALIFICATION.md` /
+`docs/release/`:
+
+- ECE gate (`ECE ≤ 0.05`) not met on any panel (measured 0.121–0.202).
+- No independently sourced real held-out typed-decision panel exists; the
+  synthetic panel is explicitly not OD-1 evidence, and `typed-decisions` DEV is
+  the checkpoint-selection set.
+- Second seed (seed 1) unrun; only seed 0 exists.
+
+The candidate remains available on its branch with a verified inference bundle
+(`systemone_inference.py` / `modeling_rockandegg_v3.py` byte-identical to the
+published artifact). The shipped serving path (unpatched `forward_batch`)
+reproduces `forward_case` to ≤ 0.015625 logit with zero decision flips on
+`R_final3` weights, and the training-time `gradsafe()` patch is numerically a
+no-op (0.0 delta). See `scripts/stage4/MONKEYPATCHES.md`.
+
 Load the canonical main release (no subfolder required):
 
 ```python
@@ -51,7 +77,7 @@ from transformers import AutoModel, AutoTokenizer
 model_id = "moeshawky/RockAndEgg-313M-v3"
 revision = "v3-fullbackbone-main-1"
 model = AutoModel.from_pretrained(
-    model_id, revision=revision, trust_remote_code=True, dtype=torch.bfloat16
+    model_id, revision=revision, trust_remote_code=True, dtype=torch.float16
 ).eval()
 tokenizer = AutoTokenizer.from_pretrained(
     model_id, revision=revision, trust_remote_code=True
@@ -64,7 +90,7 @@ Load the historical head-only release (preserved, independently retrievable):
 ```python
 model = AutoModel.from_pretrained(
     "moeshawky/RockAndEgg-313M-v3", revision="v3-head-only-main",
-    trust_remote_code=True, dtype=torch.bfloat16,
+    trust_remote_code=True, dtype=torch.float16,
 )
 ```
 

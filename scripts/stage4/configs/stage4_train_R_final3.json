@@ -1,0 +1,31 @@
+{
+  "mode": "R",
+  "scope": "final3",
+  "seed": 0,
+  "epochs": 2,
+  "curr_per_epoch": 2000,
+  "replay_per_epoch": 4000,
+  "lambda_kl": 0,
+  "lambda_rank": 0,
+  "epochs_log": [
+    {
+      "epoch": 1,
+      "train_loss": 0.7670545120636623,
+      "rank_loss": null,
+      "v2_dev_accuracy": 0.812962962962963
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.7312783583005269,
+      "rank_loss": null,
+      "v2_dev_accuracy": 0.9324074074074075
+    }
+  ],
+  "selected_epoch": 2,
+  "selected_v2_dev_accuracy": 0.9324074074074075,
+  "scope_audit": {
+    "changed_authorized": 39,
+    "changed_unauthorized": 0,
+    "authorized_only_scope": true
+  }
+}

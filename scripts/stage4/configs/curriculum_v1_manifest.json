@@ -1,0 +1,83 @@
+{
+  "pilot": "Hacker Mindset Curriculum v1",
+  "seed_base": 3001,
+  "families": {
+    "train": [
+      "substrate",
+      "handle"
+    ],
+    "heldout": [
+      "config",
+      "survivor"
+    ]
+  },
+  "depths": [
+    1,
+    2,
+    3
+  ],
+  "counts": {
+    "train_scenarios": 480,
+    "dev_scenarios": 120,
+    "test_scenarios": 480,
+    "composition_scenarios": 160,
+    "robustness_variants": 320,
+    "train_decisions": 960,
+    "dev_decisions": 240,
+    "test_decisions": 960,
+    "composition_decisions": 320
+  },
+  "validation_passed": true,
+  "validation": {
+    "n_scenarios": 1560,
+    "n_over_state": 0,
+    "n_over_option": 0,
+    "n_bad_gold": 0
+  },
+  "disjointness": {
+    "train_vs_test": {
+      "train_graphs": 48,
+      "test_graphs": 47,
+      "n_overlap": 0,
+      "disjoint": true,
+      "overlap_examples": []
+    },
+    "train_vs_comp": {
+      "train_graphs": 48,
+      "test_graphs": 15,
+      "n_overlap": 0,
+      "disjoint": true,
+      "overlap_examples": []
+    },
+    "test_vs_comp": {
+      "train_graphs": 47,
+      "test_graphs": 15,
+      "n_overlap": 0,
+      "disjoint": true,
+      "overlap_examples": []
+    },
+    "train_vs_dev": {
+      "train_graphs": 48,
+      "test_graphs": 42,
+      "n_overlap": 42,
+      "disjoint": false,
+      "overlap_examples": [
+        "06d019556d1135d8",
+        "0acea4e8ace6e2cf",
+        "0e2488988388f2c3",
+        "145901b244f1e4a5",
+        "152d7314cbbbcaba",
+        "1de49baf7e1209d2",
+        "2ff9cbdf2d143cfb",
+        "35ff5326094bc6c1",
+        "3641643f948d9420",
+        "3b62f03d17959c42"
+      ]
+    },
+    "note": "held-out evaluation = held-out families + novel composition; train_vs_test and train_vs_comp MUST be disjoint. train_vs_dev overlap is expected (same families, DEV=checkpoint selection)."
+  },
+  "metamorphic_all_passed": true,
+  "metamorphic_failures": [],
+  "curriculum_sha256": "aab5bb6374ee40affa2f386e2bb16d44a7b20120453516af34a2fc9a0c865c12",
+  "note": "SYNTHETIC; labels derived by independent DAG oracle; not OD-1 evidence."
+}

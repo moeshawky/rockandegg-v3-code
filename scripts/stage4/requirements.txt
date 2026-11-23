@@ -1,0 +1,16 @@
+# Stage 4 reproduction runtime pins (measured 2026-11-23, Tesla T4, sm_75)
+# torch 2.14.1+cu130 (CUDA 13.0, Turing has no bf16 -> fp16 on GPU, fp32 on CPU)
+# transformers 5.22.1, huggingface_hub 2.4.0, safetensors 0.8.0, accelerate 1.15.0
+# Python 3.13.13
+torch==2.14.1
+transformers==5.22.1
+huggingface_hub==2.4.0
+safetensors==0.8.0
+accelerate==1.15.0
+scikit-learn==1.6.1
+pyarrow==23.0.1
+numpy==2.4.6
+fastapi==0.165.0
+uvicorn==0.54.0
+# Optional, for the typed-decisions dataset fetch:
+# datasets is not required (parquet read via pyarrow)

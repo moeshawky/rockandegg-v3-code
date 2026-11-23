@@ -1,0 +1,29 @@
+{
+  "stage": "stage4",
+  "source_snapshot": "moeshawky/rockandegg-stage4-source (private)",
+  "source_archive_sha256": "da2d5cefaafc7e800228f23512f1aceecd7696ff9b586e33edf038cfaccb0351",
+  "evidence_archive_sha256": "86ba2fc2716ba3a3cb3d47284fe6cc9b1ec5b2a2c7fdde8592db5abd4f47a85",
+  "weights": {
+    "published_main_sha256": "17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28",
+    "stage4_final3_candidate_sha256": "bd30d80e546534b866e3c25f94a7551d34be412ec6209e36ab999b10c95c646f",
+    "stage4_final3_branch": "stage4-final3",
+    "stage4_final3_commit": "98f82b6351718a2b4b1938ac3f7456cac3c9956d"
+  },
+  "archived_file_sha256": {
+    "corrected_split_manifest.json": "b543c89039e1f84689b87a4bc37a45d1c3eefd3fbe48c2a6e4635db7df3b4559",
+    "curriculum_v1_manifest.json": "628e81962477cca5b473bf3edad48485cbe0fd9fae1303d55454a4cc51c92e95",
+    "curriculum_v2_manifest.json": "dadc45352fb2d6ee0ebb8a63a79cf52d17495af9a08b4e54653cd0d6041b1e0f",
+    "eval_panel_manifest.json": "59ea245747e010b21c3e0b7f3e6c76260d56df8f0f0e0c735a54b6d3f7ef0ed0",
+    "stage4_train_R_final3.json": "a5f5c9f46e26547853189ced98531cd5faca873d0d57e0caf01ecb7df3fb821f",
+    "corrected_data.py": "3ac63fe1866c70b0a32ae21461699ae35219ca4cd13655993d89c9e4789a5a7c",
+    "corrected_metrics_v2.py": "832b386698976467a444bc0b85fc909fbe708a7a6b0de5880bb57e5fd2a53fe4",
+    "curriculum_v1.py": "4131daf18e6e59aca2dffbc270b73ba072ceed0340ec2cca0bcd0ba1c255f55d",
+    "curriculum_v1_eval.py": "8f55b06eab2d306408b4d825b1a5eea2098877f11f8da7cd76711588c395d686",
+    "curriculum_v2.py": "046a231ffd7c4c3366b8bd96ecd7b4a9fc92008c0dd7db641f97c61b0087b92c",
+    "eval_panel.py": "bc9a60531931d23575b06c9f32f97b32cb9e9ef74b54ba1612e84f0dcfc0574d",
+    "stage4_eval.py": "e98e8298731fa686e36d02c4d18b751e8af14621538b55281ac0df6bc4301b46",
+    "stage4_train.py": "0dea69e79d40fc2cafca8c32e887b8aacecab88f0cb5a53b86159faecace1f98",
+    "v1_graph.py": "c69f40558d48f5a5b022144a9931c1ea121337789b4e776517b611ff36394ec0",
+    "v2_env.py": "e1935c6cfa5a5ad39a15fbdbbb40c52a609c927bf72d10ad0c4688525fefa6b7"
+  }
+}

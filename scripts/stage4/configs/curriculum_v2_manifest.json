@@ -1,0 +1,33 @@
+{
+  "pilot": "Curriculum v2",
+  "sha256": "63a57bfd99e1edf6929271afe36b4b26f6de254fb11a9e12ea25070b299ff61e",
+  "counts": {
+    "train": 1080,
+    "dev": 270,
+    "test": 1080,
+    "composition": 960,
+    "train_decisions": 4320,
+    "test_decisions": 4320
+  },
+  "validation": {
+    "n": 3390,
+    "over_state": 0,
+    "over_option": 0,
+    "bad_gold": 0,
+    "passed": true
+  },
+  "disjointness": {
+    "train_vs_test": {
+      "a": 203,
+      "b": 256,
+      "overlap": 0,
+      "disjoint": true
+    },
+    "train_vs_comp": {
+      "a": 203,
+      "b": 130,
+      "overlap": 0,
+      "disjoint": true
+    }
+  }
+}
