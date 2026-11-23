@@ -1,0 +1,65 @@
+{
+  "release": "RockAndEgg-313M-v3 — opt-in semantic rendering with stable answer keys",
+  "date": "2026-11-23",
+  "release_type": "source-only, frozen weights, backward-compatible opt-in",
+  "identities": {
+    "github_repo": "moeshawky/rockandegg-v3-code",
+    "github_release_commit": "b20037d7ce53c602d30656ac3b6a462f38ccf58a",
+    "github_pre_change_main": "cb45e8e64ff87fd5fdfef593e09e740946eba693",
+    "github_rollback_tag": "rollback/pre-semantic-rendering-main",
+    "hf_repo": "moeshawky/RockAndEgg-313M-v3",
+    "hf_release_revision": "a3d57ba6fc19cc1e3cc8aa44f2143b4302ea62d1",
+    "hf_pre_change_main": "36a06663291d4f3fdfc81bbc808f8810de8b745b",
+    "hf_rollback_tag": "rollback/pre-semantic-rendering-main",
+    "hf_immutable_rfinal3_pin": "837d3d502199de13874036fe912ed57bbc0dd199",
+    "model_weights_sha256": "bd30d80e546534b866e3c25f94a7551d34be412ec6209e36ab999b10c95c646f",
+    "private_archive_repo": "moeshawky/rockandegg-v3-postrelease-audit",
+    "private_archive_revision": "38ae9149e8c54e6d81e308c59ab5c7036a605715",
+    "private_archive_sha256": "07001ae48f01fb723c9f05e661bd4401de0e06560f885477806bf6a8c75038f9"
+  },
+  "source_file_hashes_sha256": {
+    "serving/systemone_inference.py": "3569654b150fbbe933e3249129079c2d42745730fc21bc5d77357a1ac1818213",
+    "serving/systemone_server.py": "1126a7a4234c3d317ceab3be533b62b04814799f9e243d0a2834ebf4b719bc2a",
+    "serving/systemone_semantics.py": "5873fce75554edb0e2caaaa52342a72cc69117c32d45e00ece5b45453db5ff3a"
+  },
+  "behavior": {
+    "new": "opt-in 'answer_keys' on adapter Question and HTTP QuestionIn; first-party state-grounded Noul renderer for safe_to_continue and human_review",
+    "refused": "critical_condition state-specific rendering (trivialization guard)",
+    "unchanged": "weights, architecture, parameter count, 256/64 budgets, fp16 policy, shared-state cache, default generic choice/score/noul, probability semantics, ordering"
+  },
+  "evidence": {
+    "archive_parity_rows": 254,
+    "archive_parity_max_prob_true_difference": 0.0,
+    "archive_parity_decision_mismatches": 0,
+    "state_blind_balanced_accuracy": {
+      "safe_to_continue": 0.423,
+      "human_review": 0.54,
+      "critical_condition": 0.28
+    },
+    "prospective_renderable_generic_to_rendered": "12/15 -> 13/15",
+    "prospective_safe_to_continue": "5/8 -> 7/8",
+    "prospective_human_review": "7/7 -> 6/7",
+    "critical_condition_guard_refusals": "2/2",
+    "live_http_smoke": "PASS (200 generic, 200 rendered stable key, 422 malformed-key control)",
+    "fresh_download_interface": "PASS (313161733 params, no lm_head, fp16 cuda:0, choice/score/noul + rendered stable key)",
+    "test_suite": "41 passed, 2 skipped (private Laya harness not shipped)"
+  },
+  "gates": {
+    "G1_identity": "PASS",
+    "G2_reproduction": "PASS",
+    "G3_causality": "PASS",
+    "G4_interface": "PASS",
+    "G5_regression": "PASS",
+    "G6_integrity": "PASS",
+    "G7_qualification": "PASS",
+    "G8_publication": "PASS",
+    "G9_documentation": "PASS",
+    "G10_persistence": "PASS"
+  },
+  "residual_limitations": [
+    "Confidence uncalibrated; ECE gate not met",
+    "critical_condition unresolved; state-specific rendering trivialized on both checkpoints",
+    "Evidence synthetic/small-sample; no independent real-world panel or second seed",
+    "Prospective human_review result mixed (7/7 generic vs 6/7 rendered)"
+  ]
+}
