@@ -22,14 +22,16 @@ is a reviewed reference copy of that canonical file, kept in sync for auditing.
 
 ## Canonical main release (exact identifiers)
 
-The default `main` artifact of the model repository is now the **FP16 cast** of the
-full-backbone seed-0 checkpoint (commit `1e323f06cc0ab5c66753e80f944b0badf487afea`,
-model SHA-256 `17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28`).
-It ships at the repository root and loads without a subfolder. The original BF16
-seed-0 checkpoint is preserved at tag `v3-fullbackbone-main-1`
-(`c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`, model SHA-256
-`c8b3aafb5ac4b5aad5808e49cd13a184205146711d0fc9e4ac123172c4141fd5`). The
-historical head-only release remains available via its tag.
+The default `main` artifact of the model repository is now **R_final3 FP16**
+(commit `837d3d502199de13874036fe912ed57bbc0dd199`, model SHA-256
+`bd30d80e546534b866e3c25f94a7551d34be412ec6209e36ab999b10c95c646f`). It ships
+at the repository root and loads without a subfolder. The previous default is
+preserved at tag `rollback/pre-rfinal3-main`
+(`1e323f06cc0ab5c66753e80f944b0badf487afea`, model SHA-256
+`17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28`). The
+original BF16 seed-0 checkpoint is preserved at tag `v3-fullbackbone-main-1`
+(`c8d6f8c1e3cc32456ddb80640a7339789ca7dff8`). The historical head-only release
+remains available via tag `v3-head-only-main`.
 
 | Item | Exact value |
 |---|---|
@@ -47,26 +49,34 @@ historical head-only release remains available via its tag.
 | Historical head-only tag | `v3-head-only-main` → `87c754951f9d4bd04c90e9ec78fc54295075e86c` |
 | Preserved preview branch | `preview/fullbackbone-bf16-seed0` → `0b60f73eda4293b4891f27c3106a977cef536a1f` |
 
-### Release state after Stage 4 (2026-11-23)
+### Promoted default (R_final3, 2026-11-23)
 
-The `R_final3` candidate (branch `stage4-final3`, commit
-`98f82b6351718a2b4b1938ac3f7456cac3c9956d`, model SHA-256
-`bd30d80e546534b866e3c25f94a7551d34be412ec6209e36ab999b10c95c646f`) was
-**not** promoted to `main`. Blocking checks, recorded in `QUALIFICATION.md` /
-`docs/release/`:
+`R_final3` is now the default `main` of `moeshawky/RockAndEgg-313M-v3`:
 
-- ECE gate (`ECE ≤ 0.05`) not met on any panel (measured 0.121–0.202).
-- No independently sourced real held-out typed-decision panel exists; the
-  synthetic panel is explicitly not OD-1 evidence, and `typed-decisions` DEV is
-  the checkpoint-selection set.
-- Second seed (seed 1) unrun; only seed 0 exists.
+- New main commit: `837d3d502199de13874036fe912ed57bbc0dd199`
+- New default weight SHA-256: `bd30d80e546534b866e3c25f94a7551d34be412ec6209e36ab999b10c95c646f`
+- Rollback tag: `rollback/pre-rfinal3-main` → `1e323f06cc0ab5c66753e80f944b0badf487afea`
+  (weights `17a54706be165ce246e963488ca7d4ebfd39394926c71325fa8e664c64c83e28`)
+- Candidate branch preserved: `stage4-final3` → `98f82b6351718a2b4b1938ac3f7456cac3c9956d`
+
+The operator accepted the calibration, independent-panel, and second-seed gaps
+for this release. Recorded limitations:
+
+- Confidence is uncalibrated (ECE 0.121–0.202 on the synthetic panels; gate 0.05
+  not met). Replay results are synthetic (oracle-generated, not OD-1).
+- Single seed (seed 0); independent real-panel and second-seed (seed 1) validation
+  pending.
+- Over-rejection persists (panel REACHABLE 0.8194 vs UNREACHABLE 0.8602).
+- Historical Laya benchmark numbers are tied to the older head-only checkpoint.
+
+The shipped serving path (unpatched `forward_batch`) reproduces `forward_case`
+to ≤ 0.015625 logit with zero decision flips on `R_final3` weights, and the
+training-time `gradsafe()` patch is numerically a no-op (0.0 delta). See
+`scripts/stage4/MONKEYPATCHES.md`.
 
 The candidate remains available on its branch with a verified inference bundle
 (`systemone_inference.py` / `modeling_rockandegg_v3.py` byte-identical to the
-published artifact). The shipped serving path (unpatched `forward_batch`)
-reproduces `forward_case` to ≤ 0.015625 logit with zero decision flips on
-`R_final3` weights, and the training-time `gradsafe()` patch is numerically a
-no-op (0.0 delta). See `scripts/stage4/MONKEYPATCHES.md`.
+published artifact).
 
 Load the canonical main release (no subfolder required):
 
