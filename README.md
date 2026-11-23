@@ -1,5 +1,13 @@
 # RockAndEgg-313M-v3 — source repository (public release candidate)
 
+> **Current-release supplement (2026-11-23).** The canonical default weights are
+> **R_final3** (SHA-256 `bd30d80e…`). This release adds an **opt-in semantic
+> rendering helper with stable answer keys** at the caller/HTTP boundary; it does
+> not change weights, architecture, token budgets, precision or default request
+> semantics. See [`docs/release/SEMANTIC_RENDERING_RELEASE.md`](docs/release/SEMANTIC_RENDERING_RELEASE.md).
+> The loading example below is pinned to the immutable R_final3 promotion commit,
+> not to the older BF16 tag. Historical release documents remain unchanged.
+
 A compact, **non-generative** typed-decision model. It does not produce text.
 It returns one typed decision per question (`choice`, `score`, `noul`) with a
 probability distribution and a confidence value.
@@ -78,14 +86,16 @@ The candidate remains available on its branch with a verified inference bundle
 (`systemone_inference.py` / `modeling_rockandegg_v3.py` byte-identical to the
 published artifact).
 
-Load the canonical main release (no subfolder required):
+Load the canonical R_final3 default release (no subfolder required). Pin the
+**commit SHA**, not the tag: `v3-fullbackbone-main-1` is the earlier BF16
+full-backbone release, not the R_final3 default.
 
 ```python
 import torch
 from transformers import AutoModel, AutoTokenizer
 
 model_id = "moeshawky/RockAndEgg-313M-v3"
-revision = "v3-fullbackbone-main-1"
+revision = "837d3d502199de13874036fe912ed57bbc0dd199"  # R_final3 promotion (immutable)
 model = AutoModel.from_pretrained(
     model_id, revision=revision, trust_remote_code=True, dtype=torch.float16
 ).eval()
@@ -103,6 +113,37 @@ model = AutoModel.from_pretrained(
     trust_remote_code=True, dtype=torch.float16,
 )
 ```
+
+## Opt-in semantic rendering (state-grounded Noul options)
+
+The generic engine scores exactly the option strings a caller supplies. On
+surface-misleading states (checks passed but approval missing), the compressed
+generic options produce false approvals. A first-party helper renders
+**caller-supplied** decisive conditions into the validated state-specific format
+and keeps the caller's answer identity stable:
+
+```python
+from systemone_semantics import render_state_specific_noul
+from systemone_inference import SystemOneRequest
+
+q = render_state_specific_noul(
+    "safe_to_continue",                       # or "human_review"
+    false_condition="checks passed but the operator has not signed off",
+    true_condition="checks passed and the operator signed off",
+)
+response = adapter(SystemOneRequest(state=state, questions=[q]))
+assert response.decisions[0].chosen_key in ("false", "true")
+```
+
+Over HTTP, send the same `instruction` and rendered `options`, plus
+`"answer_keys": ["false", "true"]`; `chosen_key` then reports the stable key
+instead of the scoring text. Omitting `answer_keys` preserves the legacy
+option-text behaviour exactly. The helper does **not** read the state or
+auto-detect a family, and it deliberately refuses `critical_condition`
+state-specific rendering (its earlier perfect score was a trivialization on
+both checkpoints). See
+[`docs/release/SEMANTIC_RENDERING_RELEASE.md`](docs/release/SEMANTIC_RENDERING_RELEASE.md)
+for evidence, scope and limitations.
 
 ## What is actually novel
 

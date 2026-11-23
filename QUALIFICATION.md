@@ -1,5 +1,12 @@
 # Qualification status — RockAndEgg-313M-v3
 
+> **Current-release notice (2026-11-23):** this ledger records the historical
+> qualification. For the current R_final3 source-only release see
+> [`docs/release/SEMANTIC_RENDERING_RELEASE.md`](docs/release/SEMANTIC_RENDERING_RELEASE.md)
+> and `evidence/semantic_rendering_validation.json`. Probability confidence
+> remains **uncalibrated**; the semantic renderer changes option text and stable
+> keys only, not probability semantics.
+
 This file is an evidence ledger, not a claim catalogue. A claim is promoted
 only when an executed operation in **this workspace** measures the property it
 asserts. "The script exists" is never treated as "the measurement ran".

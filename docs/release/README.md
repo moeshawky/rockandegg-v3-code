@@ -1,5 +1,12 @@
 # V3 Release Dossier (documentation + evidence)
 
+> **Current-release notice (2026-11-23):** this dossier is a frozen historical
+> record of the BF16/FP16 preview releases. The canonical default is now
+> **R_final3** (weights `bd30d80e…`, promotion commit `837d3d5…`). The current
+> source-only addition — opt-in semantic rendering with stable answer keys — is
+> documented in [`SEMANTIC_RENDERING_RELEASE.md`](SEMANTIC_RENDERING_RELEASE.md).
+> Historical identifiers below are not rewritten.
+
 This directory preserves the closure record for the **RockAndEgg-313M-v3 full-backbone
 BF16 research/preview release**. Status: **FROZEN WITH DOCUMENTATION LIMITATIONS**.
 The model is **RESEARCH / PREVIEW, NOT production qualified** — probabilities are

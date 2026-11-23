@@ -5,6 +5,14 @@ once; every option row is produced from that single KV cache. **No text is
 generated.** Confidence is the maximum softmax probability, optionally rescaled
 by a held-out-fitted temperature; the ECE contract is measured, never assumed.
 
+``Question.answer_keys`` is an optional, backward-compatible stable-identity
+facility. When a caller renders *scoring text* that differs from the answer
+identity it wants observed (for example a state-grounded Noul option), the
+adapter returns the matching ``answer_keys`` entry as ``chosen_key`` instead of
+the scoring string. Omitting it preserves the original behaviour exactly:
+``chosen_key`` is the selected ``options`` string. Probabilities, ordering and
+confidence are untouched by this facility.
+
 Example::
 
     from transformers import AutoModel, AutoTokenizer
@@ -56,11 +64,37 @@ _QTYPE_BY_NAME = {
 
 @dataclass(frozen=True)
 class Question:
-    """One typed question with its candidate options."""
+    """One typed question with its candidate options.
+
+    Attributes:
+        type: ``choice``, ``score`` or ``noul``.
+        options: scoring strings, in the order the head scores them.
+        instruction: instruction prepended to every option row.
+        answer_keys: optional stable identities, one per option. When set,
+            ``chosen_key`` reports ``answer_keys[argmax]`` rather than the
+            scoring string. Default ``None`` keeps the legacy observable key.
+    """
 
     type: str
     options: list[str]
     instruction: str = ""
+    answer_keys: list[str] | None = None
+
+    def __post_init__(self) -> None:
+        """Validate the optional stable-key mapping at construction time."""
+        if self.answer_keys is not None:
+            if len(self.answer_keys) != len(self.options):
+                msg = "answer_keys must have exactly one entry per option"
+                raise ValueError(msg)
+            if not all(isinstance(k, str) and k for k in self.answer_keys):
+                msg = "answer_keys must be non-empty strings"
+                raise ValueError(msg)
+
+    def observable_key(self, index: int) -> str:
+        """Return the caller-visible identity for a winning option index."""
+        if self.answer_keys is not None:
+            return self.answer_keys[index]
+        return self.options[index]
 
 
 @dataclass(frozen=True)
@@ -222,7 +256,7 @@ class SystemOneInference:
                 QuestionDecision(
                     type=question.type,
                     probabilities=probs.tolist(),
-                    chosen_key=question.options[idx],
+                    chosen_key=question.observable_key(idx),
                     confidence=float(probs.max().item()),
                 )
             )

@@ -1,5 +1,12 @@
 # Full-Backbone Training Path (selected release procedure)
 
+> **Current-release notice (2026-11-23):** this document preserves the historical
+> full-backbone BF16/FP16 procedure. The canonical default weights are now
+> **R_final3** (SHA-256 `bd30d80e…`, promotion commit `837d3d5…`). The current
+> source-only addition is the opt-in semantic rendering helper documented in
+> [`docs/release/SEMANTIC_RENDERING_RELEASE.md`](docs/release/SEMANTIC_RENDERING_RELEASE.md).
+> No training procedure or weight changed.
+
 This repository preserves **two** training procedures. They must not be confused.
 
 ## 1. Historical head-only procedure (kept for provenance)

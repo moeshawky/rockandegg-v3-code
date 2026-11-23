@@ -54,6 +54,7 @@ class FakeQuestion:
     type: str
     options: list[str]
     instruction: str = ""
+    answer_keys: list[str] | None = None
 
 
 @dataclass
@@ -83,8 +84,15 @@ class FakeInference:
         self.block_until: threading.Event | None = None
         self.active = 0
         self.max_active = 0
+        # The HTTP layer reads the adapter's recorded truncation counters.
+        # The fake mirrors that contract without a second tokenization pass.
+        self.last_option_truncation: tuple[int, int] = (0, 0)
 
     def __call__(self, request: FakeRequest) -> SimpleNamespace:
+        self.last_option_truncation = (
+            sum(1 for q in request.questions for o in q.options if len(o) > 64),
+            sum(len(q.options) for q in request.questions),
+        )
         self.active += 1
         self.max_active = max(self.max_active, self.active)
         try:
@@ -96,7 +104,9 @@ class FakeInference:
                 SimpleNamespace(
                     type=q.type,
                     probabilities=[0.7, 0.3],
-                    chosen_key=q.options[0],
+                    chosen_key=(
+                        q.answer_keys[0] if q.answer_keys is not None else q.options[0]
+                    ),
                     confidence=0.7,
                 )
                 for q in request.questions
@@ -333,3 +343,43 @@ def test_dependency_spec_is_shipped() -> None:
     spec = (_HERE / "requirements-server.txt").read_text().lower()
     for name in ("torch", "transformers", "fastapi", "uvicorn", "pydantic", "huggingface-hub"):
         assert name in spec
+
+
+def test_stable_answer_keys_reach_chosen_key(client: TestClient) -> None:
+    """Opt-in stable keys survive the HTTP boundary; scoring text can be rewritten."""
+    body = {
+        "state": "All checks passed and the owner signed off.",
+        "questions": [
+            {
+                "type": "noul",
+                "instruction": "Based on the state, is it safe to continue?",
+                "options": ["false: a check failed", "true: all checks passed"],
+                "answer_keys": ["false", "true"],
+            }
+        ],
+    }
+    resp = client.post("/v1/systemone", json=body)
+    assert resp.status_code == 200
+    assert resp.json()["decisions"][0]["chosen_key"] == "false"
+
+
+def test_missing_answer_keys_preserves_legacy_key(client: TestClient) -> None:
+    """Existing callers see the option text as chosen_key, unchanged."""
+    resp = client.post("/v1/systemone", json=VALID_BODY)
+    assert resp.status_code == 200
+    assert resp.json()["decisions"][0]["chosen_key"] == "Roll back"
+
+
+def test_answer_keys_length_mismatch_is_bad_request(client: TestClient) -> None:
+    """A malformed stable-key mapping is a canonical 400, not an inference 500."""
+    body = {
+        "state": "x",
+        "questions": [
+            {"type": "noul", "options": ["a", "b"], "answer_keys": ["only-one"]}
+        ],
+    }
+    resp = client.post("/v1/systemone", json=body)
+    assert resp.status_code == 422
+    text = resp.json()["error"]
+    assert "answer_keys" in text
+    assert "Exit:   3" in text

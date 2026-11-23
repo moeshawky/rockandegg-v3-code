@@ -1,0 +1,58 @@
+{
+  "ready": {
+    "ready": true,
+    "checks": {
+      "model_loaded": true,
+      "device_ready": true
+    },
+    "gpu_available": true,
+    "device": "cuda:0"
+  },
+  "generic_legacy": {
+    "status": 200,
+    "body": {
+      "decisions": [
+        {
+          "type": "noul",
+          "probabilities": [
+            0.23651622235774994,
+            0.7634837031364441
+          ],
+          "chosen_key": "true: the state shows all checks passed and continuation was approved",
+          "confidence": 0.7634837031364441
+        }
+      ],
+      "truncated": false,
+      "state_tokens": 14,
+      "options_truncated": 0,
+      "option_rows": 2
+    }
+  },
+  "rendered_stable_keys": {
+    "status": 200,
+    "body": {
+      "decisions": [
+        {
+          "type": "noul",
+          "probabilities": [
+            0.5175709128379822,
+            0.4824291169643402
+          ],
+          "chosen_key": "false",
+          "confidence": 0.5175709128379822
+        }
+      ],
+      "truncated": false,
+      "state_tokens": 14,
+      "options_truncated": 0,
+      "option_rows": 2
+    }
+  },
+  "malformed_key_control": {
+    "status": 422,
+    "body": {
+      "error": "error: answer_keys length mismatch\n  \u2192 Cause: a question has a different number of answer_keys than options\n  \u2192 Action: send exactly one answer key per option, or omit answer_keys\n  \u2192 Exit:   3"
+    }
+  },
+  "verdict": "PASS"
+}

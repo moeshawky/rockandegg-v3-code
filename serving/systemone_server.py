@@ -153,11 +153,18 @@ def _load_inference_module() -> ModuleType:
 
 
 class QuestionIn(BaseModel):
-    """One typed question and its candidate options."""
+    """One typed question and its candidate options.
+
+    ``answer_keys`` is optional and backward-compatible: when supplied, it
+    gives one stable identity per option. The adapter reports the matching key
+    as ``chosen_key`` so rewriting scoring text never changes the caller's
+    observable answer. Omitting it keeps the legacy option-text behaviour.
+    """
 
     type: QuestionType
     options: list[str] = Field(..., min_length=1)
     instruction: str = ""
+    answer_keys: list[str] | None = None
 
 
 class SystemOneBody(BaseModel):
@@ -606,9 +613,26 @@ async def systemone(request: Request) -> SystemOneResponseOut | JSONResponse:
     except ValidationError as exc:
         return _validation_error(exc)
 
+    # Stable-key validation is a caller-contract check, so a mismatch is a
+    # 400 with the canonical four-field block, never an inference error.
+    for q in body.questions:
+        if q.answer_keys is not None and len(q.answer_keys) != len(q.options):
+            return _error(
+                BAD_REQUEST,
+                "answer_keys length mismatch",
+                "a question has a different number of answer_keys than options",
+                "send exactly one answer key per option, or omit answer_keys",
+                EXIT_BAD_REQUEST,
+            )
+
     infer = _infer_or_raise()
     questions = [
-        infer.Question(type=q.type, options=q.options, instruction=q.instruction)
+        infer.Question(
+            type=q.type,
+            options=q.options,
+            instruction=q.instruction,
+            answer_keys=q.answer_keys,
+        )
         for q in body.questions
     ]
 

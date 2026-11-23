@@ -1,5 +1,10 @@
 # Public release manifest
 
+> **Current-release notice (2026-11-23):** the file table below is the frozen
+> historical preview manifest and is not a description of the current tree. It
+> is regenerated for the R_final3 source-only release at publication time; see
+> [`docs/release/SEMANTIC_RENDERING_RELEASE.md`](docs/release/SEMANTIC_RENDERING_RELEASE.md).
+
 Source-only candidate with reproduced qualification evidence.
 Model weights, tokenizer binaries, training data, agent directives and private
 benchmark harnesses are intentionally excluded.
@@ -9,18 +14,20 @@ Hashes are SHA-256 of the files as committed.
 | --- | ---: | --- |
 | .gitignore | 139 | 8b2ec16ad919ead95ee8b19161233b9493af6167e18e5f5b6c607a742e7d4e5c |
 | ATTRIBUTION.md | 1860 | 50eecf758f29467406be50bed90d183c8b724b608869dd2d212a6281a9dd645c |
-| FULL_BACKBONE.md | 3544 | 8e53893323bf385222f93dc4555d50bd3afe5a7361056c9c7ef8f45d1f1e6d33 |
+| FULL_BACKBONE.md | 3999 | 27cb8e6ee71d34f2da60f57582cc8cae21732488e846c198880c9bf84616453e |
 | LICENSE | 11343 | 832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e |
-| QUALIFICATION.md | 6481 | ac47bc00c72af2eeef0afd290eb25942e069b6a844450e719d25a79c90915be1 |
-| README.md | 11278 | 0b3068948474d97a3cb422c6d0a28dfe16f3223ce46621871b26f74822f54eb0 |
+| PUBLIC_MANIFEST.md | 12919 | 825eb1c83d2862aa047af576aee613b42a1e2621b5ce6a22743148a6a6824c48 |
+| QUALIFICATION.md | 6916 | 7c9b0e2a6c25a9470911ce1bba896f5bed9329ccdfb533dc3bfe709630c21c43 |
+| README.md | 15507 | d0e53f84e8b87037c2e23e6be05106af4618434f533fd8e730c62570e477de6b |
 | REPRODUCTION.md | 3221 | 1f11f1cdff4b5fadd90893a6b7818ae88b8a90582b68a18c2cecc32d6bcc2603 |
-| docs/INFERENCE_BENCHMARKS.md | 6985 | b388ebe6d3a6f47def1f3cfc3c497822f345dd72fc9dca7b950011a1be324897 |
-| docs/release/MODEL_CARD.md | 10815 | 00fc618618777f41bb0f0cb595de723ce0a8e6f346cf686993bc8d918d4d6d2e |
+| docs/INFERENCE_BENCHMARKS.md | 7333 | 3dce8eeb0bfcefe9dce738ba4650186c1a2556ea986debaa6d3ace1702da7e91 |
+| docs/release/MODEL_CARD.md | 11394 | 33597c6551195a95c891965bd37568fee651c07883bc64dc94a5f9c2e5228bb9 |
 | docs/release/MODEL_SELECTION_REPORT.md | 4138 | fc3a7eca17edaaeb110505c0d98a5f8c4d1db29d161073ce776c86e789d8609e |
 | docs/release/PUBLICATION_REPORT.md | 7229 | 1c4dea2fac3d6287d7836b2b786c755d2566413dd926c6c0c9ee3ae8328d9576 |
-| docs/release/README.md | 2706 | 0cafe1ba227a8ae6cb2df017175fa88e0adde3d30028da2b860b3e32bf8a832e |
+| docs/release/README.md | 3158 | 71ec1f48f99004c85220e0c7d6a36e4e7dda1ecfbe52b89d1a852f92cf3a37e1 |
 | docs/release/RELEASE_MANIFEST.json | 10975 | 0dc0a5bbb60c26da75de3d247bb44ff3cdef5041631f3e6411b559143f26ff7e |
 | docs/release/RELEASE_QUALIFICATION.md | 5178 | 338a52ba0982711ed85a3973d8377417a2801171821d4f5f768aeb74be41b420 |
+| docs/release/SEMANTIC_RENDERING_RELEASE.md | 7457 | 60b790d136874101619b138ecb0218135b9d8a7584a8ba848db8d6c07b426cf3 |
 | docs/release/V3_OPERATIONAL_HANDOFF.md | 6812 | 91d1fd9bd60aee29538c7191e1a0e8d6e7971c039a6e6097f205dd45ac095e39 |
 | docs/release/V3_RELEASE_FREEZE.md | 5606 | af1f8166525ab9b26498f00c38af6d69b2875f57d150fbf94025356ac0c29c64 |
 | docs/release/archive/ARCHIVE_HASHES.json | 4183 | 236f015c28e0f58a3e3cc4a40793f9e3e78a34886389d26861cfc7d6567c347c |
@@ -68,6 +75,8 @@ Hashes are SHA-256 of the files as committed.
 | evidence/gate_results_trained_full.json | 1695 | 382f62be62ec49d513765adf071a9a2dd76be9df28184361df6bedd8ddd67f76 |
 | evidence/gpu_verify_results.json | 1714 | 271f7928162eec5f60260045598f0689c61bb7c147a19a0b2aab04c91329dbd3 |
 | evidence/probe_architecture_results.json | 1484 | 8da612dda73efaea72ea97e9de771ad848403f9f9518c5650bf52c2ac2498c63 |
+| evidence/semantic_http_smoke.json | 1418 | 14155104d815c532bf076fecde1439cec5012f0ded982c2e2d49ac8f7c219add |
+| evidence/semantic_rendering_validation.json | 6914 | 36eb92181db5916af9118c274102567b5f0c7394601feed63798221d08721ae2 |
 | pyproject.toml | 1547 | 135d2c775286d9dde2cde66f294df6f8be23d61e23bc4ebdead7a98bf5f2c082 |
 | scripts/compare_fp16_eval.py | 5629 | 327ba5bd6d611bc17a6525a298b219d9df31a5d1c9c73bf6ffe542dd21f63150 |
 | scripts/evaluate_trained.py | 5370 | 5c58696419be2106790d7bbea07355ad1c49364f67c455705ba8e7381b682203 |
@@ -80,15 +89,36 @@ Hashes are SHA-256 of the files as committed.
 | scripts/probe_eval_determinism.py | 2347 | 931736b15edfaaf2d07378abe45a7c3bb90814a23a631ff14f691759576df558 |
 | scripts/release/README.md | 1218 | 1566881fd481377b7830cd871ef6d42504dd9c41b30d80b0cf3520d9381fb656 |
 | scripts/release/build_release.py | 4845 | c61b35635f97a88ced88d168c165003765a895d0530fc185352ef1102043cabe |
+| scripts/release/http_smoke_semantics.py | 4576 | 203440da405fb5166149b042d1329acd6d89f3817c714a3604457903bdaa060f |
 | scripts/release/make_manifest.py | 3283 | 4bed4d2fe68150f976c2cb38ad37ce9f77102508be95c1bb56c8c34700874221 |
 | scripts/release/perf_release.py | 5055 | 99773eb1383bdea14302b288665dd6c2e3c7be4f80aafe8679ba411b258b91ee |
 | scripts/release/publish_hf.py | 2425 | 522a86febe77fd8b1745bfcf6d6009d564d2930c4fdd88ed8fed866033a1a330 |
 | scripts/release/reconcile_hashes.py | 2651 | 60fe92821ecfc2c9e998f19b0bf581ab111935b992917796861470ddb5ee4fa9 |
 | scripts/release/smoke_documented_interface.py | 4602 | fe6da3bf4001b033f53d3ac1cf9eeb53e733f8d9563ba3aba69dd09259a47b08 |
+| scripts/release/validate_semantic_rendering.py | 15104 | 22b84c710c632faa44efac3e6ee54e5b1287e02d7896f68074a4bf4f5c5d8f43 |
 | scripts/release/verify_release.py | 8925 | 321cdf6e98b66061889a92ecd9d40d57845a984629bc390ef9fa24a6d0a4479d |
 | scripts/release/verify_remote.py | 5790 | 56b9e30aae1c6caa5140c803a97c44efd36186b587a72e844155a6959092f4d0 |
 | scripts/reload_parity_child.py | 1575 | 4e2033f48ca67c837055c27f15be8382756bcd95354ec5133fdd74c45877c9e4 |
 | scripts/run_systemone_gates.py | 14004 | e89c1d5bc743ed18db27aafb83b66bbf012c77887b77bb8a67e610f8fe8dbd29 |
+| scripts/stage4/MONKEYPATCHES.md | 3755 | f3038d8580b3f47f0a5f1e802047c66fa61db38e7351e54595eadc56e8e8c6f2 |
+| scripts/stage4/README.md | 2518 | 4d1b3b4d44018c8c9555cfcd9b89634ea51c7a5f27bb9d7f5a8356fff79a9010 |
+| scripts/stage4/STAGE4_FILE_HASHES.json | 2082 | b98d0939f2d9ebe05dabf29d22129d2c6101235ee9f2f104ccfaaa733e829b90 |
+| scripts/stage4/configs/corrected_split_manifest.json | 62690 | b543c89039e1f84689b87a4bc37a45d1c3eefd3fbe48c2a6e4635db7df3b4559 |
+| scripts/stage4/configs/curriculum_v1_manifest.json | 2038 | 628e81962477cca5b473bf3edad48485cbe0fd9fae1303d55454a4cc51c92e95 |
+| scripts/stage4/configs/curriculum_v2_manifest.json | 615 | dadc45352fb2d6ee0ebb8a63a79cf52d17495af9a08b4e54653cd0d6041b1e0f |
+| scripts/stage4/configs/eval_panel_manifest.json | 249 | 59ea245747e010b21c3e0b7f3e6c76260d56df8f0f0e0c735a54b6d3f7ef0ed0 |
+| scripts/stage4/configs/stage4_train_R_final3.json | 651 | a5f5c9f46e26547853189ced98531cd5faca873d0d57e0caf01ecb7df3fb821f |
+| scripts/stage4/corrected_data.py | 12250 | 2ffd69b4cc05a8ad3833e3c53a28599ed8c24dcf49d3c9324abe4226e00e38a6 |
+| scripts/stage4/corrected_metrics_v2.py | 12733 | 832b386698976467a444bc0b85fc909fbe708a7a6b0de5880bb57e5fd2a53fe4 |
+| scripts/stage4/curriculum_v1.py | 35136 | 99f3b53e407cdf4231171df1f3343ca5b2ebd2dce0bc9df108e5af6d95472617 |
+| scripts/stage4/curriculum_v1_eval.py | 20880 | b89f281f6e710ae5facf3aa50f075dbee8d886a9fa839a6e4e09a5c612119f74 |
+| scripts/stage4/curriculum_v2.py | 20561 | 5f529e6ed45f241f0f48398d54a455e88a1766312239c0b3186f4b5d50ab1f8e |
+| scripts/stage4/eval_panel.py | 11910 | 403b2be4d63450b7b29e95fbc1192164ac9482b337e26da12e47309c4ca7dc4c |
+| scripts/stage4/requirements.txt | 538 | e19b7e45a77040babfa4f84e67ee6a54df08a2295f1481916704df5dd39340e6 |
+| scripts/stage4/stage4_eval.py | 7575 | b66340e2d078c0f0eefdfc65c840680921d3e2918124159f266b49e61ae381e6 |
+| scripts/stage4/stage4_train.py | 17115 | 912bde68a7cde55cc8e01c626bce4c8b05646f61f2b63109248bbc060e62e794 |
+| scripts/stage4/v1_graph.py | 12243 | c69f40558d48f5a5b022144a9931c1ea121337789b4e776517b611ff36394ec0 |
+| scripts/stage4/v2_env.py | 14086 | e1935c6cfa5a5ad39a15fbdbbb40c52a609c927bf72d10ad0c4688525fefa6b7 |
 | scripts/train_full_backbone.py | 28883 | e1644394e64025eada180b38041916442d904c821fc0004b59d29a3a35164503 |
 | scripts/train_jev_distill.py | 30380 | c9c63cc6e885b0163a037244eebcefe01bd5e7608721c83bc74fb616e5fa5e72 |
 | scripts/typed_decisions_data.py | 4944 | df99a553f394e34a4d54acac997daaa39d4c713ca72ce6cd1094b94675a1f401 |
@@ -98,9 +128,10 @@ Hashes are SHA-256 of the files as committed.
 | serving/configuration_rockandegg_v3.py | 3218 | 2653c55677c42630468af4981ff0be4ec1a3bba198da430cfe779f4b1d46e23b |
 | serving/modeling_rockandegg_v3.py | 15219 | bcd51b15ea5b058b13216964c71bb72e33e591a12b4ebdfdd1e8940dceab89c3 |
 | serving/requirements-server.txt | 769 | 02d77cb11d75bf5101892e91573d8b152700aae43a7aa626aaebaae062e74e1f |
-| serving/systemone_inference.py | 8440 | c3996be3e50e1698696e8d4ec7958a43c206d3dd4003bb539912728a7551119c |
-| serving/systemone_server.py | 24991 | 660521e7cad285a69eb1582214b1f36245dadeff53e10ae1635782f89721795c |
-| serving/test_systemone_server_cpu.py | 11201 | 15aa862c0765cc1afe85a32be904aa53567074be7cb313de268be4fb0bde5f12 |
+| serving/systemone_inference.py | 10175 | 3569654b150fbbe933e3249129079c2d42745730fc21bc5d77357a1ac1818213 |
+| serving/systemone_semantics.py | 8512 | 5873fce75554edb0e2caaaa52342a72cc69117c32d45e00ece5b45453db5ff3a |
+| serving/systemone_server.py | 25996 | 1126a7a4234c3d317ceab3be533b62b04814799f9e243d0a2834ebf4b719bc2a |
+| serving/test_systemone_server_cpu.py | 13263 | 9d144a95629ba01fa98b6a29001c9c5085ac4060f98faeb7e88aa2da78c390ae |
 | src/rockandegg_v3/__init__.py | 1605 | f7894e10e2e32080117ba91d5808c66cff435b0a9e6e99344cb96541a2ac6e12 |
 | src/rockandegg_v3/config.py | 3340 | 3501f580f5b76f43c4388667d3f4069b55b5902dbad39b50225d0b634dfd9d6a |
 | src/rockandegg_v3/gates.py | 6775 | e0f1b0c3f9405960b1a173f1cc5f05a85cb664aaaddfb56dd6020f5fee8e4f9a |
@@ -112,5 +143,6 @@ Hashes are SHA-256 of the files as committed.
 | tests/__init__.py | 55 | 6af9c001cc3bdece4b80437c234c98477d67882bfdd6f5f746af76c423315186 |
 | tests/test_core.py | 6690 | fea4a83c34b06f6bbe960bb9df03f4a17b03561bc1d4d804983fa8e1a158967c |
 | tests/test_parallel.py | 898 | 0d62d117b90252d822f581dea00060cc6cedae9176e771fac4e5617e3574b6d7 |
+| tests/test_systemone_semantics.py | 5776 | b9fb589b5d9e6a87a21568830c29112da19eb5d614bf96eddf7e525f51437a07 |
 | tests/test_training_epochs.py | 5931 | 4cd3c61f890c875444dfe951888fe5014639a15752d01ddfee0c6f1f5e856530 |
 | tests/test_typed_decisions.py | 4562 | 6f00b3056b73d54642379c6d85cfd305f7072c1ed5975031d024d200aca42e87 |

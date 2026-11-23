@@ -1,0 +1,276 @@
+{
+  "weights_sha256": "bd30d80e546534b866e3c25f94a7551d34be412ec6209e36ab999b10c95c646f",
+  "parameters": 313161733,
+  "precision": "fp16",
+  "archive_parity": {
+    "rows": 254,
+    "max_abs_probtrue_diff_vs_archive": 0.0,
+    "decision_mismatches": 0,
+    "stable_key_hits": 254,
+    "verdict": "PASS"
+  },
+  "prospective": {
+    "renderable_n": 15,
+    "renderable_generic_correct": 12,
+    "renderable_rendered_correct": 13,
+    "guard_n": 2,
+    "guard_refused": 2,
+    "by_family": {
+      "safe_to_continue": {
+        "n": 8,
+        "generic": 5,
+        "rendered": 7
+      },
+      "human_review": {
+        "n": 7,
+        "generic": 7,
+        "rendered": 6
+      },
+      "critical_condition": {
+        "guard_n": 2,
+        "guard_refused": 2,
+        "generic_correct": 2
+      }
+    },
+    "details": [
+      {
+        "family": "safe_to_continue",
+        "expected": "false",
+        "generic_prob_true": 0.590779,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.413004,
+        "rendered_pred": "false",
+        "generic_key": "true",
+        "rendered_key": "false",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "safe_to_continue",
+        "expected": "false",
+        "generic_prob_true": 0.735642,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.449393,
+        "rendered_pred": "false",
+        "generic_key": "true",
+        "rendered_key": "false",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "safe_to_continue",
+        "expected": "false",
+        "generic_prob_true": 0.583203,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.517571,
+        "rendered_pred": "true",
+        "generic_key": "true",
+        "rendered_key": "true",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "safe_to_continue",
+        "expected": "true",
+        "generic_prob_true": 0.808067,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.746139,
+        "rendered_pred": "true",
+        "generic_key": "true",
+        "rendered_key": "true",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "safe_to_continue",
+        "expected": "false",
+        "generic_prob_true": 0.373876,
+        "generic_pred": "false",
+        "rendered_prob_true": 0.26588,
+        "rendered_pred": "false",
+        "generic_key": "false",
+        "rendered_key": "false",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "safe_to_continue",
+        "expected": "true",
+        "generic_prob_true": 0.721743,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.640636,
+        "rendered_pred": "true",
+        "generic_key": "true",
+        "rendered_key": "true",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "safe_to_continue",
+        "expected": "false",
+        "generic_prob_true": 0.353986,
+        "generic_pred": "false",
+        "rendered_prob_true": 0.334589,
+        "rendered_pred": "false",
+        "generic_key": "false",
+        "rendered_key": "false",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "safe_to_continue",
+        "expected": "true",
+        "generic_prob_true": 0.73412,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.823328,
+        "rendered_pred": "true",
+        "generic_key": "true",
+        "rendered_key": "true",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "human_review",
+        "expected": "false",
+        "generic_prob_true": 0.494141,
+        "generic_pred": "false",
+        "rendered_prob_true": 0.319121,
+        "rendered_pred": "false",
+        "generic_key": "false",
+        "rendered_key": "false",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "human_review",
+        "expected": "false",
+        "generic_prob_true": 0.320821,
+        "generic_pred": "false",
+        "rendered_prob_true": 0.486332,
+        "rendered_pred": "false",
+        "generic_key": "false",
+        "rendered_key": "false",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "human_review",
+        "expected": "true",
+        "generic_prob_true": 0.603932,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.626124,
+        "rendered_pred": "true",
+        "generic_key": "true",
+        "rendered_key": "true",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "human_review",
+        "expected": "true",
+        "generic_prob_true": 0.560253,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.848972,
+        "rendered_pred": "true",
+        "generic_key": "true",
+        "rendered_key": "true",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "human_review",
+        "expected": "false",
+        "generic_prob_true": 0.352202,
+        "generic_pred": "false",
+        "rendered_prob_true": 0.239349,
+        "rendered_pred": "false",
+        "generic_key": "false",
+        "rendered_key": "false",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "human_review",
+        "expected": "false",
+        "generic_prob_true": 0.411111,
+        "generic_pred": "false",
+        "rendered_prob_true": 0.602062,
+        "rendered_pred": "true",
+        "generic_key": "false",
+        "rendered_key": "true",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "human_review",
+        "expected": "true",
+        "generic_prob_true": 0.635222,
+        "generic_pred": "true",
+        "rendered_prob_true": 0.571767,
+        "rendered_pred": "true",
+        "generic_key": "true",
+        "rendered_key": "true",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "critical_condition",
+        "expected": "false",
+        "generic_prob_true": 0.433981,
+        "generic_pred": "false",
+        "rendered_prob_true": null,
+        "rendered_pred": null,
+        "generic_key": "false",
+        "rendered_key": "REFUSED_AS_EXPECTED",
+        "option_truncation": [
+          0,
+          2
+        ]
+      },
+      {
+        "family": "critical_condition",
+        "expected": "true",
+        "generic_prob_true": 0.607663,
+        "generic_pred": "true",
+        "rendered_prob_true": null,
+        "rendered_pred": null,
+        "generic_key": "true",
+        "rendered_key": "REFUSED_AS_EXPECTED",
+        "option_truncation": [
+          0,
+          2
+        ]
+      }
+    ]
+  }
+}

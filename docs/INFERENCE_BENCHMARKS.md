@@ -1,5 +1,11 @@
 # Inference Performance
 
+> **Current-release notice (2026-11-23):** all latency/memory numbers below were
+> measured on earlier artifacts and remain historical. The current R_final3
+> source-only release adds no inference-path optimization and makes no new
+> performance claim; see
+> [`../release/SEMANTIC_RENDERING_RELEASE.md`](../release/SEMANTIC_RENDERING_RELEASE.md).
+
 This document reports measured inference performance of RockAndEgg-313M-v3 and
 compares it with a native Laya implementation. RockAndEgg is a non-generative
 typed-decision model: given one state and one or more questions, it returns a

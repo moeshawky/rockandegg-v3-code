@@ -1,3 +1,12 @@
+> **Current-release notice (2026-11-23):** this card is a frozen historical record of
+> the FP16 preview. The canonical default is now **R_final3** (weights SHA-256
+> `bd30d80e…`, promotion commit `837d3d5…`). The current source-only addition is an
+> opt-in semantic-rendering helper with stable answer keys
+> ([`SEMANTIC_RENDERING_RELEASE.md`](SEMANTIC_RENDERING_RELEASE.md)); it does not
+> change weights, calibrated-confidence status, token budgets or the
+> critical-condition limitation.
+> change weights, calibrated-confidence status or critical-condition limitations.
+
 > **Update (2026-11-19):** this card describes the preview artifact (BF16 seed-0). The
 > full-backbone **FP16** seed-0 research/preview release is now published at tag
 > `v3-fullbackbone-fp16-1` on `moeshawky/RockAndEgg-313M-v3` (commit `48e42035…`).
