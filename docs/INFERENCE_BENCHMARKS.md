@@ -5,6 +5,16 @@
 > source-only release adds no inference-path optimization and makes no new
 > performance claim; see
 > [`../release/SEMANTIC_RENDERING_RELEASE.md`](../release/SEMANTIC_RENDERING_RELEASE.md).
+>
+> **Independent re-benchmark (2026-11-23, current R_final3 weights `bd30d80e…` vs
+> Laya `4fa56de7…`, 2× T4, fp16, 3 rounds):** R_final3 was faster in **32/32**
+> in-process configs (near parity at fan-out F1 ~0.9×, rising to **~4.3×** at
+> F8/S256); peak GPU memory **~860 MB vs ~2504 MB** (~3× less); cold load 1.6 s vs
+> 15.1 s. The win is the shared-state KV reuse (state encoded once vs Laya's
+> per-question re-encoding) and is fan-out dependent — it is **not** a universal
+> advantage and vanishes for independent (non-shared) state. Full methodology,
+> accuracy comparison, and per-config tables are in the private evidence package
+> (`benchmark-rfinal3-vs-laya`); older numbers below are not overwritten.
 
 This document reports measured inference performance of RockAndEgg-313M-v3 and
 compares it with a native Laya implementation. RockAndEgg is a non-generative
