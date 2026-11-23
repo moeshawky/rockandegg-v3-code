@@ -383,3 +383,51 @@ def test_answer_keys_length_mismatch_is_bad_request(client: TestClient) -> None:
     text = resp.json()["error"]
     assert "answer_keys" in text
     assert "Exit:   3" in text
+
+
+def test_answer_keys_empty_string_is_bad_request(client: TestClient) -> None:
+    """An empty stable key is a canonical 422, never an uncaught 500.
+
+    Same-length empty strings pass the length check but the real
+    ``systemone_inference.Question`` raises ``ValueError`` on empty keys outside
+    the inference try/except; the server must reject them up front.
+    """
+    body = {
+        "state": "x",
+        "questions": [
+            {"type": "noul", "options": ["a", "b"], "answer_keys": ["", "true"]}
+        ],
+    }
+    resp = client.post("/v1/systemone", json=body)
+    assert resp.status_code == 422
+    text = resp.json()["error"]
+    assert "answer_keys" in text
+    assert "Exit:   3" in text
+
+
+def test_answer_keys_whitespace_is_bad_request(client: TestClient) -> None:
+    """A whitespace-only stable key is rejected like an empty one."""
+    body = {
+        "state": "x",
+        "questions": [
+            {"type": "noul", "options": ["a", "b"], "answer_keys": ["false", "   "]}
+        ],
+    }
+    resp = client.post("/v1/systemone", json=body)
+    assert resp.status_code == 422
+    assert "answer_keys" in resp.json()["error"]
+
+
+def test_answer_keys_duplicate_is_bad_request(client: TestClient) -> None:
+    """Duplicate stable keys would make chosen_key ambiguous; reject as 422."""
+    body = {
+        "state": "x",
+        "questions": [
+            {"type": "noul", "options": ["a", "b"], "answer_keys": ["same", "same"]}
+        ],
+    }
+    resp = client.post("/v1/systemone", json=body)
+    assert resp.status_code == 422
+    text = resp.json()["error"]
+    assert "answer_keys" in text
+    assert "Exit:   3" in text

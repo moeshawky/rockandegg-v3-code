@@ -1,6 +1,12 @@
 # Public release manifest
 
-> **Current-release notice (2026-11-23):** the file table below is the frozen
+> **Current-release notice (2026-11-23):** this manifest lists every tracked
+> file EXCEPT itself; a file cannot contain its own post-write hash, so
+> ``PUBLIC_MANIFEST.md`` is intentionally excluded from the table (self-hash
+> exclusion). Its integrity is anchored by the git commit and the separately
+> versioned release manifest under ``docs/release/``, never by a stale
+> self-referential size/hash row.
+
 > historical preview manifest and is not a description of the current tree. It
 > is regenerated for the R_final3 source-only release at publication time; see
 > [`docs/release/SEMANTIC_RENDERING_RELEASE.md`](docs/release/SEMANTIC_RENDERING_RELEASE.md).
@@ -16,7 +22,6 @@ Hashes are SHA-256 of the files as committed.
 | ATTRIBUTION.md | 1860 | 50eecf758f29467406be50bed90d183c8b724b608869dd2d212a6281a9dd645c |
 | FULL_BACKBONE.md | 3999 | 27cb8e6ee71d34f2da60f57582cc8cae21732488e846c198880c9bf84616453e |
 | LICENSE | 11343 | 832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e |
-| PUBLIC_MANIFEST.md | 16022 | 42e2a73dda6cb0cb9011b318b0a6a4e8a7a35e46d68a17d5cd8cff7c8f13a4b0 |
 | QUALIFICATION.md | 6916 | 7c9b0e2a6c25a9470911ce1bba896f5bed9329ccdfb533dc3bfe709630c21c43 |
 | README.md | 15507 | d0e53f84e8b87037c2e23e6be05106af4618434f533fd8e730c62570e477de6b |
 | REPRODUCTION.md | 3221 | 1f11f1cdff4b5fadd90893a6b7818ae88b8a90582b68a18c2cecc32d6bcc2603 |
@@ -131,8 +136,8 @@ Hashes are SHA-256 of the files as committed.
 | serving/requirements-server.txt | 769 | 02d77cb11d75bf5101892e91573d8b152700aae43a7aa626aaebaae062e74e1f |
 | serving/systemone_inference.py | 10175 | 3569654b150fbbe933e3249129079c2d42745730fc21bc5d77357a1ac1818213 |
 | serving/systemone_semantics.py | 8512 | 5873fce75554edb0e2caaaa52342a72cc69117c32d45e00ece5b45453db5ff3a |
-| serving/systemone_server.py | 25996 | 1126a7a4234c3d317ceab3be533b62b04814799f9e243d0a2834ebf4b719bc2a |
-| serving/test_systemone_server_cpu.py | 13263 | 9d144a95629ba01fa98b6a29001c9c5085ac4060f98faeb7e88aa2da78c390ae |
+| serving/systemone_server.py | 27100 | 5e7c6f1026c7d11a26c95120d6754b9afd819ffb9384fb2cb454ac54068db8e7 |
+| serving/test_systemone_server_cpu.py | 14916 | d24f1c4d71ad81a429943d1ea9f70afd91200a40be0e6c2ac57d355e2a85443c |
 | src/rockandegg_v3/__init__.py | 1605 | f7894e10e2e32080117ba91d5808c66cff435b0a9e6e99344cb96541a2ac6e12 |
 | src/rockandegg_v3/config.py | 3340 | 3501f580f5b76f43c4388667d3f4069b55b5902dbad39b50225d0b634dfd9d6a |
 | src/rockandegg_v3/gates.py | 6775 | e0f1b0c3f9405960b1a173f1cc5f05a85cb664aaaddfb56dd6020f5fee8e4f9a |

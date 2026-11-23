@@ -615,6 +615,10 @@ async def systemone(request: Request) -> SystemOneResponseOut | JSONResponse:
 
     # Stable-key validation is a caller-contract check, so a mismatch is a
     # 400 with the canonical four-field block, never an inference error.
+    # Empty and duplicate keys are rejected here for the same reason: the
+    # dataclass ``Question`` refuses empty keys (raising ``ValueError``) and a
+    # duplicate key makes ``chosen_key`` ambiguous; both must surface as the
+    # canonical 422, never as an uncaught exception or a 500.
     for q in body.questions:
         if q.answer_keys is not None and len(q.answer_keys) != len(q.options):
             return _error(
@@ -624,6 +628,23 @@ async def systemone(request: Request) -> SystemOneResponseOut | JSONResponse:
                 "send exactly one answer key per option, or omit answer_keys",
                 EXIT_BAD_REQUEST,
             )
+        if q.answer_keys is not None:
+            if any(not isinstance(k, str) or not k.strip() for k in q.answer_keys):
+                return _error(
+                    BAD_REQUEST,
+                    "answer_keys empty",
+                    "an answer key is empty or whitespace-only",
+                    "send a non-empty string for every option, or omit answer_keys",
+                    EXIT_BAD_REQUEST,
+                )
+            if len(set(q.answer_keys)) != len(q.answer_keys):
+                return _error(
+                    BAD_REQUEST,
+                    "answer_keys duplicate",
+                    "answer keys must be unique within a question",
+                    "give each option a distinct key so chosen_key is unambiguous",
+                    EXIT_BAD_REQUEST,
+                )
 
     infer = _infer_or_raise()
     questions = [
