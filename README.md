@@ -15,7 +15,10 @@ probability distribution and a confidence value.
 This repository contains the training implementations, the architecture, the
 qualification scripts and the tests. The published weights, tokenizer and the
 **canonical HTTP server** live in
-[`moeshawky/RockAndEgg-313M-v3`](https://huggingface.co/moeshawky/RockAndEgg-313M-v3).
+[`moeshawky/RockAndEgg-313M-v3`](https://huggingface.co/moeshawky/RockAndEgg-313M-v3),
+whose model card is the public-facing presentation of the model's capabilities,
+measured performance and usage. This README is the engineering record: exact
+identifiers, qualification status and reproduction detail.
 Do not create a second server implementation here: `serving/systemone_server.py`
 is a reviewed reference copy of that canonical file, kept in sync for auditing.
 
