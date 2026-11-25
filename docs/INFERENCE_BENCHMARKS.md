@@ -1,20 +1,22 @@
 # Inference Performance
 
-> **Current-release notice (2026-11-23):** all latency/memory numbers below were
-> measured on earlier artifacts and remain historical. The current R_final3
-> source-only release adds no inference-path optimization and makes no new
-> performance claim; see
-> [`../release/SEMANTIC_RENDERING_RELEASE.md`](../release/SEMANTIC_RENDERING_RELEASE.md).
+> **Current benchmark — R_final3 (2026-11-23, weights `bd30d80e…` vs Laya
+> `4fa56de7…`, 2× T4, fp16, in-process, 3 rounds):** R_final3 was faster in
+> **32/32** measured configurations. The advantage is the shared-state KV reuse
+> (state encoded once vs Laya's per-question re-encoding) and is **fan-out
+> dependent**: near parity at F1 (ratio 0.90–0.96×), rising to **4.3×** at
+> F8/S256 (41 ms vs 177 ms), and it **vanishes for independent (non-shared)
+> state** (0.88–0.99×). Peak allocated GPU memory at the matched S256/F8 config
+> was **860 MB vs 2504 MB**; cold load 1.6 s vs 15.1 s. This is **not** a
+> universal advantage. Full methodology and per-config tables are in the private
+> evidence package (`benchmark-rfinal3-vs-laya`).
 >
-> **Independent re-benchmark (2026-11-23, current R_final3 weights `bd30d80e…` vs
-> Laya `4fa56de7…`, 2× T4, fp16, 3 rounds):** R_final3 was faster in **32/32**
-> in-process configs (near parity at fan-out F1 ~0.9×, rising to **~4.3×** at
-> F8/S256); peak GPU memory **~860 MB vs ~2504 MB** (~3× less); cold load 1.6 s vs
-> 15.1 s. The win is the shared-state KV reuse (state encoded once vs Laya's
-> per-question re-encoding) and is fan-out dependent — it is **not** a universal
-> advantage and vanishes for independent (non-shared) state. Full methodology,
-> accuracy comparison, and per-config tables are in the private evidence package
-> (`benchmark-rfinal3-vs-laya`); older numbers below are not overwritten.
+> **Historical sections below.** §1 and §5 describe the previous checkpoint
+> (`17a54706…`) and are retained unchanged as historical record. Their ~1.33×
+> stratified ratio and ~0.85 GB / ~2.68 GB peak reserved VRAM are **not** the
+> current R_final3 result and must not be cited as such. The current-release
+> source-only note is in
+> [`../release/SEMANTIC_RENDERING_RELEASE.md`](../release/SEMANTIC_RENDERING_RELEASE.md).
 
 This document reports measured inference performance of RockAndEgg-313M-v3 and
 compares it with a native Laya implementation. RockAndEgg is a non-generative
@@ -42,6 +44,11 @@ The comparison is **native implementation versus native implementation** under
 each model's configured runtime path. Parameter-storage dtype was not matched
 between the two implementations, so this is not a controlled precision-equal
 comparison.
+
+The checkpoint SHA-256 in the table (`17a54706…`) is the **previous** artifact.
+The current R_final3 release is `bd30d80e…` (313,161,733 parameters, 626,337,154
+bytes serialized); the current re-benchmark is summarised in the notice at the
+top of this document.
 
 ## 2. Environment
 
@@ -79,6 +86,11 @@ comparison.
   cluster, not independent samples.
 
 ## 5. Inference Performance results
+
+> **Historical (previous checkpoint `17a54706…`).** The tables in this section
+> were measured on the pre-promotion artifact and are retained as historical
+> record. They are superseded by the current R_final3 re-benchmark summarised at
+> the top of this document.
 
 ### A+D serving optimization vs the original published implementation
 
@@ -138,11 +150,12 @@ with `python -m pytest serving/test_systemone_server_cpu.py -q`.
 ## 7. Relationship to earlier benchmarks
 
 A previously reported ~1.48× T4 advantage is **not reproduced as a single
-settled number** here. The current stratified ratio is ~1.33×, with a
-configuration-dependent range of roughly 1.05–2.00× measured under the
-conditions in §2. A separate matched workload on an RTX PRO 6000 favored Laya
-on p50 latency. These results differ by hardware and workload and should not be
-combined or cherry-picked.
+settled number** here. The ~1.33× stratified ratio (range ~1.05–2.00×) belongs
+to the **previous checkpoint** `17a54706…` under the §2 conditions and is
+historical. The current R_final3 re-benchmark (top of this document) measures a
+fan-out-dependent advantage of up to 4.3× at F8/S256. A separate matched workload
+on an RTX PRO 6000 favored Laya on p50 latency. These results differ by hardware
+and workload and should not be combined or cherry-picked.
 
 ## 8. Limitations
 
@@ -154,8 +167,8 @@ combined or cherry-picked.
 4. F1 and F2 case pools differ in workflow composition and state-length
    distribution; their relative scaling is descriptive, not a clean causal
    isolation of fan-out.
-5. The ~1.33× figure does not establish a universal advantage on every GPU or
-   workload.
+5. The fan-out-dependent advantage (up to 4.3× at F8/S256 on the current
+   weights) does not establish a universal advantage on every GPU or workload.
 6. The memory difference reflects model size and parameter-storage
    characteristics as well as runtime architecture.
 7. No new accuracy or calibration evaluation was performed; this is a latency

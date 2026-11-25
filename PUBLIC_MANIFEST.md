@@ -23,9 +23,9 @@ Hashes are SHA-256 of the files as committed.
 | FULL_BACKBONE.md | 3999 | 27cb8e6ee71d34f2da60f57582cc8cae21732488e846c198880c9bf84616453e |
 | LICENSE | 11343 | 832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e |
 | QUALIFICATION.md | 6916 | 7c9b0e2a6c25a9470911ce1bba896f5bed9329ccdfb533dc3bfe709630c21c43 |
-| README.md | 15507 | d0e53f84e8b87037c2e23e6be05106af4618434f533fd8e730c62570e477de6b |
+| README.md | 15723 | 93b9843eb6301480875d2e1cd5bcd899dd620bdc5e83190b6bbbc5f1038e5ebd |
 | REPRODUCTION.md | 3221 | 1f11f1cdff4b5fadd90893a6b7818ae88b8a90582b68a18c2cecc32d6bcc2603 |
-| docs/INFERENCE_BENCHMARKS.md | 7333 | 3dce8eeb0bfcefe9dce738ba4650186c1a2556ea986debaa6d3ace1702da7e91 |
+| docs/INFERENCE_BENCHMARKS.md | 8899 | 0ba42f1bd5ffa68fe0e16981d24b10662bd17ba466b97ec8dae8adec8e935135 |
 | docs/release/CURRENT_RELEASE_MANIFEST.json | 3389 | 46e67117a2dd5d733847fb306639af032fbd38bf1927fa42b934efe380740efa |
 | docs/release/MODEL_CARD.md | 11394 | 33597c6551195a95c891965bd37568fee651c07883bc64dc94a5f9c2e5228bb9 |
 | docs/release/MODEL_SELECTION_REPORT.md | 4138 | fc3a7eca17edaaeb110505c0d98a5f8c4d1db29d161073ce776c86e789d8609e |
@@ -134,10 +134,10 @@ Hashes are SHA-256 of the files as committed.
 | serving/configuration_rockandegg_v3.py | 3218 | 2653c55677c42630468af4981ff0be4ec1a3bba198da430cfe779f4b1d46e23b |
 | serving/modeling_rockandegg_v3.py | 15219 | bcd51b15ea5b058b13216964c71bb72e33e591a12b4ebdfdd1e8940dceab89c3 |
 | serving/requirements-server.txt | 769 | 02d77cb11d75bf5101892e91573d8b152700aae43a7aa626aaebaae062e74e1f |
-| serving/systemone_inference.py | 10175 | 3569654b150fbbe933e3249129079c2d42745730fc21bc5d77357a1ac1818213 |
+| serving/systemone_inference.py | 11385 | 805aa6f91203eefc7bde6f46247d5ea0b9bc319955f3d8ac1a62460e59c5e537 |
 | serving/systemone_semantics.py | 8512 | 5873fce75554edb0e2caaaa52342a72cc69117c32d45e00ece5b45453db5ff3a |
-| serving/systemone_server.py | 27100 | 5e7c6f1026c7d11a26c95120d6754b9afd819ffb9384fb2cb454ac54068db8e7 |
-| serving/test_systemone_server_cpu.py | 14916 | d24f1c4d71ad81a429943d1ea9f70afd91200a40be0e6c2ac57d355e2a85443c |
+| serving/systemone_server.py | 29394 | d50641b93da5bd214147df660d64c36ce64c78573a820db2be98f898cb68fd5d |
+| serving/test_systemone_server_cpu.py | 19248 | 497f2bd8d6c50ce54b4d8725d13d6d15663a4b2795d28ae33a3d1b97227a8f6f |
 | src/rockandegg_v3/__init__.py | 1605 | f7894e10e2e32080117ba91d5808c66cff435b0a9e6e99344cb96541a2ac6e12 |
 | src/rockandegg_v3/config.py | 3340 | 3501f580f5b76f43c4388667d3f4069b55b5902dbad39b50225d0b634dfd9d6a |
 | src/rockandegg_v3/gates.py | 6775 | e0f1b0c3f9405960b1a173f1cc5f05a85cb664aaaddfb56dd6020f5fee8e4f9a |
