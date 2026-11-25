@@ -39,7 +39,7 @@ Example::
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 import torch
 import torch.nn.functional as F
@@ -157,25 +157,43 @@ class SystemOneInference:
         pad = tokenizer.pad_token_id
         self.pad_id = pad if pad is not None else tokenizer.eos_token_id
         self.last_option_truncation: tuple[int, int] = (0, 0)
+        # State-length reporting for the most recent ``_encode_state`` call.
+        # ``last_state_tokens`` is the exact token count of the input state
+        # before any capacity limit is applied; ``last_state_truncated`` says
+        # whether that count exceeded ``max_state_len``; ``last_physical_state_len``
+        # is the padded execution length actually handed to the backbone. The
+        # HTTP layer reads these instead of tokenizing the state a second time.
+        self.last_state_tokens: int = 0
+        self.last_state_truncated: bool = False
+        self.last_physical_state_len: int = max_state_len
 
     def _encode_state(self, text: str) -> tuple[torch.Tensor, torch.Tensor]:
-        """Tokenize and right-pad the state to ``S``; return ids and a mask."""
-        enc = self.tokenizer(
-            text,
-            add_special_tokens=False,
-            return_tensors="pt",
-            truncation=True,
-            max_length=self.max_state_len,
+        """Tokenize once, truncate to capacity, right-pad to the physical length.
+
+        The tokenization is performed *without* truncation so the exact input
+        length is known from the same pass that produces the ids; slicing to
+        ``max_state_len`` is head truncation and yields the same ids the former
+        ``truncation=True, max_length=...`` call produced. Capacity (how much
+        state is admitted) and physical execution length (how long the cached
+        sequence is) are both derived from ``max_state_len`` here and are
+        reported separately via ``last_state_tokens`` /
+        ``last_physical_state_len`` so callers are not forced to conflate them.
+        """
+        ids_list = self.tokenizer(text, add_special_tokens=False)["input_ids"]
+        n_real = len(ids_list)
+        ids_list = ids_list[: self.max_state_len]
+        n_kept = len(ids_list)
+        pad_n = self.max_state_len - n_kept
+        ids = torch.tensor(
+            [ids_list + [self.pad_id] * pad_n], dtype=torch.long, device=self.device
         )
-        ids = cast("torch.Tensor", enc["input_ids"])
-        mask = cast("torch.Tensor", enc["attention_mask"])
-        if ids.shape[1] < self.max_state_len:
-            pad_n = self.max_state_len - ids.shape[1]
-            ids = torch.cat(
-                [ids, torch.full((1, pad_n), self.pad_id, dtype=ids.dtype)], dim=1
-            )
-            mask = torch.cat([mask, torch.zeros((1, pad_n), dtype=mask.dtype)], dim=1)
-        return ids.to(self.device), mask.to(self.device)
+        mask = torch.tensor(
+            [[1] * n_kept + [0] * pad_n], dtype=torch.long, device=self.device
+        )
+        self.last_state_tokens = n_real
+        self.last_state_truncated = n_real > self.max_state_len
+        self.last_physical_state_len = self.max_state_len
+        return ids, mask
 
     def _encode_options(
         self, questions: list[Question]

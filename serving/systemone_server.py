@@ -96,6 +96,13 @@ SOURCE = MODEL_ID or LOCAL_DIR or "moeshawky/RockAndEgg-313M-v3"
 MAX_STATE_LEN = 256
 MAX_OPTION_LEN = 64
 
+# Qualified context policy. "fixed-256" is the legacy behaviour and remains the
+# production default: the Phase I-V qualification (CONTEXT_POLICY.md) measured
+# every extended-context arm as accuracy-negative, so the additional capacity is
+# deliberately not enabled. The identifier is reported per response so callers
+# can tell which policy served a request.
+CONTEXT_POLICY = "fixed-256"
+
 QuestionType = Literal["choice", "score", "noul"]
 
 _STARTED_AT = time.monotonic()
@@ -190,6 +197,15 @@ class QuestionDecisionOut(BaseModel):
 class SystemOneResponseOut(BaseModel):
     """Response envelope: one decision per request question.
 
+    ``state_tokens`` is the exact number of tokens in the request state before
+    any capacity limit, measured by the single tokenization pass that produced
+    the model input. ``max_state_tokens`` is the effective state capacity and
+    ``physical_state_len`` the padded execution length handed to the backbone;
+    the two are reported separately because they are distinct quantities that
+    the legacy adapter conflated. ``truncated`` is true exactly when
+    ``state_tokens > max_state_tokens``, so an overlength state is never
+    presented as fully evaluated.
+
     ``options_truncated`` reports the number of option rows whose text exceeded
     the qualified option budget and was therefore cut by the adapter. Reporting
     is additive only — the qualified tokenization contract is unchanged.
@@ -198,6 +214,9 @@ class SystemOneResponseOut(BaseModel):
     decisions: list[QuestionDecisionOut]
     truncated: bool
     state_tokens: int
+    max_state_tokens: int
+    physical_state_len: int
+    context_policy: str
     options_truncated: int = 0
     option_rows: int = 0
 
@@ -507,19 +526,33 @@ def _device_ready() -> bool:
         return False
 
 
-def _run_inference(inference: Any, request: Any) -> tuple[Any, int, int]:
+def _run_inference(inference: Any, request: Any) -> tuple[Any, int, int, int, bool, int]:
     """Score one request under the single-inference concurrency bound.
 
-    Returns the response together with the option-truncation counters the
-    adapter's batched option encode recorded for this request. They are read in
-    this worker thread, immediately after the adapter returns, so the HTTP
-    layer needs no second tokenization pass and no mutable state crosses
-    requests.
+    Returns the response together with the per-request metadata the adapter
+    recorded for *this* call: the option-truncation counters, the exact state
+    token count, the truncation flag and the physical execution length.
+
+    Every value is read inside the semaphore, immediately after the adapter
+    returns. The adapter records these fields on itself, so reading them after
+    releasing the bound would let a queued request overwrite them and hand one
+    caller another caller's metadata. Returning them as request-local data
+    removes that shared-state window entirely.
     """
     with _INFERENCE_SLOTS:
         response = inference(request)
         options_truncated, option_rows = inference.last_option_truncation
-        return response, options_truncated, option_rows
+        state_tokens = inference.last_state_tokens
+        state_truncated = inference.last_state_truncated
+        physical_state_len = inference.last_physical_state_len
+        return (
+            response,
+            options_truncated,
+            option_rows,
+            state_tokens,
+            state_truncated,
+            physical_state_len,
+        )
 
 
 @app.get("/healthz", response_model=HealthOut, summary="Liveness and configuration")
@@ -646,6 +679,19 @@ async def systemone(request: Request) -> SystemOneResponseOut | JSONResponse:
                     EXIT_BAD_REQUEST,
                 )
 
+    # A state-conditioned decision model must not answer from absent state. An
+    # empty or whitespace-only state carries no information, so it is rejected
+    # here at the request boundary with the canonical 422 contract rather than
+    # scored into an apparently meaningful decision.
+    if not body.state.strip():
+        return _error(
+            BAD_REQUEST,
+            "state empty",
+            "the request state is empty or whitespace-only",
+            "send a non-empty state describing the situation to decide on",
+            EXIT_BAD_REQUEST,
+        )
+
     infer = _infer_or_raise()
     questions = [
         infer.Question(
@@ -658,22 +704,24 @@ async def systemone(request: Request) -> SystemOneResponseOut | JSONResponse:
     ]
 
     inference = _inference_or_raise()
-    # Tokenize the state ourselves so truncation is observable: the adapter
-    # truncates silently, and a caller cannot otherwise tell whether its state
-    # was cut. Option truncation is NOT a second pass: the adapter's batched
-    # option encode records it per request (see _run_inference).
-    state_tokens = len(
-        inference.tokenizer(body.state, add_special_tokens=False)["input_ids"]
-    )
+    # The adapter tokenizes the state exactly once and records the exact input
+    # length, whether capacity truncated it, and the physical execution length.
+    # Re-tokenizing here would be a second bounded pass for a value the single
+    # pass already established.
 
     request_obj = infer.SystemOneRequest(state=body.state, questions=questions)
     try:
         # Inference is synchronous and CPU/GPU bound. Run it in a worker thread
         # so health probes stay responsive, under a single-slot bound so the
         # model is never entered concurrently.
-        response, options_truncated, option_rows = await asyncio.to_thread(
-            _run_inference, inference, request_obj
-        )
+        (
+            response,
+            options_truncated,
+            option_rows,
+            state_tokens,
+            state_truncated,
+            physical_state_len,
+        ) = await asyncio.to_thread(_run_inference, inference, request_obj)
     except Exception:
         # Full exception (type, message, traceback) stays in the server log.
         # The client receives no internal detail, file path or tensor shape.
@@ -696,8 +744,11 @@ async def systemone(request: Request) -> SystemOneResponseOut | JSONResponse:
             )
             for d in response.decisions
         ],
-        truncated=state_tokens > inference.max_state_len,
+        truncated=state_truncated,
         state_tokens=state_tokens,
+        max_state_tokens=inference.max_state_len,
+        physical_state_len=physical_state_len,
+        context_policy=CONTEXT_POLICY,
         options_truncated=options_truncated,
         option_rows=option_rows,
     )
