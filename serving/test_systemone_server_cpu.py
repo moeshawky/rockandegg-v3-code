@@ -87,6 +87,12 @@ class FakeInference:
         # The HTTP layer reads the adapter's recorded truncation counters.
         # The fake mirrors that contract without a second tokenization pass.
         self.last_option_truncation: tuple[int, int] = (0, 0)
+        # Per-call state metadata, mirroring the real adapter's contract. The
+        # fake records the exact length and the truncation flag so the server's
+        # request-local read can be tested without a model.
+        self.last_state_tokens: int = 0
+        self.last_state_truncated: bool = False
+        self.last_physical_state_len: int = 256
 
     def __call__(self, request: FakeRequest) -> SimpleNamespace:
         self.last_option_truncation = (
@@ -100,6 +106,12 @@ class FakeInference:
                 self.block_until.wait(timeout=5)
             if self.raise_message is not None:
                 raise RuntimeError(self.raise_message)
+            # Record the per-call metadata the real adapter records, so the
+            # server's request-local read is exercised on every call.
+            n = len(self.tokenizer(request.state)["input_ids"])
+            self.last_state_tokens = n
+            self.last_state_truncated = n > self.max_state_len
+            self.last_physical_state_len = self.max_state_len
             decisions = [
                 SimpleNamespace(
                     type=q.type,
@@ -431,3 +443,94 @@ def test_answer_keys_duplicate_is_bad_request(client: TestClient) -> None:
     text = resp.json()["error"]
     assert "answer_keys" in text
     assert "Exit:   3" in text
+
+
+def test_empty_state_rejected(client: TestClient) -> None:
+    """An empty state carries no information; reject it as 422, never score it."""
+    body = {"state": "", "questions": [{"type": "noul", "options": ["a", "b"]}]}
+    resp = client.post("/v1/systemone", json=body)
+    assert resp.status_code == 422
+    text = resp.json()["error"]
+    assert "state empty" in text
+    assert "Exit:   3" in text
+
+
+def test_whitespace_state_rejected(client: TestClient) -> None:
+    """Whitespace-only state is absent information, not a short state."""
+    body = {"state": "   \t\n ", "questions": [{"type": "noul", "options": ["a", "b"]}]}
+    resp = client.post("/v1/systemone", json=body)
+    assert resp.status_code == 422
+    assert "state empty" in resp.json()["error"]
+
+
+def test_valid_state_still_accepted(client: TestClient) -> None:
+    """The empty-state guard must not change behaviour for valid input."""
+    resp = client.post("/v1/systemone", json=VALID_BODY)
+    assert resp.status_code == 200
+    assert resp.json()["decisions"]
+
+
+def test_context_metadata_reported(client: TestClient) -> None:
+    """Every response carries the qualified context geometry."""
+    resp = client.post("/v1/systemone", json=VALID_BODY)
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["max_state_tokens"] == 256
+    assert body["physical_state_len"] == 256
+    assert body["context_policy"] == "fixed-256"
+    assert body["truncated"] is False
+    assert body["state_tokens"] >= 1
+
+
+def test_overlength_state_marked_truncated(client: TestClient) -> None:
+    """A state beyond capacity is reported truncated with its exact length."""
+    body = {
+        "state": "x" * (4 * 300),
+        "questions": [{"type": "noul", "options": ["a", "b"]}],
+    }
+    resp = client.post("/v1/systemone", json=body)
+    assert resp.status_code == 200
+    out = resp.json()
+    assert out["truncated"] is True
+    assert out["state_tokens"] == 300
+    assert out["max_state_tokens"] == 256
+    assert out["physical_state_len"] == 256
+
+
+def test_concurrent_metadata_is_request_local(client: TestClient) -> None:
+    """Short and overlength requests must not receive each other's metadata.
+
+    The adapter records state metadata on itself, so a read outside the
+    inference bound could return a queued request's values. This drives both
+    shapes simultaneously and asserts each response describes its own state.
+    """
+    short = {"state": "short state", "questions": [{"type": "noul", "options": ["a", "b"]}]}
+    long = {
+        "state": "y" * (4 * 400),
+        "questions": [{"type": "noul", "options": ["a", "b"]}],
+    }
+    results: dict[str, dict] = {}
+    barrier = threading.Barrier(2)
+
+    def call(tag: str, payload: dict) -> None:
+        barrier.wait(timeout=5)
+        results[tag] = client.post("/v1/systemone", json=payload).json()
+
+    threads = [
+        threading.Thread(target=call, args=("short", short), daemon=True),
+        threading.Thread(target=call, args=("long", long), daemon=True),
+    ]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join(timeout=30)
+
+    assert set(results) == {"short", "long"}
+    assert results["short"]["truncated"] is False
+    assert results["short"]["state_tokens"] < 256
+    assert results["long"]["truncated"] is True
+    assert results["long"]["state_tokens"] == 400
+    # No cross-contamination in either direction.
+    assert results["short"]["state_tokens"] != results["long"]["state_tokens"]
+    assert results["short"]["physical_state_len"] == 256
+    assert results["long"]["physical_state_len"] == 256
